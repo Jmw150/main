@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# a short script to precompile with c, then compile with latex
+# don't use '#' for non-C stuff as it can cause errors
+
+# made by: Jordan Winkler
+
+
+if [ ${1:(-4)} == '.tex' ] ; then
+    ### preping for c precompiler ###
+    # gcc only preprocesses .c files
+    cp $1 ${1::-4}.c 
+    # precompiler turns \\ into \
+    grep -rl '\\' ${1::-4}.c | xargs sed -i 's/\\\\/\\\\\\\\/g'
+
+    # preparing for, possible bad precompile
+    cp $1 ${1::-4}.tempp
+
+    # use of gcc precompiler
+    gcc -E ${1::-4}.c -o ${1::-4}.temp 
+
+    # clean up after gcc, precompiler comments left behind
+    grep '^[^#]*$' ${1::-4}.temp > ${1::-4}.tempp
+
+    # latex file -> pdf
+    pdflatex ${1::-4}.tempp
+    #pdflatex -interaction=nonstopmode ${1::-4}.tempp
+    mv ${1::-4}.tempp ${1::-4}.temp
+
+    #remove files created during this run
+    rm ${1::-4}.temp ${1::-4}.c
+
+else
+    echo "need extension '.tex'" # restrict this process to .tex files
+fi

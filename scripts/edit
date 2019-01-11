@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# let emacs be loaded in full screen
+emacs -mm "$@" & exit

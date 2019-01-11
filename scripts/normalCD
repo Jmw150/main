@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# calculates normal bell curve distribution
+
+start=$1
+end=$2
+
+mu=$3
+sig=$4
+
+if [ $# -eq 4 ] ; then
+    riemanSum "1/(${sig}*(2*pi)**(.5))*exp(-((x-${mu})/${sig})**2/2)" $start $end 1000
+elif [ $# -eq 2 ] ; then
+    riemanSum "1/((2*pi)**(.5))*exp((-(x)**2)/2)" $start $end 1000
+else 
+    echo "riemanSum [start] [end] (mean) (standard deviation)"
+fi
