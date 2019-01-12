@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# to grab all data for this class
+
+wget -m --no-parent http://www.cs.iusb.edu/~danav/teach/
+mv www.cs.iusb.edu/~danav/teach/ ./
+rm -r www.cs.iusb.edu

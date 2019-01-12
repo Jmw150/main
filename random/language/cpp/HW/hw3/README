@@ -1,0 +1,14 @@
+Program:       hw3 (Canfield Game using linked lists)
+Authors:       Jordan Winkler (student), Dana Vrajitoru
+               and William Knight
+Class:         C243, Fall 2017
+Last updated:  Sep 15, 2017.
+Description:   An implementation of stacks and queues with a 
+               card game.
+
+
+To install example code type "make". To run example code type 
+"./canfield".
+
+
+

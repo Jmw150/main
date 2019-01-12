@@ -1,0 +1,50 @@
+
+Dana_Vrajitoru
+C243_Data_Structures
+===============================================================================
+                         ***** C243 Homework 10 *****
+Due date: Monday, November 27, 2017.
+
+* Download the following files: ||done||
+graph.h
+graph.cc
+main.cc
+Makefile
+graph1.txt
+graph2.txt
+graph3.txt
+graph4.txt
+graph5.txt
+They compile with the command make and the program can be executed with the
+command graph. The text files contain examples of graphs that can be read by
+the program.
+
+* 3 functions (4 for extra credit), mod main function
+You will have to implement the 3 functions that have their body missing at the
+end of the graph.cc file and make some modifications to main.cc. A fourth one
+can be implemented for extra credit.
+** a. write . This function should write the graph to a file according to the
+format described in class and in the notes. You have to make sure that the file
+is compatible with the read function - meaning that you should be able to read
+the graph back from the file. You also have to be careful not to write each
+edge twice if the graph is undirected.
+** b. input . This function should ask the user if the graph is directed or not,
+and then for the number of nodes in the graph. After inputting this
+information, you will need to set the directed flag appropritely and then
+initialize the graph with that number of vertices, which will assign the names
+as uppercase letters in sequence. Don't ask the user for the names of the
+verices, but give them a warning about the way the names were assigned. Then it
+should input edges in the form first name second name. The input should end
+with anything that is not an uppercase letter.
+** c. printBf   or   printDf. Choose one of these two functions to implement,
+and let me know in a comment in the submission which one you've chosen. These
+functions should implement the breadth-first and depth-first traversal of the
+graph. The operation given in pseudo-code as "processing a node" consists in
+this case of writing out the name of the vertex. For the printBf you'll need a
+queue class. You can use either the class from homework 3, of the STL class
+queue (see http://www.cplusplus.com/reference/queue/queue/ for a reference).
+Optional (3 extra credit points): implement both the breadth-first and the
+depth-first traversal functions above.
+** d. Modify the menu functions in main.cc by adding the options of writing the
+graph to a file or to input it from the user.
+Turn in: All the files that you modify.
