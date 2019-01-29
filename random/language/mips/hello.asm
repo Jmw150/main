@@ -32,7 +32,7 @@ main:
     sb      $t0, 13($sp)
 
     addi    $v0, $zero, 4       # 4 is for print string
-    addi    $a0, $sp, 0
+    addi    $a0, $sp, 0         # throw the stack into the call
 
     syscall                     # print to the log
 

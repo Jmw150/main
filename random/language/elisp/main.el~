@@ -1,0 +1,128 @@
+(defun average-arg (&rest L)
+  "average-arg 1 ... n
+   
+   average but for direct arguments instead of passing in a list"
+  (let ((result 0) (counter 0))
+    (dolist (x L result)
+      (setq result (+ result x))
+      (setq counter (+ counter 1)))
+    (setq result (/ result (float counter)))))
+
+(defun printRange (x y)
+  (let ((temp))
+    (if (> x y)
+        (progn
+          (setq temp x)
+          (setq x y)
+          (setq y temp)))
+    (while (not (equal x y))
+      (princ x)
+      (princ "\n")
+      (setq x (+ x 1)))))
+
+(defun printList (L)
+  (while L
+    (princ (car L))
+    (princ "\n")
+    (setq L (cdr L))))
+
+(defun power (base exponent)
+  "Computes (base)^(exponent)
+
+   Power can compute both positive and negative integer exponent problems.
+   However, the algorithm doesn't work properly for exponents that are floats."
+  (defun positive-exponent (base exponent)
+    (let ((result 1))
+      (while (> exponent 0)
+        (setq exponent (- exponent 1))
+        (setq result (* result base)))
+      result))
+  
+  (defun negative-exponent (base exponent)
+    (let ((result 1))
+      (while (< exponent 0)
+        (setq exponent (+ exponent 1))
+        (setq result (* result (/ 1 (float base)))))
+      result))
+  (let ((result))
+    (cond
+     ((= exponent 0) 1)
+     ((> exponent 0)
+      (setq result (positive-exponent base exponent)))
+     ((< exponent 0)
+      (setq result (negative-exponent base exponent)))
+     result)))
+
+(defun print-rectangle (x y symbol)
+  "Prints a rectangle of variable symbol x by y size."
+  (dotimes (y-counter y)
+    (dotimes (x-counter x)
+      (princ symbol)
+      (princ " "))
+    (princ "\n")))
+
+
+
+
+(defun quadratic (a b c)
+  "Calculates the zeroes of a quadratic function ax^2+bx+c. Can't do imaginary roots"
+
+  (defun sqrtI (x)
+    "A modified sqrt function to deal with imaginary numbers.
+   Quadratic only works with floats."
+    (let ((result '()))
+      (if (> x 0)
+          (setq result (sqrt x))
+        (push "imaginary" result)
+        (push (sqrt (* x -1)) result))
+      result))
+  (list
+    (/ (+ (* b -1) (sqrt (- (expt b 2) (* 4 a c)))) (* 2 a))
+    (/ (- (* b -1) (sqrt (- (expt b 2) (* 4 a c)))) (* 2 a))))
+
+(defun power (base exponent)
+  "Computes (base)^(exponent).
+   Non-Tail-Recursive Power Method"
+  (cond
+   ((<= exponent 0) 1)
+   (t (* base (power base (- exponent 1))))))
+
+
+(defun power2 (base exponent result)
+  "Computes (base)^(exponent).
+   Tail-Recursive Method (Transformation)"
+  (cond
+   ((<= exponent 0) result)
+   (t (power2 base (- exponent 1) (* result base)))))
+
+(defun power3 (base exponent)
+  "Computes (base)^(exponent).
+   Iterative Method (Transformation)"
+  (let ((result 1))
+  (while (> exponent 0)
+    (setq exponent (- exponent 1))
+    (setq result (* result base)))
+  result))
+
+(defun summation (k n)
+    (cond
+     ((> k n) 0)
+     ((= k n) n)
+     (t (+ k (summation (+ k 1) n)))))
+
+(defun summation2 (k n result)
+     (cond
+      ((> k n) result)
+      ((= k n) (+ k result))
+      (t (summation2 (+ k 1) n (+ k result)))))
+
+(defun summation3 (k n)
+  (let ((result 0))
+    (while (<= k n)
+      (setq result (+ k result))
+      (setq k (+ k 1)))
+    (if (> k n)
+        result
+      (if (= k n)
+          (+ k result)))))
+

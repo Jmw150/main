@@ -1,7 +1,8 @@
 /* lambda calculus with church encoding in C
    Pete Eberlein <pete.eberlein@gmail.com>
 
-   inspired by http://experthuman.com/programming-with-nothing 
+   inspired by 
+    http://experthuman.com/programming-with-nothing 
 */
 
 #include <stdio.h>

@@ -1,11 +1,6 @@
 /*
 Welcome to my langauge.
 
-language design 
-* lambda calc focus, allows currying and partial evaluation
-* able to use pointers and other C stuff 
-* sophisticated enough macros to mimic other languages fully
-
 conventions:
 file name extension .l (lambda, or lisp)
 library extension .ll (lambda library)
@@ -18,7 +13,7 @@ document all of this stuff
 
 slim things down
 *** change quote, or q-expressions to just '() or (list )
-*** separate out c wrappers
+*** clean up c wrappers
 
 optimizations
 *** s-expressions
