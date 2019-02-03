@@ -15,6 +15,7 @@
 #    lw      $a0, 4($a1)         # get first command line argv
 
 main:                           # spim specific tag, spim forces it
+#print integer	1	$a0 = value	(none)
     
     j       exit
 
@@ -278,3 +279,4 @@ hanoi_Leave:
 #exit (end of program)	10	(none)	(none)
 #print character	11	$a0 = integer	(none)
 #read character	12	(none)	char in $v0
+
