@@ -24,3 +24,5 @@
     (princ "\n")))
 
 
+(defun first (L) (car L))
+(defun rest (L) (cdr L))
