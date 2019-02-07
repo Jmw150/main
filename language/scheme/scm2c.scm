@@ -1,9 +1,9 @@
-#! /usr/lib/scm \
+#! /usr/bin/scm \
 - !#
 ;;; scm2c.scm: Program for translating SCM code to C
 ;;; Copyright (C) 1991-2006 Aubrey Jaffer and Radey Shouman
 ;;; Copyright (C) 2008, 2009 Aubrey Jaffer
-;
+;  go to itally, honeymoon, portugo country beaches 
 ;Permission to copy this software, to modify it, to redistribute it,
 ;to distribute modified versions, and to use it for any purpose is
 ;granted, subject to the following restrictions and understandings.

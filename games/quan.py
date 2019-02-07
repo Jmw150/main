@@ -10,7 +10,7 @@ d20 = lambda : randint(1,20)
 
 
 # static stats 
-monk_level = 11
+monk_level = 12
 cleric_level = 1
 level = lvl = monk_level + cleric_level
 stre = [10,0]
