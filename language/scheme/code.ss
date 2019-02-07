@@ -869,4 +869,227 @@ Amicable pair: 10744 10856
 Amicable pair: 12285 14595
 Amicable pair: 17296 18416"
 
+; anagram
+
+(import (scheme base)
+        (scheme char)
+        (scheme file)
+        (scheme write)
+        (srfi 125)  ; hash tables
+        (srfi 132)) ; sorting library
+ 
+;; read in the words
+(define (read-groups)
+  (with-input-from-file 
+    "unixdict.txt"
+    (lambda () 
+      (let ((groups (hash-table string=?)))
+        (do ((line (read-line) (read-line)))
+          ((eof-object? line) groups)
+          (let* ((key (list->string (list-sort char<? (string->list line))))
+                 (val (hash-table-ref/default groups key '())))
+            (hash-table-set! groups key (cons line val))))))))
+ 
+;; extract the longest values from given hash-table of groups
+(define (largest-groups groups)
+  (define (find-largest grps n sofar)
+    (cond ((null? grps)
+           sofar)
+          ((> (length (car grps)) n)
+           (find-largest (cdr grps) (length (car grps)) (list (car grps))))
+          ((= (length (car grps)) n)
+           (find-largest (cdr grps) n (cons (car grps) sofar)))
+          (else 
+            (find-largest (cdr grps) n sofar))))
+  (find-largest (hash-table-values groups) 0 '()))
+ 
+;; print results
+(for-each 
+  (lambda (group)
+    (display "[ ")
+    (for-each (lambda (word) (display word) (display " ")) group)
+    (display "]\n"))
+  (list-sort (lambda (a b) (string<? (car a) (car b)))
+             (map (lambda (grp) (list-sort string<? grp))
+                  (largest-groups (read-groups)))))
+
+"
+[ abel able bale bela elba ]
+[ alger glare lager large regal ]
+[ angel angle galen glean lange ]
+[ caret carte cater crate trace ]
+[ elan lane lean lena neal ]
+[ evil levi live veil vile ]
+
+
+"
+
+;; Deranged_anagrams
+
+(import (scheme base)
+        (scheme char)
+        (scheme cxr)
+        (scheme file)
+        (scheme write)
+        (srfi 1)    ; lists
+        (srfi 132)) ; sorting library
+ 
+;; read in word list, and sort into decreasing length
+(define (read-ordered-words)
+  (with-input-from-file
+    "unixdict.txt"
+    (lambda ()
+      (do ((line (read-line) (read-line))
+           (words '() (cons line words)))
+        ((eof-object? line) 
+         (list-sort (lambda (a b) (> (string-length a) (string-length b)))
+                    words))))))
+ 
+(define (find-deranged-words word-list)
+  (define (search words)
+    (let loop ((word-chars (let ((chars (map string->list words)))
+                             (zip chars 
+                                  (map (lambda (word) (list-sort char<? word)) 
+                                       chars)))))
+      (if (< (length word-chars) 2)
+        #f ; failed to find any
+        (let ((deranged-word ; seek a deranged version of the first word in word-chars
+                (find (lambda (chars)
+                        (and (equal? (cadar word-chars) (cadr chars)) ; check it's an anagram?
+                             (not (any char=? (caar word-chars) (car chars))))) ; and deranged?
+                      word-chars)))
+          (if deranged-word ; if we got one, return it with the first word
+            (map list->string (list (caar word-chars) (car deranged-word)))
+            (loop (cdr word-chars)))))))
+  ;
+  (let loop ((rem word-list))
+    (if (null? rem)
+      '()
+      (let* ((len (string-length (car rem)))
+             (deranged-words (search ; look through group of equal sized words
+                               (take-while (lambda (word) (= len (string-length word)))
+                                           (cdr rem)))))
+        (if deranged-words
+          deranged-words
+          (loop (drop-while (lambda (word) (= len (string-length word)))
+                            (cdr rem))))))))
+ 
+(display (find-deranged-words (read-ordered-words))) (newline)
+
+; (excitation intoxicate)
+
+"
+Animate a pendulum
+
+One good way of making an animation is by simulating a physical system and illustrating the variables in that system using a dynamically changing graphical display. The classic such physical system is a simple gravity pendulum.
+
+For this task, create a simple physical model of a pendulum and animate it.
+
+Library: Scheme/PsTk
+Translation of: Ruby
+This is a direct translation of the Ruby/Tk example into Scheme + PS/Tk.
+"
+
+#!r6rs
+ 
+;;; R6RS implementation of Pendulum Animation
+ 
+(import (rnrs)
+        (lib pstk main) ; change this for your pstk installation
+        )
+ 
+(define PI 3.14159)
+(define *conv-radians* (/ PI 180))
+(define *theta* 45.0)
+(define *d-theta* 0.0)
+(define *length* 150)
+(define *home-x* 160)
+(define *home-y* 25)
+ 
+;;; estimates new angle of pendulum
+(define (recompute-angle)
+  (define (avg a b) (/ (+ a b) 2))
+  (let* ((scaling (/ 3000.0 (* *length* *length*)))
+         ; first estimate
+         (first-dd-theta (- (* (sin (* *theta* *conv-radians*)) scaling)))
+         (mid-d-theta (+ *d-theta* first-dd-theta))
+         (mid-theta (+ *theta* (avg *d-theta* mid-d-theta)))
+         ; second estimate
+         (mid-dd-theta (- (* (sin (* mid-theta *conv-radians*)) scaling)))
+         (mid-d-theta-2 (+ *d-theta* (avg first-dd-theta mid-dd-theta)))
+         (mid-theta-2 (+ *theta* (avg *d-theta* mid-d-theta-2)))
+         ; again first
+         (mid-dd-theta-2 (- (* (sin (* mid-theta-2 *conv-radians*)) scaling)))
+         (last-d-theta (+ mid-d-theta-2 mid-dd-theta-2))
+         (last-theta (+ mid-theta-2 (avg mid-d-theta-2 last-d-theta)))
+         ; again second
+         (last-dd-theta (- (* (sin (* last-theta *conv-radians*)) scaling)))
+         (last-d-theta-2 (+ mid-d-theta-2 (avg mid-dd-theta-2 last-dd-theta)))
+         (last-theta-2 (+ mid-theta-2 (avg mid-d-theta-2 last-d-theta-2))))
+    ; put values back in globals
+    (set! *d-theta* last-d-theta-2)
+    (set! *theta* last-theta-2)))
+ 
+;;; The main event loop and graphics context
+(let ((tk (tk-start)))
+  (tk/wm 'title tk "Pendulum Animation")
+  (let ((canvas (tk 'create-widget 'canvas)))
+ 
+    ;;; redraw the pendulum on canvas
+    ;;; - uses angle and length to compute new (x,y) position of bob
+    (define (show-pendulum canvas)
+      (let* ((pendulum-angle (* *conv-radians* *theta*))
+             (x (+ *home-x* (* *length* (sin pendulum-angle))))
+             (y (+ *home-y* (* *length* (cos pendulum-angle)))))
+        (canvas 'coords 'rod *home-x* *home-y* x y)
+        (canvas 'coords 'bob (- x 15) (- y 15) (+ x 15) (+ y 15))))
+ 
+    ;;; move the pendulum and repeat after 20ms
+    (define (animate)
+      (recompute-angle)
+      (show-pendulum canvas)
+      (tk/after 20 animate))
+ 
+    ;; layout the canvas
+    (tk/grid canvas 'column: 0 'row: 0)
+    (canvas 'create 'line 0 25 320 25 'tags: 'plate 'width: 2 'fill: 'grey50)
+    (canvas 'create 'oval 155 20 165 30 'tags: 'pivot 'outline: "" 'fill: 'grey50)
+    (canvas 'create 'line 1 1 1 1 'tags: 'rod 'width: 3 'fill: 'black)
+    (canvas 'create 'oval 1 1 2 2 'tags: 'bob 'outline: 'black 'fill: 'yellow)
+ 
+    ;; get everything started
+    (show-pendulum canvas)
+    (tk/after 500 animate)
+    (tk-event-loop tk)))
+
+; anonamous recursion
+
+(define (fibonacci n)
+  (if (> 0 n)
+      "Error: argument must not be negative."
+      (let aux ((a 1) (b 0) (count n))
+        (if (= count 0)
+            b
+            (aux (+ a b) a (- count 1))))))
+ 
+(map fibonacci '(1 2 3 4 5 6 7 8 9 10))
+
+; '(1 1 2 3 5 8 13 21 34 55)
+
+; Apply a callback to an array
+;Take a combined set of elements and apply a function to each element. 
+
+(define (map f L)
+  (if (null? L)
+      L
+      (cons (f (car L)) (map f (cdr L)))))
+
+(define (square n) (* n n))
+(define x #(1 2 3 4 5))
+(map square (vector->list x))
+
+(map (lambda (n) (* n n)) '(1 2 3 4 5))
+
+
+
 

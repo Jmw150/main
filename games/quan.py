@@ -17,7 +17,7 @@ stre = [10,0]
 dex  = [20,5]
 con  = [13,1]
 inte = [8,-1]
-wis  = [16,3] #change to 18 when monk_level == 12
+wis  = [18,3] #change to 18 when monk_level == 12
 cha  = [10,0]
 inspiration = 0
 
