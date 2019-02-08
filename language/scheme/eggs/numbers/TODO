@@ -1,0 +1,94 @@
+-*- org -*-   
+* See if it's possible to move variadic procedures into C
+  This could be kind of tricky considering we have to allocate
+  bignums.  Maybe use a destructive operation where possible?  But the
+  initial allocation still needs to happen (we don't want to clobber
+  input args).  Perhaps moving allocation to the heap makes it easier,
+  but I kind of doubt that, considering we need to pass a GC
+  continuation in case the heap is full.
+
+  [FLW: see my other remarks in file:TODO. Comparisons, at least, can
+  be done without heap-allocation.]
+
+* Integration into core
+  For integration into core, a few more things need to happen,
+  approximately in this order:
+** Add serialization/deserialization of bignums to C
+   Structs are already serialized correctly by core.  This fact is
+   already exploited by the numbers-syntax hack.  But to make the
+   resulting C code portable across architectures, we'll need some way
+   to serialize bignums (eg, a 40-bit number would be a bignum on a
+   32-bit system, but a fixnum on a 64-bit system).  We could simply
+   use a string-based solution, but I don't know how well that plays
+   with the GC & allocator: I think the total memory size needed for
+   all literals is calculated up front.  
+
+   If all else fails, we could make a pessimistic estimate based on
+   the size on a 32-bit system, or use #ifdef.  But a better solution
+   would be to have some sort of "packed" blob representation.  Then
+   the number of words could be pretty easily calculated (total bits
+   in the blob divided by this platform's bignum digit size).
+
+   [FLW: I recommend to store strings. In fact, I've heard somewhere
+   that Bigloo even uses this representation for flonum literals, as
+   it is generally more space efficient. I don't know whether this is
+   still the case, though. Literals are allocated in non-GC'd heap,
+   AFAIK, so you can ignore the size issue.]
+
+** Hardwired rewrite-rules must be reviewed and updated
+   Besides the specialization types database (which we already have an
+   updated version of), there's the weird rewrite-rules in
+   c-platform.scm These need to be checked whether they still rewrite
+   to any C numops that don't exist anymore, and whether the
+   inline_allocate sizes are still correct.
+*** Question: (How) does this interfere with bootstrapping ability?
+    I assume that an old compiler will still apply these rewrite-rules
+    when compiling a CHICKEN with bignum support.  If this is correct,
+    we'll probably need to tag an intermediate version which still has
+    all the old deprecated C functions, so that it can be compiled
+    with an old CHICKEN, and it itself can compile the new CHICKEN
+    which has only the new functions.
+** Add bignum support to the FFI
+   One of the current problems with core is that 63 and 64-bit
+   integers get precision loss when converting back and forth to
+   Scheme due to flonum conversion.  The FFI should raise an exception
+   when trying to pass a flonum to an "int" argument, and if you pass
+   a bignum, it should attempt to fit it into the native integer.  If
+   that fails, an exception should be raised (much like we do with the
+   embedded NUL check for strings).  Returning from C (and retrieving
+   a value from a locative) is always possible, but may result in a
+   bignum being allocated.  This may mean we need to move some stuff
+   around.  Foreign calls currently are probably "allocating
+   inline".  This may still work, because the maximum size of such a
+   FFI int->bignum conversion is fixed, but it needs some additional
+   thought to make it work correctly.
+
+   [FLW: correct - a integer-result converted to bignum will require
+   very little storage and the amount can be estimated up-front (the
+   max needed for a 64-bit bignum).]
+
+*** Question: should implicit ratnum->float conversion be done?
+
+    [FLW: I think this would be a sensible solution and it doesn't
+    allocate storage. Any extended number passed to C is basically
+    meaningless to the native side. I would go for convenience, in
+    this case, or check what the other implementations are doing.]
+
+** Integrate into the scrutinizer
+   At the very least, bignums will need to be added to the scrutinizer
+   because they'll be a new distinct type.  The strange "number" type
+   will need to be changed (or removed) as well.  Compnums and ratnums
+   could be added, but is probably not necessary.
+
+   [FLW: the more information the scrutinizer has, the more
+   opportunities for specailization arise (and thus fewer CPS calls).]
+
+** Compiler code for "fixnum", "float" and "generic" mode must be reviewed and updated
+   Maybe a new "integer" mode should be added, so that
+   performance-critical code can finally use bignums.
+
+   [FLW: these modes are obsolete, IMHO. There is so much conversion
+   going under the hood, that declarations like this just make the
+   code less safe and are usually only useful for tiny benchmarks. I
+   consider these modes a design mistake, it is better to use
+   type-specific arithmetic operators.]

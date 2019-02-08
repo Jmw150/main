@@ -1,0 +1,592 @@
+;;;; numbers.types - Hand-coded type-information for "numbers" -*- Scheme -*-
+
+;; Any type of number:
+;;
+;; (or fixnum float number (struct bignum) (struct ratnum) (struct compnum))
+;;
+;; Note that the "number" type is a builtin Chicken type representing
+;; "fixnum or float", however it is disjoint from either!  It doesn't match
+;; any of the "numbers" egg types.
+
+(numbers#eqv? (#(procedure #:pure) numbers#eqv? (* *) boolean)
+	      ((immediate *) (eq? #(1) #(2)))
+	      ((* immediate) (eq? #(1) #(2))))
+
+(numbers#equal? (#(procedure #:pure) numbers#equal? (* *) boolean)
+		((immediate *) (eq? #(1) #(2)))
+		((* immediate) (eq? #(1) #(2))))
+
+(numbers#number? (#(procedure #:pure) numbers#number? (*) boolean)
+		 (((or fixnum float number (struct bignum) (struct ratnum) (struct compnum)))
+                  (let ((#(tmp) #(1))) '#t)))
+
+(numbers#integer? (#(procedure #:pure) numbers#integer? (*) boolean)
+		  (((or fixnum (struct bignum))) (let ((#(tmp) #(1))) '#t))
+		  ((float) (##core#inline "C_u_i_fpintegerp" #(1))))
+
+(numbers#exact-integer? (#(procedure #:pure) numbers#exact-integer? (*) boolean)
+		  (((or fixnum (struct bignum))) (let ((#(tmp) #(1))) '#t))
+		  (((not (or fixnum (struct bignum)))) (let ((#(tmp) #(1))) '#f)))
+
+(numbers#exact? (#(procedure #:pure #:enforce) numbers#exact? ((or fixnum float number (struct bignum) (struct ratnum) (struct compnum))) boolean)
+		(((or fixnum (struct bignum) (struct ratnum)))
+		 (let ((#(tmp) #(1))) '#t))
+                ((float)
+		 (let ((#(tmp) #(1))) '#f)))
+
+(numbers#inexact? (#(procedure #:pure #:enforce) numbers#inexact? ((or fixnum float number (struct bignum) (struct ratnum) (struct compnum))) boolean)
+                  (((or fixnum (struct bignum) (struct ratnum)))
+                   (let ((#(tmp) #(1))) '#f))
+		  ((float) (let ((#(tmp) #(1))) '#t)))
+
+(numbers#real? (#(procedure #:pure) numbers#real? (*) boolean)) ;XXX add specializations?
+
+(numbers#complex? (#(procedure #:pure) numbers#complex? (*) boolean)
+		  (((struct compnum)) (let ((#(tmp) #(1))) '#t)))
+
+(numbers#rational? (#(procedure #:pure) numbers#rational? (*) boolean)
+		   ((fixnum) (let ((#(tmp) #(1))) '#t))) ;XXX more?
+
+(numbers#bignum? (#(procedure #:pure #:predicate (struct bignum)) numbers#bignum? (*) boolean))
+(numbers#ratnum? (#(procedure #:pure #:predicate (struct ratnum)) numbers#ratnum? (*) boolean))
+(numbers#cplxnum? (#(procedure #:pure #:predicate (struct compnum)) numbers#cplxnum? (*) boolean))
+
+(numbers#nan? (#(procedure #:clean #:enforce) numbers#nan? ((or fixnum float number (struct bignum) (struct ratnum) (struct compnum))) boolean)
+	      (((or fixnum (struct bignum) (struct ratnum)))
+               (let ((#(tmp) #(1))) '#f))
+              ((float) (numbers#@flonum-nan? #(1)))
+              ((*) (numbers#@basic-nan? #(1))))
+
+(numbers#infinite? (#(procedure #:clean #:enforce) numbers#infinite? ((or fixnum float number (struct bignum) (struct ratnum) (struct compnum))) boolean)
+                   (((or fixnum (struct bignum) (struct ratnum)))
+                    (let ((#(tmp) #(1))) '#f))
+                   ((float) (numbers#@flonum-infinite? #(1)))
+                   ((*) (numbers#@basic-infinite? #(1))))
+
+(numbers#finite? (#(procedure #:clean #:enforce) numbers#finite? ((or fixnum float number (struct bignum) (struct ratnum) (struct compnum))) boolean)
+                 (((or fixnum (struct bignum) (struct ratnum)))
+                  (let ((#(tmp) #(1))) '#t))
+                 ((float) (numbers#@flonum-finite? #(1)))
+                 ((*) (numbers#@basic-finite? #(1))))
+
+(numbers#rectnum? (#(procedure #:pure) numbers#rectnum? (*) boolean)
+                  (((or fixnum float number (struct bignum) (struct ratnum)))
+                   (let ((#(tmp) #(1))) '#f)))
+
+(numbers#compnum? (#(procedure #:pure) numbers#compnum? (*) boolean)
+                  (((or fixnum float number (struct bignum) (struct ratnum)))
+                   (let ((#(tmp) #(1))) '#f)))
+
+(numbers#cintnum? (#(procedure #:pure) numbers#cintnum? (*) boolean)
+                  (((or fixnum float number (struct bignum)))
+                   (let ((#(tmp) #(1))) '#t))
+                  (((struct ratnum))
+                   (let ((#(tmp) #(1))) '#f)))
+
+(numbers#cflonum? (#(procedure #:pure) numbers#cflonum? (*) boolean)
+                  ((float) (let ((#(tmp) #(1))) '#t))
+                  (((or fixnum number (struct bignum) (struct ratnum)))
+                   (let ((#(tmp) #(1))) '#f)))
+
+(numbers#zero? (#(procedure #:clean #:enforce) numbers#zero? ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) boolean) 
+	       ((fixnum) (eq? #(1) '0))
+	       ((float) (##core#inline "C_u_i_zerop" #(1)))
+               (((or (struct bignum) (struct ratnum) (struct compnum)))
+                (let ((#(tmp) #(1))) '#f))
+               ((*) (numbers#@basic-zero? #(1))))
+
+(numbers#odd? (#(procedure #:clean #:enforce) numbers#odd? ((or float fixnum (struct bignum) number)) boolean)
+	       ((fixnum) (##core#inline "C_i_fixnumoddp" #(1)))
+               (((or fixnum (struct bignum))) (numbers#@integer-odd? #(1)))
+               ((*) (numbers#@basic-odd? #(1))))
+
+(numbers#even? (#(procedure #:clean #:enforce) numbers#even? ((or float fixnum (struct bignum) number)) boolean)
+	       ((fixnum) (##core#inline "C_i_fixnumevenp" #(1)))
+               (((or fixnum (struct bignum))) (numbers#@integer-even? #(1)))
+               ((*) (numbers#@basic-even? #(1))))
+
+(numbers#positive? (#(procedure #:clean #:enforce) numbers#positive? ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) boolean)
+		   ((fixnum) ;; Or (numbers#@fixnum-positive? #(1))
+                    (##core#inline "C_fixnum_greaterp" #(1) '0))
+		   ((float) (##core#inline "C_u_i_positivep" #(1)))
+                   (((or fixnum (struct bignum))) (numbers#@integer-positive? #(1)))
+                   (((struct ratnum)) (numbers#positive? (##sys#slot #(1) '1)))
+                   ((*) (numbers#@basic-positive? #(1))))
+
+(numbers#negative? (#(procedure #:clean #:enforce) numbers#negative? ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) boolean)
+		   ((fixnum) ;; Or (numbers#@fixnum-negative? #(1))
+                    (##core#inline "C_fixnum_lessp" #(1) '0))
+		   ((float) (##core#inline "C_u_i_negativep" #(1)))
+                   (((or fixnum (struct bignum))) (numbers#@integer-negative? #(1)))
+                   (((struct ratnum)) (numbers#negative? (##sys#slot #(1) '1)))
+                   ((*) (numbers#@basic-negative? #(1))))
+
+(numbers#max (#(procedure #:clean #:enforce) numbers#max (#!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+	     ((fixnum fixnum) (fxmax #(1) #(2)))
+	     ((float float) (##core#inline "C_i_flonum_max" #(1) #(2))))
+
+(numbers#min (#(procedure #:clean #:enforce) numbers#min (#!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+	     ((fixnum fixnum) (fxmin #(1) #(2)))
+	     ((float float) (##core#inline "C_i_flonum_min" #(1) #(2))))
+
+(numbers#+ (#(procedure #:clean #:enforce) numbers#+ (#!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+           (() (fixnum) '0)
+           ((fixnum) (fixnum) #(1))
+           ((float) (float) #(1))
+           ((number) (number) #(1))
+           (((struct bignum)) ((struct bignum)) #(1))
+           (((struct ratnum)) ((struct ratnum)) #(1))
+           (((struct compnum)) ((struct compnum)) #(1))
+	   ((float fixnum) (float)
+	    (##core#inline_allocate 
+	     ("C_a_i_flonum_plus" 4) 
+	     #(1) 
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(2))))
+	   ((fixnum float) (float)
+	    (##core#inline_allocate 
+	     ("C_a_i_flonum_plus" 4) 
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(1))
+	     #(2)))
+	   ((float float) (float)
+	    (##core#inline_allocate ("C_a_i_flonum_plus" 4) #(1) #(2)))
+           ((fixnum fixnum) ((or fixnum (struct bignum)))
+            (numbers#@fixnum-2-plus #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-plus #(1) #(2)))
+           ((* *) ((or float fixnum (struct bignum) number (struct compnum) (struct ratnum)))
+            (numbers#@basic-2-plus #(1) #(2))))
+
+(numbers#add1 (#(procedure #:clean #:enforce) numbers#add1 ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+           ((fixnum) ((or fixnum (struct bignum)))
+            (numbers#@fixnum-2-plus #(1) '1))
+           (((or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-plus #(1) '1))
+           ((number) (number)
+            (numbers#@basic-2-plus #(1) '1))
+           ((float) (float)
+	    (##core#inline_allocate ("C_a_i_flonum_plus" 4) #(1) '1.0))
+	   ((*) ((or float fixnum (struct bignum) number (struct compnum) (struct ratnum)))
+            (numbers#@basic-2-plus #(1) '1)))
+
+(numbers#- (#(procedure #:clean #:enforce) numbers#- ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) #!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+           ((fixnum) ((or fixnum (struct bignum)))
+            (numbers#@fixnum-negate #(1)))
+           (((or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+              (numbers#@integer-negate #(1)))
+           ((float) (float) 
+	    (##core#inline_allocate ("C_a_i_flonum_negate" 4) #(1)))
+           ((*) ((or float fixnum (struct bignum) number (struct compnum) (struct ratnum)))
+            (numbers#@basic-negate #(1)))
+	   ((float fixnum) (float)
+	    (##core#inline_allocate 
+	     ("C_a_i_flonum_difference" 4) 
+	     #(1) 
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(2))))
+	   ((fixnum float) (float)
+	    (##core#inline_allocate 
+	     ("C_a_i_flonum_difference" 4) 
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(1))
+	     #(2)))
+	   ((float float) (float)
+	    (##core#inline_allocate ("C_a_i_flonum_difference" 4) #(1) #(2)))
+           ((fixnum fixnum) ((or fixnum (struct bignum)))
+            (numbers#@fixnum-2-minus #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-minus #(1) #(2)))
+           ((* *) ((or float fixnum (struct bignum) number (struct compnum) (struct ratnum)))
+            (numbers#@basic-2-minus #(1) #(2))))
+
+(numbers#sub1 (#(procedure #:clean #:enforce) numbers#sub1 ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+           ((fixnum) ((or fixnum (struct bignum)))
+            (numbers#@fixnum-2-minus #(1) '1))
+           (((or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-minus #(1) '1))
+	   ((float) (float)
+	    (##core#inline_allocate ("C_a_i_flonum_difference" 4) #(1) '1.0))
+           ((number) (number)
+            (numbers#@basic-2-minus #(1) '1))
+           ((*) ((or float fixnum (struct bignum) number (struct compnum) (struct ratnum)))
+            (numbers#@basic-2-minus #(1) '1)))
+
+(numbers#signum (#(procedure #:clean #:enforce) numbers#signum ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct compnum) (struct ratnum)))
+             ((fixnum) (fixnum)
+              (numbers#@fixnum-signum #(1)))
+             (((or fixnum (struct bignum))) (fixnum)
+              (numbers#@integer-signum #(1)))
+	     ((float) (float)
+	      (numbers#@flonum-signum #(1)))
+             (((struct ratnum)) (fixnum)
+              (numbers#@integer-signum (##sys#slot #(1) '1)))
+             (((struct compnum)) ((struct compnum))
+              (numbers#@basic-signum #(1)))
+             ((*) ((or fixnum float))
+              (numbers#@basic-signum #(1))))
+
+(numbers#* (#(procedure #:clean #:enforce) numbers#* (#!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+           (() (fixnum) '1)
+           ((fixnum) (fixnum) #(1))
+           ((float) (float) #(1))
+           ((number) (number) #(1))
+           (((struct bignum)) ((struct bignum)) #(1))
+           (((struct ratnum)) ((struct ratnum)) #(1))
+           (((struct compnum)) ((struct compnum)) #(1))
+	   ((float fixnum) (float)
+	    (##core#inline_allocate 
+	     ("C_a_i_flonum_times" 4)
+	     #(1)
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(2))))
+	   ((fixnum float) (float)
+	    (##core#inline_allocate
+	     ("C_a_i_flonum_times" 4)
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(1))
+	     #(2)))
+	   ((float float) (float)
+	    (##core#inline_allocate ("C_a_i_flonum_times" 4) #(1) #(2)))
+           ((fixnum fixnum) ((or fixnum (struct bignum)))
+            (numbers#@fixnum-2-times #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-times #(1) #(2)))
+           ((* *) ((or float fixnum (struct bignum) number (struct compnum) (struct ratnum)))
+            (numbers#@basic-2-times #(1) #(2))))
+
+(numbers#/ (#(procedure #:clean #:enforce) numbers#/ ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) #!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+	   ((float fixnum) (float)
+	    (##core#inline_allocate 
+	     ("C_a_i_flonum_quotient_checked" 4) 
+	     #(1) 
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(2))))
+	   ((fixnum float) (float)
+	    (##core#inline_allocate 
+	     ("C_a_i_flonum_quotient" 4) 
+	     (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(1))
+	     #(2)))
+	   ((float float) (float)
+	    (##core#inline_allocate ("C_a_i_flonum_quotient" 4) #(1) #(2))))
+
+(numbers#= (#(procedure #:clean #:enforce) numbers#= ((or fixnum float (struct bignum) (struct ratnum)) (or fixnum float (struct bignum) (struct ratnum)) #!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) boolean)
+	   ((fixnum fixnum) (eq? #(1) #(2)))
+	   ((float fixnum) (numbers#@basic-2-= #(1) #(2)))
+           ((fixnum float) (numbers#@basic-2-= #(1) #(2)))
+	   ((float float) (##core#inline "C_flonum_equalp" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+            (numbers#@integer-2-= #(1) #(2)))
+           ((* *) (numbers#@basic-2-= #(1) #(2))))
+
+(numbers#> (#(procedure #:clean #:enforce) numbers#> ((or fixnum float (struct bignum) (struct ratnum)) (or fixnum float (struct bignum) (struct ratnum)) #!rest (or fixnum float (struct bignum) (struct ratnum))) boolean)
+           ((fixnum fixnum) (fx> #(1) #(2)))
+	   ((float fixnum) (numbers#@basic-2-> #(1) #(2)))
+           ((fixnum float) (numbers#@basic-2-> #(1) #(2)))
+	   ((float float) (##core#inline "C_flonum_greaterp" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+            (numbers#@integer-2-> #(1) #(2)))
+           ((* *) (numbers#@basic-2-> #(1) #(2))))
+
+(numbers#>= (#(procedure #:clean #:enforce) numbers#>= ((or fixnum float (struct bignum) (struct ratnum)) (or fixnum float (struct bignum) (struct ratnum)) #!rest (or fixnum float (struct bignum) (struct ratnum))) boolean)
+           ((fixnum fixnum) (fx>= #(1) #(2)))
+	   ((float fixnum) (numbers#@basic-2->= #(1) #(2)))
+           ((fixnum float) (numbers#@basic-2->= #(1) #(2)))
+	   ((float float) (##core#inline "C_flonum_greater_or_equal_p" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+            (numbers#@integer-2->= #(1) #(2)))
+           ((* *) (numbers#@basic-2->= #(1) #(2))))
+
+(numbers#< (#(procedure #:clean #:enforce) numbers#< ((or fixnum float (struct bignum) (struct ratnum)) (or fixnum float (struct bignum) (struct ratnum)) #!rest (or fixnum float (struct bignum) (struct ratnum))) boolean)
+	   ((fixnum fixnum) (fx< #(1) #(2)))
+	   ((float fixnum) (numbers#@basic-2-< #(1) #(2)))
+           ((fixnum float) (numbers#@basic-2-< #(1) #(2)))
+	   ((float float) (##core#inline "C_flonum_lessp" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+            (numbers#@integer-2-< #(1) #(2)))
+           ((* *) (numbers#@basic-2-< #(1) #(2))))
+
+(numbers#<= (#(procedure #:clean #:enforce) numbers#<= ((or fixnum float (struct bignum) (struct ratnum)) (or fixnum float (struct bignum) (struct ratnum)) #!rest (or fixnum float (struct bignum) (struct ratnum))) boolean)
+	   ((fixnum fixnum) (fx<= #(1) #(2)))
+	   ((float fixnum) (numbers#@basic-2-<= #(1) #(2)))
+           ((fixnum float) (numbers#@basic-2-<= #(1) #(2)))
+	   ((float float) (##core#inline "C_flonum_less_or_equal_p" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+            (numbers#@integer-2-<= #(1) #(2)))
+           ((* *) (numbers#@basic-2-<= #(1) #(2))))
+
+(numbers#quotient (#(procedure #:clean #:enforce) numbers#quotient ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+                  ((float float) (float)
+                   (numbers#@flonum-quotient #(1) #(2)))
+                  ;; TODO: mixed fix/flo cases?
+		  ((fixnum fixnum) (fixnum)
+                   (numbers#@fixnum-quotient #(1) #(2)))
+                  (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+                   (numbers#@integer-quotient #(1) #(2)))
+                  ((* *) ((or fixnum (struct bignum) float))
+                   (numbers#@basic-quotient #(1) #(2))))
+
+;; Identical to the above
+(numbers#truncate-quotient (#(procedure #:clean #:enforce) numbers#truncate-quotient ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+                  ((float float) (float)
+                   (numbers#@flonum-quotient #(1) #(2)))
+                  ;; TODO: mixed fix/flo cases?
+		  ((fixnum fixnum) (fixnum)
+                   (numbers#@fixnum-quotient #(1) #(2)))
+                  (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+                   (numbers#@integer-quotient #(1) #(2)))
+                  ((* *) ((or fixnum (struct bignum) float))
+                   (numbers#@basic-quotient #(1) #(2))))
+
+(numbers#remainder (#(procedure #:clean #:enforce) numbers#remainder ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+                  ((float float) (float)
+                   (numbers#@flonum-remainder #(1) #(2)))
+                  ;; TODO: mixed fix/flo cases?
+		  ((fixnum fixnum) (fixnum)
+                   (numbers#@fixnum-remainder #(1) #(2)))
+                  (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+                   (numbers#@integer-remainder #(1) #(2)))
+                  ((* *) ((or fixnum (struct bignum) float))
+                   (numbers#@basic-remainder #(1) #(2))))
+
+;; Identical to the above
+(numbers#truncate-remainder (#(procedure #:clean #:enforce) numbers#truncate-remainder ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+                  ((float float) (float)
+                   (numbers#@flonum-remainder #(1) #(2)))
+                  ;; TODO: mixed fix/flo cases?
+		  ((fixnum fixnum) (fixnum)
+                   (numbers#@fixnum-remainder #(1) #(2)))
+                  (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+                   (numbers#@integer-remainder #(1) #(2)))
+                  ((* *) ((or fixnum (struct bignum) float))
+                   (numbers#@basic-remainder #(1) #(2))))
+
+(numbers#modulo
+ (#(procedure #:clean #:enforce) numbers#modulo ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))))
+
+;; Identical to the above
+(numbers#floor-remainder
+ (#(procedure #:clean #:enforce) numbers#floor-remainder ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))))
+
+(numbers#floor-quotient
+ (#(procedure #:clean #:enforce) numbers#floor-quotient ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))))
+
+;; The next four all have the same signature
+(numbers#quotient&remainder (#(procedure #:clean #:enforce) numbers#quotient&remainder ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+                  ((float float) (float float)
+                   (numbers#@flonum-quotient&remainder #(1) #(2)))
+                  ;; TODO: mixed fix/flo cases?
+		  ((fixnum fixnum) (fixnum fixnum)
+                   (numbers#@fixnum-quotient&remainder #(1) #(2)))
+                  (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+                   (numbers#@integer-quotient&remainder #(1) #(2)))
+                  ((* *) ((or fixnum (struct bignum) float) (or fixnum (struct bignum) float))
+                   (numbers#@basic-quotient&remainder #(1) #(2))))
+
+(numbers#quotient&modulo
+ (#(procedure #:clean #:enforce) numbers#quotient&modulo ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))))
+
+(numbers#floor/
+ (#(procedure #:clean #:enforce) numbers#floor/ ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))))
+
+;; Identical to quotient&remainder
+(numbers#truncate/ (#(procedure #:clean #:enforce) numbers#floor/ ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+                   ((float float) (float float)
+                   (numbers#@flonum-quotient&remainder #(1) #(2)))
+                   ;; TODO: mixed fix/flo cases?
+                   ((fixnum fixnum) (fixnum fixnum)
+                    (numbers#@fixnum-quotient&remainder #(1) #(2)))
+                   (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+                    (numbers#@integer-quotient&remainder #(1) #(2)))
+                   ((* *) ((or fixnum (struct bignum) float) (or fixnum (struct bignum) float))
+                   (numbers#@basic-quotient&remainder #(1) #(2))))
+
+(numbers#gcd (#(procedure #:clean #:enforce) numbers#gcd (#!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+             (() (fixnum) '0)
+             ((fixnum) (fixnum) (numbers#@fixnum-abs #(1)))
+             ;; Must be an integer flonum!
+             #;((float) (float) #(1))
+             #;((number) (number) #(1))
+             (((struct bignum)) ((struct bignum)) (numbers#@integer-abs #(1)))
+             ((float float) (float float) (numbers#@flonum-2-gcd #(1) #(2)))
+             ;; TODO: mixed fix/flo cases?
+             ((fixnum fixnum) ((or fixnum (struct bignum)))
+              (numbers#@fixnum-2-gcd #(1) #(2))))
+
+(numbers#lcm (#(procedure #:clean #:enforce) numbers#lcm (#!rest (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+             (() (fixnum) '1)
+             ((fixnum) (fixnum) (numbers#@fixnum-abs #(1)))
+             ;; Must be an integer flonum!
+             #;((float) (float) #(1))
+             #;((number) (number) #(1))
+             (((struct bignum)) ((struct bignum)) (numbers#@integer-abs #(1))))
+
+(numbers#abs (#(procedure #:clean #:enforce) numbers#abs ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+             ((fixnum) ((or fixnum (struct bignum)))
+              (numbers#@fixnum-abs #(1)))
+             (((or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+              (numbers#@integer-abs #(1)))
+	     ((float) (float)
+	      (##core#inline_allocate ("C_a_i_flonum_abs" 4) #(1)))
+             ((*) ((or fixnum (struct bignum) float))
+              (numbers#@basic-abs #(1))))
+
+(numbers#floor (#(procedure #:clean #:enforce) numbers#floor ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+	       ((fixnum) (fixnum) #(1))
+               (((struct bignum)) ((struct bignum)) #(1))
+	       (((or fixnum (struct bignum))) ((or fixnum (struct bignum))) #(1))
+	       ((float) (float)
+		(##core#inline_allocate ("C_a_i_flonum_floor" 4) #(1))))
+
+(numbers#ceiling (#(procedure #:clean #:enforce) numbers#ceiling ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+		 ((fixnum) (fixnum) #(1))
+                 (((struct bignum)) ((struct bignum)) #(1))
+                 (((or fixnum (struct bignum))) ((or fixnum (struct bignum))) #(1))
+		 ((float) (float)
+		  (##core#inline_allocate ("C_a_i_flonum_ceiling" 4) #(1))))
+
+(numbers#truncate (#(procedure #:clean #:enforce) numbers#truncate ((or fixnum float (struct bignum) (struct ratnum))) (or fixnum float (struct bignum)))
+		  ((fixnum) (fixnum) #(1))
+                  (((struct bignum)) ((struct bignum)) #(1))
+                  (((or fixnum (struct bignum))) ((or fixnum (struct bignum))) #(1))
+		  ((float) (float)
+		   (##core#inline_allocate ("C_a_i_flonum_truncate" 4) #(1))))
+
+(numbers#round (#(procedure #:clean #:enforce) numbers#round ((or fixnum float (struct bignum) (struct ratnum))) (or fixnum float (struct bignum)))
+	       ((fixnum) (fixnum) #(1))
+	       (((struct bignum)) ((struct bignum)) #(1))
+	       (((or fixnum (struct bignum))) ((or fixnum (struct bignum))) #(1))
+	       ((float) (float)
+		(##core#inline_allocate ("C_a_i_flonum_round_proper" 4) #(1))))
+
+(numbers#numerator (#(procedure #:clean #:enforce) numbers#numerator ((or fixnum float (struct bignum) (struct ratnum))) (or fixnum float (struct bignum)))
+                   (((struct bignum)) ((struct bignum)) #(1))
+                   ((fixnum) (fixnum) #(1))
+                   (((struct ratnum)) (##sys#slot #(1) '1)))
+
+(numbers#denominator (#(procedure #:clean #:enforce) numbers#denominator ((or fixnum float (struct bignum) (struct ratnum))) (or fixnum float (struct bignum)))
+                     (((or fixnum (struct bignum))) (fixnum) (let ((#(tmp) #(1))) '1))
+                     (((struct ratnum)) (##sys#slot #(1) '2)))
+
+(numbers#exact->inexact (#(procedure #:clean #:enforce) numbers#exact->inexact ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) float)
+			((float) #(1))
+			((fixnum) (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(1))))
+
+(numbers#inexact (#(procedure #:clean #:enforce) numbers#inexact ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) float)
+                 ((float) #(1))
+                 ((fixnum) (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(1))))
+
+(numbers#inexact->exact (#(procedure #:clean #:enforce) numbers#inexact->exact ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum (struct ratnum) (struct bignum)))
+			;;XXX float case?
+			(((or fixnum (struct bignum) (struct ratnum))) #(1)))
+
+(numbers#exact (#(procedure #:clean #:enforce) numbers#exact ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) fixnum)
+               ;;XXX float case?
+               (((or fixnum (struct bignum) (struct ratnum))) #(1)))
+
+(numbers#exp (#(procedure #:clean #:enforce) numbers#exp ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum)))
+	     ((float) (float) (##core#inline_allocate ("C_a_i_flonum_exp" 4) #(1))))
+
+;; No specialization due to (log -flonum) => complex
+(numbers#log (#(procedure #:clean #:enforce) numbers#log ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) #!optional (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum))))
+
+(numbers#expt (#(procedure #:clean #:enforce) numbers#expt ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) (or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or fixnum float (struct bignum) (struct compnum) (struct ratnum)))
+              ;; This breaks in some extreme edge cases... Worth disabling?
+	      #;((float float) (float)
+	       (##core#inline_allocate ("C_a_i_flonum_expt" 4) #(1) #(2))))
+
+(numbers#sqrt (#(procedure #:clean #:enforce) numbers#sqrt ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum)))
+              ;; This breaks for negative numbers (should result in a compnum)
+	      #;((float) (float) (##core#inline_allocate ("C_a_i_flonum_sqrt" 4) #(1)))
+              )
+
+(numbers#sin (#(procedure #:clean #:enforce) numbers#sin ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum)))
+	     ((float) (float) (##core#inline_allocate ("C_a_i_flonum_sin" 4) #(1))))
+
+(numbers#cos (#(procedure #:clean #:enforce) numbers#cos ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum)))
+	     ((float) (float) (##core#inline_allocate ("C_a_i_flonum_cos" 4) #(1))))
+
+(numbers#tan (#(procedure #:clean #:enforce) numbers#tan ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum)))
+	     ((float) (float) (##core#inline_allocate ("C_a_i_flonum_tan" 4) #(1))))
+
+(numbers#asin (#(procedure #:clean #:enforce) numbers#asin ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum)))
+              ;; Unfortunately this doesn't work when the number is > 1.0 (returns compnum)
+	      #;((float) (float) (##core#inline_allocate ("C_a_i_flonum_asin" 4) #(1))))
+
+(numbers#acos (#(procedure #:clean #:enforce) numbers#acos ((or fixnum float (struct bignum) (struct compnum) (struct ratnum))) (or float (struct compnum)))
+              ;; Unfortunately this doesn't work when the number is > 1.0 (returns compnum)
+	      #;((float) (float) (##core#inline_allocate ("C_a_i_flonum_acos" 4) #(1))))
+
+(numbers#atan (#(procedure #:clean #:enforce) numbers#atan ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) #!optional number) (or float (struct compnum)))
+	      ((float) (float) (##core#inline_allocate ("C_a_i_flonum_atan" 4) #(1)))
+	      ((float float) (float) (##core#inline_allocate ("C_a_i_flonum_atan2" 4) #(1) #(2))))
+
+(numbers#angle (#(procedure #:clean #:enforce) numbers#angle ((or float fixnum (struct compnum) (struct bignum) (struct ratnum))) float)
+               ((float) (##core#inline_allocate ("C_a_i_flonum_atan2" 4) '0.0 #(1)))
+               ((fixnum) (##core#inline_allocate
+                          ("C_a_i_flonum_atan2" 4)
+                          '0.0
+                          (##core#inline_allocate ("C_a_i_fix_to_flo" 4) #(1))))
+               (((struct compnum)) (float)
+                (##core#inline_allocate
+                 ("C_a_i_flonum_atan2" 4)
+                 (numbers#exact->inexact (##sys#slot #(1) '2))
+                 (numbers#exact->inexact (##sys#slot #(1) '1)))))
+
+(numbers#magnitude (#(procedure #:clean #:enforce) numbers#magnitude ((or float fixnum (struct compnum) (struct bignum) (struct ratnum))) (or float fixnum (struct bignum) (struct ratnum)))
+                   (((or float fixnum (struct bignum) (struct ratnum))) (numbers#abs #(1))))
+
+(numbers#number->string
+ (#(procedure #:clean #:enforce) numbers#number->string ((or fixnum float (struct bignum) (struct compnum) (struct ratnum)) #!optional fixnum) string)
+ ((fixnum) (##sys#fixnum->string #(1))) ; Needed?
+ ((fixnum fixnum) (numbers#@fixnum->string #(1) #(2)))
+ (((or fixnum (struct bignum))) (numbers#@integer->string #(1) '10))
+ (((or fixnum (struct bignum)) fixnum) (numbers#@integer->string #(1) #(2)))
+ ((float fixnum) (numbers#@flonum->string #(1) #(2)))
+ ((float) (numbers#@flonum->string #(1) '10))
+ ((*) (numbers#@basic-number->string #(1) '10))
+ ((* *) (numbers#@basic-number->string #(1) #(2))))
+
+(numbers#string->number
+ (#(procedure #:clean #:enforce) numbers#string->number (string #!optional fixnum)
+  (or fixnum float (struct bignum) (struct compnum) (struct ratnum) boolean)))
+
+(numbers#bit-set? (#(procedure #:clean #:enforce) numbers#bit-set? ((or fixnum (struct bignum)) (or fixnum (struct bignum))) boolean)
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum)))
+            (numbers#@integer-bit-set? #(1) #(2))))
+
+(numbers#bitwise-and (#(procedure #:clean #:enforce) numbers#bitwise-and (#!rest (or fixnum (struct bignum))) (or fixnum (struct bignum)))
+           (() '-1)
+           ((fixnum) (fixnum) #(1))
+           (((struct bignum)) ((struct bignum)) #(1))
+           (((or fixnum (struct bignum))) #(1))
+           ((fixnum fixnum) (fixnum)
+            (##core#inline "C_u_fixnum_and" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-bitwise-and #(1) #(2))))
+
+(numbers#bitwise-ior (#(procedure #:clean #:enforce) numbers#bitwise-ior (#!rest (or fixnum (struct bignum))) (or fixnum (struct bignum)))
+           (() '0)
+           ((fixnum) (fixnum) #(1))
+           (((struct bignum)) ((struct bignum)) #(1))
+           (((or fixnum (struct bignum))) #(1))
+           ((fixnum fixnum) (fixnum)
+            (##core#inline "C_u_fixnum_or" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-bitwise-ior #(1) #(2))))
+
+(numbers#bitwise-xor (#(procedure #:clean #:enforce) numbers#bitwise-xor (#!rest (or fixnum (struct bignum))) (or fixnum (struct bignum)))
+           (() '0)
+           ((fixnum) (fixnum) #(1))
+           (((struct bignum)) ((struct bignum)) #(1))
+           (((or fixnum (struct bignum))) #(1))
+           ((fixnum fixnum) (fixnum)
+            (##core#inline "C_fixnum_xor" #(1) #(2)))
+           (((or fixnum (struct bignum)) (or fixnum (struct bignum))) ((or fixnum (struct bignum)))
+            (numbers#@integer-2-bitwise-xor #(1) #(2))))
+
+(numbers#arithmetic-shift (#(procedure #:clean #:enforce) numbers#arithmetic-shift ((or fixnum (struct bignum)) fixnum) (or fixnum (struct bignum)))
+           (((or fixnum (struct bignum)) fixnum) ((or fixnum (struct bignum)))
+            (numbers#@integer-arithmetic-shift #(1) #(2))))
+
+(numbers#integer-length (#(procedure #:clean #:enforce) numbers#integer-length ((or fixnum (struct bignum))) fixnum)
+           ((fixnum) (fixnum)
+            (numbers#@fixnum-length #(1)))
+           (((or fixnum (struct bignum))) (fixnum)
+            (numbers#@integer-length #(1))))
+
+(numbers#random (#(procedure #:clean #:enforce) numbers#random ((or fixnum (struct bignum))) (or fixnum (struct bignum))))
+(numbers#randomize (#(procedure #:clean #:enforce) numbers#randomize (#!optional (or fixnum (struct bignum))) undefined))
