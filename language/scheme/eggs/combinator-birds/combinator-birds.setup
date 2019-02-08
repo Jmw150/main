@@ -1,8 +1,0 @@
-(compile -sJ -O0 -d2 combinator-birds-chicken.scm -o combinator-birds.so)
-(compile -s  -O0 -d2 combinator-birds.import.scm)
-(compile -s  -O0 -d2 combinator-letters.import.scm)
-(install-extension 'combinator-birds
-  '("combinator-birds.so"
-    "combinator-birds.import.so"
-    "combinator-letters.import.so")
-  '((version 0.0.3)))

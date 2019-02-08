@@ -1,5 +1,0 @@
-((synopsis "A utility belt for managing your Chicken coop")
- (author "Christian Kellermann, Moritz Heidkamp")
- (category tools)
- (license "BSD")
- (depends matchable))

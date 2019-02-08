@@ -1,8 +1,0 @@
-(compile chicken-select.scm)
-(compile chicken-build.scm)
-(compile chicken-hatch.scm)
-
-(install-program 
- 'chicken-belt
- '("chicken-select" "chicken-build" "chicken-hatch")
- '())
