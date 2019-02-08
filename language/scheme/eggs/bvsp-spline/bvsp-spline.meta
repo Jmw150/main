@@ -1,0 +1,24 @@
+;; -*- Hen -*-
+
+((egg "bvsp-spline.egg") ; This should never change
+
+ ; List here all the files that should be bundled as part of your egg.  
+
+ (files "bvsp-spline.setup" "bvsp-spline.meta" "bvsp-spline.scm" "bvspis" "tests")
+
+ ; Your egg's license:
+
+ (license "GPL-3")
+
+ ; Pick one from the list of categories (see below) for your egg and
+ ; enter it here.
+
+ (category math)
+
+ ; A list of eggs bvsp-spline depends on.
+
+ (needs)
+
+ (author "Ivan Raikov")
+
+ (synopsis "An interface to the BVSPIS package (Boundary-Valued Shape-Preserving Interpolating Splines)."))

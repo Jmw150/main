@@ -1,0 +1,12 @@
+;;;; number-limits.setup  -*- Hen -*-
+
+(use setup-helper-mod)
+
+(verify-extension-name "number-limits")
+
+(setup-shared-extension-module 'int-limits (extension-version "2.1.0"))
+(setup-shared-extension-module 'float-limits (extension-version "2.1.0"))
+
+(setup-shared-extension-module 'number-limits (extension-version "2.1.0"))
+
+;(install-extension 'number-limits '() `((version ,(extension-version "2.1.0")) ) )

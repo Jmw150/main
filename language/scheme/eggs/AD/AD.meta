@@ -1,0 +1,15 @@
+;;;  -*- Hen -*-
+
+((egg "AD.egg")
+ (category math)
+ (author "Jeffrey Mark Siskind")
+ (maintainer "Andrei Barbu")
+ (license "LGPL")
+ (doc-from-wiki)
+ (synopsis "Performs automatic differentiation")
+ (depends setup-helper define-structure traversal)
+ (test-depends test)
+ (files "AD.meta" 
+        "AD.release-info"
+        "AD.scm" 
+        "AD.setup"))

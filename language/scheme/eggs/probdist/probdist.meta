@@ -1,0 +1,24 @@
+;;;; -*- Hen -*-
+
+((egg "probdist.egg") ; This should never change
+
+ ; List here all the files that should be bundled as part of your egg.  
+
+ (files "sampled-pdf.scm" "probdist.setup" "probdist.meta" "normal-pdf.scm" "tests")
+
+ ; Your egg's license:
+
+ (license "GPL-3")
+
+ ; Pick one from the list of categories (see below) for your egg and
+ ; enter it here.
+
+ (category math)
+
+ ; A list of eggs probdist depends on.
+
+ (needs datatype matchable srfi-4-utils blas matrix-utils atlas-lapack)
+
+ (author "Ivan Raikov")
+
+ (synopsis "Probability distributions."))

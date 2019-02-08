@@ -1,0 +1,29 @@
+;; -*- Hen -*-
+
+(define (gsl-try-compile header ldflags)
+  (and (try-compile 
+	(string-append "#include " header "\n" 
+		       "int main() { cblas_ddot(0, NULL, 0, NULL, 0); return 0; }\n")
+	ldflags: ldflags)
+       ldflags ))
+
+(define-syntax gsl-test 
+  (syntax-rules ()
+    ((_ (flags ...))
+     (condition-case (gsl-try-compile flags ...)
+		     (t ()    #f)))))
+
+(define ld-options
+  (or (gsl-test  ("<gsl/gsl_cblas.h>" "-lgsl -lgslcblas -lm"))
+      (error "unable to figure out location of GSL library")))
+
+(compile -s -O3 -d1 "statistics.scm" -j statistics -L "\"" ,ld-options "\"" )
+(compile -c -O3 -d1 "statistics.scm" -unit statistics -L "\"" ,ld-options "\"" )
+(compile -s -O3 -d0 "statistics.import.scm"  -L "\"" ,ld-options "\"" )
+
+
+(install-extension
+ 'statistics
+ '("statistics.o" "statistics.so" "statistics.import.so")
+ '((version 0.8)))
+

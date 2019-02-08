@@ -1,0 +1,43 @@
+;;;; "mathh.setup  -*- Hen -*-
+
+(use setup-helper-mod)
+
+(verify-extension-name "mathh")
+
+(define mathh-compile-options `(
+  -local -no-procedure-checks
+  ,@(cond-expand
+      (linux    '(-C -D_ISOC99_SOURCE) ) ;_GNU_SOURCE instead?
+      (else     '() ) ) ) )
+
+;* (The compiler option '-inline-global' causes problems; so no -O3+.)
+(setup-shared+static-extension-module (extension-name) (extension-version "3.4.2")
+  ;cannot be inline #1340
+  ;#:inline? #t
+  #:types? #t
+  #:compile-options mathh-compile-options
+  #:files '("mathh-constants.scm"))
+
+(setup-shared+static-extension-module 'mathh-consts (extension-version "3.4.2")
+  #:inline? #t
+  #:types? #t
+  #:compile-options `(
+    -scrutinize
+    -optimize-level 3 -debug-level 1
+    -no-bound-checks -no-argc-checks -no-procedure-checks))
+
+(setup-shared+static-extension-module 'fp-utils (extension-version "3.4.2")
+  #:inline? #t
+  #:types? #t
+  #:compile-options `(
+    -scrutinize
+    -optimize-level 3 -debug-level 1
+    -no-procedure-checks))
+
+(setup-shared+static-extension-module 'fx-utils (extension-version "3.4.2")
+  #:inline? #t
+  #:types? #t
+  #:compile-options `(
+    -scrutinize
+    -optimize-level 3 -debug-level 1
+    -no-procedure-checks))
