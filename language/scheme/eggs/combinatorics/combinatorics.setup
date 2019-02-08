@@ -1,0 +1,10 @@
+(use hahn setup-helper-mod)
+
+(verify-extension-name "combinatorics")
+
+(setup-shared-extension-module
+ 'combinatorics
+ (extension-version "0.3.8")
+ compile-options: '(-X hahn))
+
+(run-hahn -o combinatorics.wiki combinatorics-core.scm)

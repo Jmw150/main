@@ -1,0 +1,582 @@
+* Monads
+Monads for Scheme
+
+* Description
+** What is a Monad?
+
+Monads are like a burrito.
+
+Ok, well not.
+
+Monads are types that have:
+
+1. A binding function of the form: a -> (a -> M b) -> M b
+2. A unit function: a -> M a
+
+That's it.
+
+For instance, the identity monad is:
+
+1. Bind: (lambda (a f) (f a))
+2. Unit: (lambda (a) a)
+
+Not too bad, eh?
+
+Most of what we write that can be described as a "recipe list" or a "do to" list is a Monad. And, as you may have noticed, we write a lot of boiler plate code to handle the interim wrapping/unwrapping/error checking functionality that occurs between each step.
+
+The Monad egg allows you to write that code once and remain focused on the task at hand.
+
+** Why not use miscmacros:doto instead?
+
+Because you may want intermediary control and multiple usage of a unit function.
+
+Monads aren't simply about iterating over a value or set of values and passing them to various functions; they're about removing recurring boilerplate related to constructing the desired values, and any intermediary steps that may be required between processing the values.
+
+Yes, sometimes this isn't strictly a necessary set of functionality. But for when it is, save yourself some time and write a monad.
+
+** What's this about lazy evaluation?
+
+Yes, this monad implementation is lazily evaluated.
+
+* Functions
+*** (define-monad name unit-function bind-function [fail-function])
+
+Defines a new monad of the given name. Also defines the following procedures:
+
+Providing 'fail-function' is optional.
+
+| Function  | Usage                                                                                        |
+|-----------+----------------------------------------------------------------------------------------------|
+| name-unit | Constructs a new monad from a value using the given unit function                            |
+| name-bind | Constructs a new monad from an existing monad and a function using the given bind function   |
+| name-fail | Constructs a 'failure' case monad for the given monadic type. Defaults to throwing an assert          |
+
+*** (using monad [body ...])
+
+Within the body the following procedures will be defined:
+
+| Function | Usage        |
+|----------+--------------|
+| >>=      | Maps to bind |
+| return   | Maps to unit |
+| fail     | Maps to fail |
+
+Ie:
+
+: (using <id>
+:  (>>= (return 1) (lambda (x) (+ x 1))))
+
+Is the same as:
+
+: (<id>-bind (<id>-unit 1) (lambda  (x) (+ x 1)))
+
+*** (return monad value)
+
+Allows any function to lift a value into the monad provided. Ie,
+
+: (define (foo bar)
+:   (if (not bar)
+:       (fail <maybe>)
+:       (return <maybe> bar)))
+
+Would be the same as:
+
+: (define (foo bar)
+:   (if (not bar)
+:       (<maybe>-fail)
+:       (<maybe>-unit bar)))
+
+Would be the same as:
+
+: (define (foo bar)
+:   (if (not bar)
+:       'Nothing
+:       `(Just ,bar)))
+
+*** (fail monad [body ...])
+
+Creates the failure case for the given monad, optionally providing a body to the failure state constructor.
+
+Defaults to throwing an assert for most monads.
+
+*** (do-using monad [body ...])
+
+Similar to the (using) procedure, but allows for even more terseness.
+
+Within do-using the following will be defined:
+
+| Function | Usage                                                             |
+|----------+-------------------------------------------------------------------|
+| >>=      | Maps to bind                                                      |
+| return   | Maps to unit                                                      |
+| fail     | Maps to fail                                                      |
+| /m        | Shorthand for calling monad-specific functions, details follow    |
+| /m!       | Shorthand for calling monad-specific functions, details follow    |
+| <-       | Shorthand for binding a symbol to a monadic value, details follow |
+
+**** /m! Keyword
+
+The /m! keyword is used as a shortcut for referencing monad-specific procedures which are prefixed with the current monad name.
+
+For example:
+
+: (do-using <writer> (/m! tell 1))
+
+Is the same as:
+
+: (do-using <writer> (<writer>-tell 1))
+
+**** /m Keyword
+
+The /m keyword is like /m!, except that it references the procedure without executing it.
+
+For example:
+
+: (do-using <state> (x <- (/m get)) (return x))
+
+Is the same as:
+
+: (do-using <state> (x <- <state>-get) (return x))
+
+**** <- Keyword
+
+The <- keyword is used as a shortcut for binding a value within a monad.
+
+For example:
+
+: (do-using <maybe>
+:   (x <- (return 1))
+:   x)
+
+Is the same as:
+
+: (do-using <maybe>
+:   (>>= (return 1)
+:     (lambda (x)
+:       (do-using <maybe>
+:         x))))
+
+**** General Example
+
+A simple example:
+
+: (do-using <maybe>
+:    (x <- (return <maybe> 1))
+:    x)
+: 
+: ;Returns:
+: (Just 1)
+
+Or, a more complex example:
+
+: (do-using <maybe> 
+:           (x <- (return 1))
+:           (if (eq? 2 (cadr x))
+:               (return 'Banana)
+:               (fail))
+:           (y <- (return 'Apple))
+:           y)
+:
+: ;Returns:
+: Nothing
+
+*** (do/m monad [body ...])
+
+Alias for (do-using monad [body ...]).
+
+**** /m! Keyword
+
+The /m! keyword is used as a shortcut for referencing monad-specific procedures which are prefixed with the current monad name.
+
+For example:
+
+: (do-using <writer> (/m! tell 1))
+
+Is the same as:
+
+: (do-using <writer> (<writer>-tell 1))
+
+**** /m Keyword
+
+The /m keyword is like /m!, except that it references the procedure without executing it.
+
+For example:
+
+: (do-using <state> (x <- (/m get)) (return x))
+
+Is the same as:
+
+: (do-using <writer> (x <- <state>-get) (return x))
+
+**** <- Keyword
+
+The <- keyword is used as a shortcut for binding a value within a monad.
+
+For example:
+
+: (do-using <maybe>
+:   (x <- (return 1))
+:   x)
+
+Is the same as:
+
+: (do-using <maybe>
+:   (>>= (return 1)
+:     (lambda (x)
+:       (do-using <maybe>
+:         x))))
+
+**** General Example
+
+A simple example:
+
+: (do-using <maybe>
+:    (x <- (return <maybe> 1))
+:    x)
+: 
+: ;Returns:
+: (Just 1)
+
+Or, a more complex example:
+
+: (do-using <maybe> 
+:           (x <- (return 1))
+:           (if (eq? 2 (cadr x))
+:               (return 'Banana)
+:               (fail))
+:           (y <- (return 'Apple))
+:           y)
+:
+: ;Returns:
+: Nothing
+
+* Basic Monads
+Simple monads pre-defined by this egg.
+
+** Identity
+
+:  (define-monad
+:    <id>
+:    (lambda (a) a)
+:    (lambda (a f) (f a)))
+
+** Maybe
+
+:  (define-monad
+:    <maybe>
+:    (lambda (a) a)
+:    (lambda (a f) (if a (f (cadr a)) #f))
+:    (case-lambda (() 'Nothing)
+:                 ((_ . _) 'Nothing)))
+
+*** Example
+
+: > (do <maybe> 
+:       (if #t 
+:           'Nothing 
+:           '(Just First))
+:       '(Just Second))
+: Nothing
+
+** List
+
+:  (define-monad
+:    <list>
+:    (lambda (a) (list a))
+:    (lambda (a f) (concatenate! (map! f a))))
+
+*** Example
+
+: #;> (do <list> 
+:         (x <- '(1 2 3))
+:         (y <- '(a b c))
+:         (return `(,x ,y)))
+: ((1 a) (1 b) (1 c) (2 a) (2 b) (2 c) (3 a) (3 b) (3 c))
+
+** State
+
+:  (define-monad
+:    <state>
+:    (lambda (a) (lambda (s) `(,a . ,s)))
+:    (lambda (a f)
+:      (lambda (s)
+:        (let* ((p (a s))
+:               (a^ (car p))
+:               (s^ (cdr p)))
+:          ((f a^) s^)))))
+
+*** Extra Methods
+
+**** <state>-get
+
+<procedure>(<state>-get s)</procedure>
+
+Retrieves the current state from a given <state> monad.
+
+***** Example
+
+: #;> ((do <state> 
+:          (x <- (/m get))
+:          (return x))
+:      "Hi!")
+: ("Hi!" . "Hi!")
+
+**** <state>-gets
+
+<procedure>(<state>-gets f)</procedure>
+
+Creates a monad that retrieves a given state after filtering it with the function provided.
+
+***** Example 
+
+: #;> ((do <state> 
+:          (x <- (/m! gets (lambda (s) (+ s 1))))
+:          (return x))
+:      1)
+: (2 . 1)
+
+**** <state>-modify
+
+<procedure>(<state>-modify f)</procedure>
+
+Creates a monad that modifies the current state with a given function.
+
+***** Example
+
+: #;> ((do <state> 
+:          (/m! modify (lambda (v) 
+:                       (display (format "Received: ~S\n" v))
+:                       (+ v 1))))
+:      1)
+: Received: 1
+: (() . 2)
+
+**** <state>-put
+
+<procedure>(<state>-put v)</procedure>
+
+Creates a monad that forces a value into the current <state> monad.
+
+***** Example
+
+: #;> ((do <state> 
+:          (/m! put 1))
+:      2)
+: (() . 1)
+
+** Reader
+
+:  (define-monad
+:    <reader>
+:    (lambda (a) (lambda (v) a))
+:    (lambda (a f) (lambda (v) ((f (a v)) v))))
+
+*** Extra Methods
+
+**** <reader>-ask
+
+<procedure>(<reader>-ask m)</procedure>
+
+Extracts the current value from the current reader monad.
+
+***** Example
+
+: #;> ((do <reader> 
+:          (x <- (/m ask))
+:          (return (+ x 1)))
+:      1)
+: 2
+
+**** <reader>-asks
+
+<procedure>(<reader>-asks f)</procedure>
+
+Creates a monad that filters the current value in the reader monad with the given function.
+
+***** Example
+
+: #;> ((do <reader> 
+:          (/m! asks (lambda (v) 
+:                     (+ v 1))))
+:      1)
+: 2
+
+
+**** <reader>-local
+
+<procedure>(<reader>-local f m)</procedure>
+
+Creats a monad that first filters the current reader monad value with the provided function, then passes that filtered value to the provided reader monad.
+
+***** Example
+
+: #;> ((do <reader> 
+:          (/m! local 
+:              (lambda (v) (+ v 1))
+:              (do <reader> 
+:                  (x <- (/m ask))
+:                  (return x))))
+:      1)
+: 2
+
+** Writer
+
+:  (define-monad
+:    <writer>
+:    (lambda (a) (cons a '()))
+:    (lambda (a f)
+:      (let* ((b (f (car a))))
+:	(cons (car b) (append (cdr a) (cdr b))))))
+
+*** Extra Methods
+
+**** <writer>-tell
+
+<procedure>(<writer>-tell . v)</procedure>
+
+Creates a monad where the provided value is wrapped in a <writer>.
+
+***** Example
+
+: #;> (do/m <writer>
+:           (x <- (return 'hello))
+:           (/m! tell x)
+:           (/m! tell 'world))
+: (() hello world)
+
+**** <writer>-listen
+
+<procedure>(<writer>-listen a)</procedure>
+
+Creates a monad where the value has been extracted out of the writer.
+
+***** Example
+
+: #;> (let ((other-writer
+:           (do/m <writer>
+:                 (/m! tell 'hello)
+:                 (/m! tell 'test)
+:                 (/m! tell 'world))))
+:      (do/m <writer>
+:            (x <- (/m! listen other-writer))
+:            (return x)))
+: ((() hello test world) hello test world)
+
+**** <writer>-listens
+
+<procedure>(<writer>-listens f m)</procedure>
+
+Creates a monad that is the outcome of applying the provided function on the given writer monad.
+
+***** Example
+
+: #;> (let ((other-writer
+:            (do/m <writer>
+:                  (/m! tell 'hello)
+:                  (/m! tell 'test)
+:                  (/m! tell 'world))))
+:       (do/m <writer>
+:             (x <- (/m! listens
+:                   (lambda (l) (map (lambda (s) 'arf) l))
+:                   other-writer))
+:             (return x)))
+: ((() arf arf arf) hello test world)
+
+**** <writer>-pass
+
+<procedure>(<writer>-pass m)</procedure>
+
+Creates a monad that is the outcome of mutating the provided writer monad with a given function. Expects to be provided a monad of the form: ((value . function) . rest-of-writer)
+
+Not generally used much except by those that know what they're doing, you're likely after <writer>-censor for most cases.
+
+***** Example
+
+: #;> (let ((other-writer
+:            (do/m <writer>
+:                  (/m! tell '(1 2 3))
+:                  (return
+:                   (/m! tell
+:                        (lambda (l)
+:                          (map ->string l)))))))
+:       (do/m <writer>
+:             (/m! pass other-writer)))
+: (() "(1 2 3)")
+
+**** <writer>-censor
+
+<procedure>(<writer>-censor f m)</procedure>
+
+Creates a monad resulting from the application of the provided function on the given monad, analyzing the values that were in the given monad.
+
+Think of it as a shortcut to using pass without all the cruft, or flexibility.
+
+
+: #;> (let ((other-writer
+:            (do/m <writer>
+:                  (/m! tell '(1 2 3)))))
+:        (do/m <writer>
+:              (/m! censor
+:                   (lambda (l) (map ->string l))
+:                   other-writer)))
+: (() "(1 2 3)")
+
+* Version History
+
+| Version | Notes |
+|---------+-------|
+|     4.0 | Dropped Exception and CPS, as they did not work under basic tests; removed do keyword, fixed Writer monad |
+|     3.3 | Total rewrite, no API changes |
+|     3.2 | Minor syntax change |
+|     3.1 | Use let* instead of letrec |
+|     3.0 | Renamed :! to /m! and : to /m due to : already being used for explicit specialization |
+|     2.4 | Added :! keyword, fixed : keyword |
+|     2.3 | Added fail function for all monads which defaults to assert, but is definied appropriately for the <exception> and <maybe> monads. Added : keyword to using and do-using. Added >>=, return and fail bindings to do-using syntax. |
+|     2.2 | Added failure states for monads |
+|     2.1 | Rewrote API to allow for terser execution and a simpler interface. Removed use of promises completely. Removed doto-using, run-chain, and run from the API completely. Added do-using syntax. Maybe monad is now self-defined for it's value or no-value states. |
+|     2.0 | Internal rewrite that broke the API, immediately followed by 2.1. |
+|     1.1 | Added Cameron Swords' State, Reader, Writer, CPS and Exception monads |
+|     1.0 | Initial release |
+
+* Contribution
+
+Contributions are welcome provided you accept the license I have chosen for this egg for the contributions themselves.
+
+The github repository is at: https://github.com/dleslie/monad-egg
+
+* Authors
+
+Original Egg By Daniel J. Leslie
+dan@ironoxide.ca
+
+Additional Contributors:
+Cameron Swords.
+Peter Bex
+
+* License
+
+Copyright 2012 Daniel J. Leslie. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are
+permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this list of
+      conditions and the following disclaimer.
+
+   2. Redistributions in binary form must reproduce the above copyright notice, this list
+      of conditions and the following disclaimer in the documentation and/or other materials
+      provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY DANIEL J. LESLIE ''AS IS'' AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL DANIEL J. LESLIE OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The views and conclusions contained in the software and documentation are those of the
+authors and should not be interpreted as representing official policies, either expressed
+or implied, of Daniel J. Leslie.

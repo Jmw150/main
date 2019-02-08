@@ -1,0 +1,11 @@
+;;;; combinators.meta  -*- Hen -*-
+
+((egg "combinators.egg")
+ (category data)
+ (author "[[kon lovett]]")
+ (license "Public Domain")
+ (doc-from-wiki)
+ (synopsis "Combinators")
+ (depends (setup-helper "1.5.2"))
+ (test-depends test)
+ (files "logical-combinators.scm" "section-combinators.scm" "combinators.meta" "combinators.release-info" "uni-combinators.scm" "generic-section-combinators.scm" "combinators.setup" "arguments-helpers.inc" "stack-combinators.scm" "tri-combinators.scm" "bi-combinators.scm" "sort-combinators.scm" "tests/run.scm") )

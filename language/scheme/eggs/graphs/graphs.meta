@@ -1,0 +1,20 @@
+;; -*- Hen -*-
+
+((egg "graphs.egg")
+ ; List of files that should be bundled alongside egg
+ (files "src"
+        "tests"
+        "graphs.setup"
+        "graphs.meta"
+        "graphs.scm"
+        "graphs-derived.scm"
+        "LICENSE")
+
+ (license "BSD3")
+ (category data)
+ (depends arrays coops hahn lazy-seq matchable)
+ (test-depends test random-bsd)
+ (author "Jeremy Steward")
+ (email "jeremy@thatgeoguy.ca")
+ (repo "https://github.com/ThatGeoGuy/chicken-graphs")
+ (synopsis "Provides combinatorial graphs, digraphs, multigraphs, and multidigraphs."))
