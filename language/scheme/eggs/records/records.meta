@@ -1,0 +1,9 @@
+;;; records.meta -*- Hen -*-
+
+((egg "records.egg")
+ (synopsis "Procedural record-type interface")
+ (category data)
+ (license "Public Domain")
+ (author "David Carlton, Aubrey Jaffer")
+ (doc-from-wiki)
+ (files "records.meta" "records.scm" "records.setup") )

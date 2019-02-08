@@ -1,0 +1,8 @@
+(compile -sS -O2 -d1 srfi-25.scm -j srfi-25)
+(compile -s -O2 -d0 srfi-25.import.scm)
+(compile -c -O2 -d1 srfi-25.scm -o srfi-25-static.o -unit srfi-25)
+(install-extension
+ 'srfi-25
+ '("srfi-25.so" "srfi-25.import.so" "srfi-25-static.o") 
+ '((version 1.2) 
+   (static "srfi-25-static.o")))

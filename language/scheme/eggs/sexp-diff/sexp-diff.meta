@@ -1,0 +1,10 @@
+;;;; sexp-diff.meta -*- Scheme -*-
+
+
+((synopsis "S-Expression diff algorithm")
+ (author "Michael Weber and Vincent St-Amour")
+ (maintainer "/users/felix-winkelmann")
+ (test-depends test)
+ (license "LGPL")
+ (category data)
+ (files "sexp-diff.meta" "tests/run.scm" "sexp-diff.scm" "sexp-diff.setup"))

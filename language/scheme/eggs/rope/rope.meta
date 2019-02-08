@@ -1,0 +1,6 @@
+((license "BSD")
+ (category data)
+ (author "Evan Hanson")
+ (synopsis "Heavyweight alternative to strings")
+ (test-depends test with-current-directory)
+ (doc-from-wiki))

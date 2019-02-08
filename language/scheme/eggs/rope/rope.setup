@@ -1,0 +1,5 @@
+(compile -d0 -O3 -s sys/chicken.scm -o rope.so -J -specialize -emit-type-file rope.types)
+(compile -d0 -O3 -s rope.import.scm -o rope.import.so)
+(install-extension 'rope
+ '("rope.so" "rope.import.so" "rope.types")
+ '((version "0.0.6")))
