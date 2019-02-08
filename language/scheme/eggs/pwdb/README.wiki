@@ -1,0 +1,231 @@
+<h1>Introduction</h1>
+
+pwdb is a command-line-based password manager, designed to work well
+when the password database is stored in a version control system.
+
+In order to do this, it stores each account's details in a separate
+file. Other password managers tend to store everything in a single
+encrypted database file; if you add two different accounts from two
+different machines, then the resulting commits will conflict on a
+binary file, requiring some level of manual work to merge them!
+
+Other interesting features include:
+
+  *  Accounts have an arbitrary number of key=value fields, to support
+     things like credit cards as well as traditional username/password
+     accounts.
+  *  Any of those fields may be marked as "obscured", meaning pwdb
+     never displays them onscreen unless you force it to.
+  *  Highly scriptable.
+  *  Support for generating new accounts from configurable templates.
+  *  Support for arbitrarily nested encryption, requiring extra
+     authentication to access more sensitive accounts' details.
+
+<h1>Getting Started</h1>
+
+Install pwdb by installing Chicken Scheme, then running:
+
+<pre>chicken-install pwdb</pre>
+
+Go to the directory where you'll store your password files.
+
+Set up a basic template:
+
+<pre>echo '(account (url "FIXME") (username "FIXME") (password ,(make-passphrase) obscured))' | pwdb -n TEMPLATE.pwdb</pre>
+
+You'll be prompted for a new passphrase; enter it twice. This will be
+used to encrypt all your accounts (by default), because it's used to
+encrypt the template.
+
+Now create a new account from that template:
+
+<pre>pwdb -ne Amazon.pwdb TEMPLATE.pwdb</pre>
+
+You'll be prompted for the passphrase to decrypt the template, then an
+editor (your choice in $EDITOR) will pop up with the template for you
+to edit (with a random passphrase generated for you). When you save
+it, the same passphrase you used to decrypt the template will be used
+to encrypt the new account file.
+
+To look at an account, do this:
+
+<pre>pwdb Amazon.pwdb</pre>
+
+You'll see that anything marked "obscured" isn't displayed (unless
+you add the <tt>-a</tt> flag to the command line).
+
+You can pull out a specific field, which is handy in scripts:
+
+<pre>pwdb Amazon.pwdb url</pre>
+
+If you specify <tt>-a</tt>, you can even pull out obscured fields. A
+good trick is:
+
+<pre>pwdb -a Amazon.pwdb password | xclip</pre>
+
+If you've installed xclip, that will put your Amazon password in your
+X selection buffer, so a middle-click in that password box will paste
+it for you. However, it'll be left in the selection buffer afterwards,
+so a better idea is;
+
+<pre>pwdb -i xclip Amazon.pwdb</pre>
+
+That will list the un-obscured fields, and then prompt you for a
+number. If you enter the number of the password field, it will pipe
+the password into <tt>xclip</tt> for you to paste. But when you enter
+<tt>q</tt> to quit interactive mode, it'll clear the selection buffer
+for you by feeding an empty string to <tt>xclip</tt>.
+
+If you want to edit an account:
+
+<pre>pwdb -e Amazon.pwdb</pre>
+
+That won't show you the contents of obscured fields, but you can add,
+remove, or change obscured fields - any field left as
+<tt>&lt;obscured&gt;</tt> will just pick up the value it had
+originally; if you replace <tt>&lt;obscured&gt;</tt> with <tt>"Secret
+Password"</tt> then the obscured field <em>will</em> be changed!
+
+Or you can do:
+
+<pre>pwdb -ea Amazon.pwdb</pre>
+
+...to edit the entire account, obscured fields and all.
+
+<h2>Multi-layer encryption</h2>
+
+Let's make a template for bank cards, which requires an additional
+passphrase for extra security. Don't think of that in terms of "more
+encryption is harder to brute-force"; think of it in terms of "the
+passphrase you enter a few times a day to get into social networking
+web-sites isn't enough to also get your credit card numbers".
+
+<pre>echo '(account (card-number "FIXME") (expiry "FIXME") (cvv "FIXME" obscured) (pin "FIXME" obscured))' | pwdb -n BANK-CARDS-TEMPLATE.pwdb cards</pre>
+
+Note that as well as changing the template layout, we've added an
+extra argument to <tt>pwdb</tt>: "<tt>cards</tt>". This is a tag we
+have chosen to name the extra passphrase.
+
+When creating the template account, pwdb will now ask us for the usual
+passphrase, and also a passphrase "for cards". Use something different
+for this one!
+
+The storage format for pwdb files is always encrypted by the "general"
+passphrase, but if additional passphrases are used, then they are
+layered; only after undoing the outer "general" encryption will pwdb
+even know that the contents are further encrypted, and with what
+passphrase. So when you use that template, you will be prompted for
+the normal passphrase, then you'll be prompted for the passphrase "for
+cards"; only when both are entered correctly will pwdb be able to read
+the actual template within; and that encryption setup is inherited by
+accounts created from this template.
+
+<h2>Templates</h2>
+
+Templates aren't special - they're just pwdb files like any other, and
+you can use any pwdb file as a template to create another. However,
+when a template is used to create a new pwdb file, some special field
+values cause the random generation of passwords and passphrases:
+
+<pre>,(make-passphrase)</pre>
+
+...creates a passphrase from four random Lojban gismu words.
+
+<pre>,(make-password LEN)</pre>
+
+...creates a random password of LEN random characters, chosen from a
+hardcoded reasonable set (avoiding easy-to-confuse symbols such as
+0OoIl).
+
+<h1>Scripting</h1>
+
+pwdb won't prompt for a passphrase if it finds it in the
+environment. Set the environment variable <tt>PWDB</tt> to your
+passphrase, and <tt>PWDB_..tag...</tt> (eg, <tt>PWDB_cards</tt>) for a
+multi-layer encryption tag passphrase, to avoid being prompted for
+them. This is handy when scripting bulk operations over all your
+accounts, but be careful of who else is running code on your
+machine...
+
+<h1>Command Reference</h1>
+
+<h2><tt>pwdb -n NEW-FILENAME [TAGS...]</tt></h2>
+
+Creates a new pwdb file from an account sexpression on standard
+input. If <tt>TAGS...</tt> are given, then they're the passphrase-tags
+for extra layers of encryption, from outermost to innermost.
+
+<h2><tt>pwdb -ne NEW-FILENAME TEMPLATE-FILENAME</tt></h2>
+
+Reads a file to use as a template, expands any <tt>,(...)</tt>
+commands in it, asks the user to edit it with <tt>$EDITOR</tt>, then
+saves it to the new filename (with the same encryption keys as the
+template).
+
+<h2><tt>pwdb [-a] FILENAME</tt></h2>
+
+Displays the account on stdout; unless <tt>-a</tt> is specified,
+fields marked as obscured will have their values obscured.
+
+<h2><tt>pwdb [-a] FILENAME FIELD...</tt></h2>
+
+Dumps the values of the named fields to stdout, one per line; unless
+<tt>-a</tt> is specified, fields marked as obscured will have their
+values obscured.
+
+<h2><tt>pwdb -e [-a] FILENAME</tt></h2>
+
+Opens up the specified account in <tt>$EDITOR</tt>; unless <tt>-a</tt>
+is specified, fields marked as obscured will have their values
+obscured in the editable text, and any obscured fields in the saved
+text will have their values filled in from the same-named fields in
+the original account data. This means that if you deleted obscured
+fields, or add new ones or edit existing ones to have values, those
+values will be saved to the new account.
+
+<h2><tt>pwdb -i CLIP-COMMAND FILENAME</tt></h2>
+
+Opens up the specified account and enters interactive mode. A list of
+the fields of the account gets printed out, prefixed by numbers, with
+obscured field values hidden. The user is then prompted to enter a
+number; if they do so, then the value of that field (even if obscured)
+is piped into the <tt>CLIP-COMMAND</tt> (<tt>xclip</tt> works great
+for this). The user may also enter <tt>quit</tt> to quit,
+<tt>help</tt> for some help, or <tt>reveal NUMBER</tt> to print out
+the value of the numbered field (even if it's obscured).
+
+<h1>Account sexpr format</h1>
+
+An account is stored like so:
+
+<pre>(account (KEY "VALUE" [OPTIONS...])...)</pre>
+
+Options can either be a bare symbol, or a property of the form
+<tt>(KEY "VALUE")</tt>.
+
+The only supported option at this time is <tt>obscured</tt>, which
+marks the field so that its value is not displayed by default.
+
+<h1>Bugs</h1>
+
+  *  Doesn't use a proper key derivation function; the key is just
+     based on the SHA hash of the passphrase entered, which makes it
+     easier to brute-force.
+  *  Doesn't make any effort to prevent plaintext or keys from being
+     swapped out and all that.
+  *  No easy way to re-encrypt a file to change the passphrase (but it
+     can be easily added).
+  *  Not enough configurability for password/passphrase generation.
+  *  sexpr format exposed by <tt>-e</tt> (edit) and <tt>-n</tt>
+     (create new) commands is ugly when formatted all onto one line by
+     <tt>pp</tt>.
+  *  When dumping specified named fields to stdout, any that are
+     missing in the account will just be skipped, and a script has no
+     way of knowing which one(s) were skipped.
+
+<h1>Release history</h1>
+
+  *  1.2: Fix broken edit mode (I need to write a test
+     suite!), "reveal" command and help in interactive mode.
+  *  1.1: Fix broken release metadata
+  *  1.0: Initial release

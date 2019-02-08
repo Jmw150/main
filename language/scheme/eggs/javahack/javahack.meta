@@ -1,0 +1,9 @@
+;;; javahack.meta -*- Scheme -*-
+
+((egg "javahack.egg")
+ (needs matchable)
+ (synopsis "A simple interface to Java(tm)")
+ (category ffi)
+ (license "BSD")
+ (author "felix winkelmann")
+ (files "hello.scm" "test.scm" "jscheme.jar" "javahack.scm" "callback.scm" "Callback.java" "hello2.scm" "javahack.meta" "javahack-wrap.scm" "javahack.setup"))

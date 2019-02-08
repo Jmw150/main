@@ -1,0 +1,7 @@
+((egg "simple-graphics.egg")
+ (files "simple-graphics.scm" "simple-graphics.setup")
+ (license "BSD")
+ (needs doodle miscmacros parley)
+ (author "Alaric Snell-Pym")
+ (category graphics)
+ (synopsis "A simple graphics interface for education and fun"))

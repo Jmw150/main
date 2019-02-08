@@ -1,0 +1,15 @@
+Dear fellow chicken schemers,
+
+the following steps should suffice to upgrade to the latest version
+of octave:
+
+1. Get the latest source from
+   http://carretechnologies.com/scheme/octave/octave.html
+2. Adjust the list of exported symbols in octave-chicken.scm
+3. If necessary adjust import / use statements in the octave-chicken
+   wrapper
+4. compile and install
+
+Have fun!
+
+Christian Kellermann <ckeen@pestilenz.org>

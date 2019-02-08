@@ -1,0 +1,19 @@
+;;;; loop.setup -*- Scheme -*-
+
+(use make)
+
+(make (("loop-support.so" ("loop-support.scm")
+	(compile -s -O2 -d1 loop-support.scm -j loop-support) )
+       ("loop-support.import.so" ("loop-support.import.scm")
+	(compile -s -O2 -d0 loop-support.import.scm) )
+       ("loop.so" ("loop.scm" "loop-support.import.so")
+	(compile -s -O2 -d1 loop.scm -j loop) )
+       ("loop.import.so" ("loop.import.scm" "loop-support.import.so")
+	(compile -s -O2 -d0 loop.import.scm) ) )
+  '("loop-support.so" "loop.so" "loop.import.so"))
+
+(install-extension 'loop 
+ '("loop-support.so" "loop.so" "loop.import.so" "loop-support.import.so") 
+ '((syntax)
+   (exports "loop-support.exports")
+   (version 1.4)))

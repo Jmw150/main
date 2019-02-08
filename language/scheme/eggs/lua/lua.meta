@@ -1,0 +1,26 @@
+;;; lua.meta -*- Hen -*-
+
+((egg "lua.egg")
+
+ (synopsis "Embed Lua interpreter into Scheme applications")
+
+ (needs dollar make)
+
+ (test-depends test)
+
+ (category ffi)
+
+ (license "MIT")
+
+ (author "PUC Rio, Chicken interface by felix winkelmann")
+
+ (files "lua.setup" "COPYRIGHT"
+	"ldebug.h" "liolib.c" "lstrlib.c" "lapi.c" "lopcodes.c" "lua.setup"
+	"lapi.h" "ldo.c" "llex.c" "lopcodes.h" "ltable.c" "lundump.c" "ldo.h"
+	"llex.h" "ltable.h" "lundump.h" "lauxlib.c" "loslib.c" "lauxlib.h"
+	"ldump.c" "llimits.h" "ltablib.c" "lvm.c" "lmathlib.c" "lparser.c"
+	"lvm.h" "lbaselib.c" "lfunc.c" "lparser.h" "ltm.c" "lfunc.h" "lmem.c"
+	"ltm.h" "lzio.c" "lcode.c" "lmem.h" "lstate.c" "lzio.h" "lcode.h"
+	"lgc.c" "lstate.h" "luaconf.h" "lgc.h" "loadlib.c" "lua.h"
+	"tests/run.scm" "ldblib.c" "lstring.c" "lualib.h" "linit.c"
+	"lobject.c" "lstring.h" "ldebug.c" "lobject.h" "lua-main.scm"))

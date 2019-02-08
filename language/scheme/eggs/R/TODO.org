@@ -1,0 +1,2512 @@
+* TODO Still a lot of segfaults when doing serious work.
+  Need our own memory management à la =Rcpp=, after all?
+* TODO =NA= fails on 32-bit machines.
+  #+BEGIN_EXAMPLE
+    /root/salmonella-run-publish/chicken/bin/csi -script run.scm < /dev/null
+    
+    Warning: R_HOME not set: running `R RHOME'; better set R_HOME.
+    Test error ........................................................... Error in as.environment(pos) : 
+      no item called "onthoeunth" on the search list
+    [ PASS]
+    Pi via named arguments to get ........................................ [ PASS]
+    Scalar integer ....................................................... [ PASS]
+    Vector integers ...................................................... [ PASS]
+    Nested vector-integers ............................................... [ PASS]
+    Nested list-integers ................................................. [ PASS]
+    String scalar ........................................................ [ PASS]
+    String vector ........................................................ [ PASS]
+    Scalar real .......................................................... [ PASS]
+    Scalar vector ........................................................ [ PASS]
+    Scalar boolean: false ................................................ [ PASS]
+    Scalar boolean: true ................................................. [ PASS]
+    Vector boolean ....................................................... [ PASS]
+    Scalar complex ....................................................... [ PASS]
+    Vector complex ....................................................... [ PASS]
+    Named arguments ...................................................... [ PASS]
+    Opaque object ........................................................ [ PASS]
+    Attributes ........................................................... [ PASS]
+    NaN and infinity ..................................................... [ PASS]
+    Scalar NA ............................................................ [ PASS]
+    Integer NA ........................................................... [ FAIL]
+        expected #(1 2 3 #(NA)) but got #(1 2 3 0)
+        (R* (c 1 2 3 ,NA))
+    String NA ............................................................ [ PASS]
+    Complex NA ........................................................... [ PASS]
+    Boolean NA ........................................................... [ PASS]
+    Real NA .............................................................. [ FAIL]
+        expected #(1 #(NA)) but got #(1 0)
+        (R* (c 1.0 ,NA))
+    List NA .............................................................. [ PASS]
+  #+END_EXAMPLE
+* TODO Segfaults
+  This was sufficient to segfault =R=; is no longer, however:
+
+  #+BEGIN_SRC scheme :tangle test-segfault.scm :shebang #!/usr/bin/env chicken-scheme
+    (use debug R)
+    (let* ((x (R (runif 100 0 10)))
+           (y (R (+ 2 (+ (* 3 ,x) (rnorm 100)))))
+           (df (R (data.frame x: ,x y: ,y)))
+           (d (R (lm (as.formula "y ~ x") data: ,df))))
+      (debug (R* (print (attributes (summary ,d))))))
+    
+  #+END_SRC  
+* TODO We need a shortcut for =[=, after all.
+  Same thing for =.=, apparently; comes up in e.g. =proto=.
+* TODO Explicitly shut down R, too.
+  See e.g. =Rf_endEmbeddedR= from =Rembedded.h=.
+* TODO Named lists as records?
+* TODO R-eval-string
+* TODO Levels
+* TODO =NaN=
+  We still have to do it in the other direction, just like we did with
+  =NA=; don't we?
+* DONE Multiple expressions in =R=
+  CLOSED: [2012-10-11 Thu 17:03]
+* DONE Statistics example
+  CLOSED: [2012-10-11 Thu 06:05]
+  #+BEGIN_SRC scheme :tangle statistics.scm :shebang #!/usr/bin/env chicken-scheme
+    (use debug R)
+    (let* ((x (R (runif 100 0 10)))
+           (y (R (+ 2 (+ (* 3 ,x) (rnorm 100)))))
+           (df (R (data.frame x: ,x y: ,y)))
+           (d (R (lm (as.formula "y ~ x") data: ,df))))
+      (R (print ($ (summary ,d) "ceofficients")))
+      (R (print ($ (summary ,d) "r.squared")))
+      (R (print ($ (summary ,d) "cov.unscaled")))
+      (R (print ($ (summary ,d) "fstatistic")))
+      (R (print (attributes (summary ,d))))
+      (debug (R* ($ (summary ,d) "cov.unscaled"))))
+  #+END_SRC
+* DONE =ggplot= example
+  CLOSED: [2012-10-11 Thu 05:43]
+  #+BEGIN_SRC scheme :tangle ggplot.scm :shebang #!/usr/bin/env chicken-scheme
+    (use debug R)
+    (R (library "ggplot2"))
+    ;; (R (library "plyr"))
+    ;; (let* ((df (R (data.frame
+    ;;               gp: (factor (rep (,(string->symbol "[") letters (: 1 3))
+    ;;                                each: 10))
+    ;;               y: (rnorm 30))))
+    ;;        (ds (R (ddply ,df
+    ;;                      (,(string->symbol ".") gp)
+    ;;                      summarise
+    ;;                      mean: (mean ($ ,df y))
+    ;;                      sd: (sd ($ ,df y))))))
+    ;;   (R (%+% (ggplot ,df (aes x: gp y: y))
+    ;;           (geom_point)
+    ;;           (geom_point data: ,ds
+    ;;                       (aes y: mean)
+    ;;                       color: "red"
+    ;;                       size: 3))))
+    (R (plot (qplot (factor ($ mtcars cyl))
+                    ($ mtcars wt)
+                    data: mtcars
+                    geom: (c "boxplot" "jitter"))))
+    
+  #+END_SRC
+* DONE =inf=
+  CLOSED: [2012-10-10 Wed 00:52]
+* DONE =NA=
+  CLOSED: [2012-10-10 Wed 00:52]
+  It's a little shitty to have to =,R-NA= and to have weird INT_MIN
+  artifacts everywhere; can we have a special =NA= object?
+
+  #+BEGIN_SRC c
+    LibExtern int    R_NaInt;   /* NA_INTEGER:= INT_MIN currently */
+  #+END_SRC
+* DONE =R-eval= to distinguish atoms, quotations from application.
+  CLOSED: [2012-10-09 Tue 14:13]
+  #+BEGIN_SRC scheme :tangle R-eval.scm :shebang #!/usr/bin/env chicken-scheme
+    (use debug R test expand-full)
+    
+    ;; (trace R-eval)
+    
+    ;; (R 2)
+    ;; (R '(ls))
+    ;; (R `(ls))
+    ;; (R (ls (new.env)))
+    (debug
+     (R* (ls (new.env (new.env))))
+     (R (assign "a" 2))
+     (R* (get x: "a"))
+     (R* 2)
+     (R* a)
+     (R* "harro")
+     (R b))
+    
+  #+END_SRC
+* DONE Raise a Scheme condition when evaluation fails.
+  CLOSED: [2012-10-09 Tue 14:14]
+  - CLOSING NOTE [2012-10-09 Tue 14:14] \\
+    Still getting some segfaults on errors, though.
+* DONE Lists
+  CLOSED: [2012-10-07 Sun 04:22]
+  - CLOSING NOTE [2012-10-07 Sun 04:22] \\
+    Deep translation
+  Should =R*= deep-translate lists; or can we also do a superficial
+  collection of opaque objects? Nah; we'll use R-accessors if we want
+  to slice.
+* DONE Get the AIMA example to work.
+  CLOSED: [2012-10-06 Sat 11:47]
+  #+BEGIN_SRC R :tangle voronoi.R
+    library(debug)
+    library(ggplot2)
+    
+    plot.voronoi <- function(voronoi,
+                             path.x,
+                             path.y,
+                             start.x,
+                             start.y,
+                             end.x,
+                             end.y) {
+      png('voronoi.png', width=1024, heigh=768)
+      q <- qplot(voronoi$x1,
+                 voronoi$y1,
+                 xlab="",
+                 ylab="") +
+      opts(legend.position='none') +
+      geom_point(aes(x=start.x,
+                     y=start.y,
+                     alpha=1.0),
+                 shape=1,
+                 size=5) +
+      geom_text(aes(x=start.x,
+                    y=start.y,
+                    label='Start',
+                    alpha=1.0),
+                size=3) +
+      geom_point(aes(x=end.x,
+                     y=end.y,
+                     alpha=1.0),
+                 shape=1,
+                 size=5) +
+      geom_text(aes(x=end.x,
+                    y=end.y,
+                    label='End',
+                    alpha=1.0),
+                size=3) +
+      geom_segment(aes(x=voronoi$x1,
+                       xend=voronoi$x2,
+                       y=voronoi$y1,
+                       yend=voronoi$y2,
+                       alpha=1.0)) +
+      geom_text(aes(x=voronoi$x1 + (voronoi$x2 - voronoi$x1) / 2,
+                    y=voronoi$y1 + (voronoi$y2 - voronoi$y1) / 2,
+                    label=signif(sqrt((voronoi$x2 - voronoi$x1) ^ 2 +
+                      (voronoi$y2 - voronoi$y1) ^ 2),
+                      digits=2),
+                    alpha=1.0),
+                size=3) +
+      ## We have to do this in segments, if we want to be able to model
+      ## bi-directional search.
+      geom_path(aes(x=path.x,
+                    y=path.y,
+                    alpha=1.0),
+                color='red',
+                size=2.0) +
+      geom_point(aes(x=voronoi$x1,
+                     y=voronoi$y1,
+                     alpha=1.0))
+      plot(q)
+      dev.off()
+    }
+    
+  #+END_SRC
+
+  #+BEGIN_SRC scheme :tangle voronoi.scm :shebang #!/usr/bin/env chicken-scheme
+    (use debug
+         lolevel
+         matchable
+         R
+         srfi-1
+         vector-lib)
+    
+    (import-for-syntax matchable)
+    
+    (define-syntax define-record-and-printer
+      (lambda (expression rename compare)
+        (match expression
+          ((_ record . fields)
+           (let ((%define-record (rename 'define-record))
+                 (%define-record-printer (rename 'define-record-printer))
+                 (%begin (rename 'begin))
+                 (%lambda (rename 'lambda))
+                 (%write (rename 'write))
+                 (%record->vector (rename 'record->vector)))
+             `(,%begin
+               (,%define-record ,record ,@fields)
+               (,%define-record-printer
+                ,record
+                (,%lambda (record out)
+                     (,%write (,%record->vector record) out)))))))))
+    
+    (define n-vertices (make-parameter 100))
+    
+    (define (R-voronoi n-vertices)
+      (R-apply "library" '(deldir))
+      (R-apply "$" (list
+                    (R-apply "deldir"
+                             (list (R-apply "rnorm" (list n-vertices))
+                                   (R-apply "rnorm" (list n-vertices))))
+                    "dirsgs")))
+    
+    (define (voronoi R-voronoi)
+      (R-eval "apply" R-voronoi 1 (R-apply "get" '("list"))))
+    
+    (define-record-and-printer point x y)
+    
+    (define (voronoi-for-each f voronoi)
+      (vector-for-each
+       (lambda (i x)
+         (match x
+           (#(#(x1 y1 x2 y2 i1 i2 e1 e2))
+            (f x1 y1 x2 y2))))
+       voronoi))
+    
+    (define (neighbors voronoi)
+      (let ((neighbors (make-hash-table)))
+        (voronoi-for-each
+         (lambda (x1 y1 x2 y2)
+           (let ((p1 (make-point x1 y1))
+                 (p2 (make-point x2 y2)))
+             (hash-table-update!/default neighbors
+                                         p1
+                                         (lambda (neighbors)
+                                           (lset-adjoin eq? neighbors p2))
+                                         '())
+             (hash-table-update!/default neighbors
+                                         p2
+                                         (lambda (neighbors)
+                                           (lset-adjoin eq? neighbors p1))
+                                         '())))
+         voronoi)
+        neighbors))
+    
+    (define (points neighbors)
+      (hash-table-keys neighbors))
+    
+    (define (start points)
+      (let iter ((points points)
+                 (start (make-point +inf +inf)))
+        (if (null? points)
+            start
+            (let ((point (car points))
+                  (rest (cdr points)))
+              (if (< (point-x point) (point-x start))
+                  (iter rest point)
+                  (iter rest start))))))
+    
+    (define (end points)
+      (let iter ((points points)
+                 (end (make-point -inf -inf)))
+        (if (null? points)
+            end
+            (let ((point (car points))
+                  (rest (cdr points)))
+              (if (> (point-x point) (point-x end))
+                  (iter rest point)
+                  (iter rest end))))))
+    
+    (define-record-and-printer tessellation
+      R-object
+      points
+      start
+      end)
+    
+    (define tessellate
+      (case-lambda
+       (() (tessellate (n-vertices)))
+       ((n-vertices)
+        (let* ((R-voronoi (R-voronoi n-vertices))
+               (voronoi (voronoi R-voronoi)))
+          (let* ((neighbors (neighbors voronoi))
+                 (points (points neighbors)))
+            (let ((start (start points))
+                  (end (end points)))
+              (make-tessellation
+               R-voronoi
+               points
+               start
+               end)))))))
+    
+    (define (plot-tessellation tessellation path filename)
+      (R-apply "source" '("voronoi.R"))
+      (let ((path-x (vector-map (lambda (i point) (point-x point)) path))
+            (path-y (vector-map (lambda (i point) (point-y point)) path))
+            (start (tessellation-start tessellation))
+            (end (tessellation-end tessellation)))
+        (R-eval "plot.voronoi"
+                (tessellation-R-object tessellation)
+                path-x
+                path-y
+                (point-x start)
+                (point-y start)
+                (point-x end)
+                (point-y end))))
+    
+    (let ((tessellation (tessellate)))
+      (plot-tessellation tessellation
+                         (vector (tessellation-start tessellation)
+                                 (tessellation-end tessellation))
+                         "harro.png"))
+    
+  #+END_SRC
+* DONE R-form
+  CLOSED: [2012-10-07 Sun 04:21]
+# <<R-form>
+  Macro that takes unquoted symbols; does memoization on the lookup.
+  Can it distinguish between function-application and variable-lookup?
+  Not sure how to distinguish between niladic and variable.
+
+  Maybe we can avoid evaluating by default, and deal with mainly
+  opaque R-forms; possibly, when you need to modify the R-forms is
+  exceptional (at which point you eval).
+
+  =R= could be a wrapper around =R-apply=, therefore; and, say, =R*=
+  could be =R-eval=. Arguments could be in quasiquote, such that we
+  can reference things.
+
+  Could it be that a symbol does function or variable lookup: and in
+  the former case, applies; otherwise, gets?
+
+  (I /really/ need examples in =cock=; for which: some kind of
+  markdown for Scheme blocks.)
+
+  Or maybe the opposite: =R= evaluates, =R= merely applies? And by
+  evaluate, I mean: =(compose R->scheme R-apply)=.
+
+  If we were going to do this right, =R-eval= would catch
+  function-like things and send them to apply; =R-eval= is basically
+  just =R->scheme=.
+
+  No, =R-eval= takes a language object of some kind; maybe the result
+  of calling =R-apply=?
+* DONE Named arguments
+  CLOSED: [2012-10-06 Sat 11:51]
+  Little state machine with last keyword argument read; exhaust the
+  named and unnamed arguments.
+
+  #+BEGIN_SRC scheme
+    (use debug
+         srfi-1
+         srfi-8
+         test)
+    
+    (define keyword->symbol (compose string->symbol keyword->string))
+    
+    (define (named×unnamed . arguments)
+      (let iter ((arguments arguments)
+                 (keyword #f)
+                 (named '())
+                 (unnamed '()))
+        (if (null? arguments)
+            (values (reverse named) (reverse unnamed))
+            (let ((argument (car arguments))
+                  (rest (cdr arguments)))
+              (if (keyword? argument)
+                  (iter rest argument named unnamed)
+                  (if keyword
+                      (iter rest
+                            #f
+                            (alist-cons (keyword->string keyword)
+                                        argument named)
+                            unnamed)
+                      (iter rest #f named (cons argument unnamed))))))))
+    
+    (receive (named unnamed)
+      (named×unnamed 'a 'b 'c harro: 'e why: jes: 'omg)
+      (test named '(("harro" . e) ("jes" . omg)))
+      (test unnamed '(a b c)))
+  #+END_SRC
+
+  According to =matchArgs= in =match.c=, =CHAR(PRINTNAME(TAG(f)))=
+  accesses the named argument. No names? =names= is =NULL=,
+  apparently; unnamed arguments get the null-string.
+* DONE Libraries
+  CLOSED: [2012-10-07 Sun 04:21]
+  - CLOSING NOTE [2012-10-07 Sun 04:21] \\
+    Do it normally with e.g. =(R library "debug")=.
+* DONE Attributes
+  CLOSED: [2012-10-07 Sun 04:21]
+  There's not only names to worry about; but other things, too: like
+  dimensions for matrices, &c. We might have to come up with a generic
+  attributes thing. Which means that every object becomes a record.
+
+  Can we maintain a separate attributes table keyed by some hash of
+  the object; which is subject to deletion upon finalization, &c.?
+
+  I'm not sure if that's possible, given garbage collection; could it
+  be that the R-objects (even though they've been preserved) are moved
+  around at some point? The Scheme-objects are moved around for sure,
+  aren't they?
+
+  Can't hash the object, either; since two objects might be otherwise
+  identical but have different attributes. Hash the object along with
+  its attributes? Can't retrieve an object's attributes unambiguously.
+
+  Look out for =C_gc_mutation_hook= and =C_gc_post_hook= in runtime.c.
+  The latter might be useful for individual mutations; the former for
+  a scan of the locative-table?
+
+  test-cg-hooks.scm has:
+
+  #+BEGIN_SRC scheme
+    #>
+    
+    static int count = 0;
+    
+    static void 
+    gc_start(int mode)
+    {
+      printf(">>>>> GC pre hook - mode=%d, count=%d\n", mode, count++);
+    }
+    
+    static void
+    gc_end(int mode, long ms)
+    {
+      printf("<<<<< GC post hook - mode=%d, count=%d, ms=%ld\n", mode, --count, ms);
+    }
+    
+    <#
+    
+    (set-gc-report! #t)
+    
+    (foreign-code #<<EOF
+    C_pre_gc_hook = gc_start;
+    C_post_gc_hook = gc_end;
+    EOF
+    )
+  #+END_SRC
+
+  Not sure how I would update the attribute-table based on the new
+  locative-table, though.
+
+  =C_GC_HOOKS= doesn't appear to be turned on by default, though; so
+  =C_gc_mutation_hook= is useless. =C_post_gc_hook=, on the other
+  hand, gets called; can we create a table of objects and see how
+  their pointers change?
+
+  See [[http://homepage.stat.uiowa.edu/~luke/R/gengcnotes.html][Luke's notes on the generational GC]]:
+
+  #+BEGIN_QUOTE
+  However, the non-moving allocation strategy used by the generational
+  collector means that eventually locations of successive allocations
+  become essentially unrelated and are therefore very likely to be
+  quite far apart.
+  #+END_QUOTE
+
+  Is it dangerous to assume that the addresses pointing to R objects
+  don't move?
+
+  #+BEGIN_QUOTE
+  The code enabled by defining =USE_GENERATIONAL_GC= implements a
+  non-moving generational collector with two or three generations.
+  #+END_QUOTE
+
+  Ah, =USE_GENERATIONAL_GC= is not on by default? It is in 1.8.1;
+  could it be that recent versions use generational GC? See memory.c:
+
+  #+BEGIN_SRC c
+    /*
+     *      This code implements a non-moving generational collector
+     *      with two or three generations.
+     */
+  #+END_SRC
+
+  See [[http://cran.r-project.org/doc/manuals/R-ints.html#The-write-barrier][R-internals]]:
+
+  #+BEGIN_QUOTE
+  R has since version 1.2.0 had a generational garbage collector.
+  #+END_QUOTE
+
+  Christ, it depends on an implementation detail; but we might be able
+  to pull it off. How do we get the address of the R-object in
+  question? No good: we still have to map the Scheme value to the
+  R-address somehow. Back to square zero.
+
+  Also, =object->pointer= only applies to non-immediates; we might
+  have to resort to records here. Damn.
+
+  [[http://api.call-cc.org/doc/heap-o-rama][Heap-o-rama]] might have been interesting, were it not for attributes
+  on immediate objects.
+
+  Just a stab in the dark, but Chicken has =C_i_getprop= and
+  =C_putprop=; can properties be hidden in the header of objects
+  somehow?
+
+  We could deal with properties in an ad-hoc fashion: Oh, the vector
+  has names? Hash table. Oh, the vector has dims? Matrix. &c.
+
+  Since we're passing around opaque R-objects now, we'll associate the
+  attributes with that. Can =R*= pass the object back + attributes?
+  Sure! Translating them back into R: pain in the ass. Let's not worry
+  about that for now. What about things like alists, &c.? Befraying
+  the attributes is going to be a pain in the ass. One thing at a
+  time. Alists later, maybe; translating them back, though? How about
+  hash-tables? Whatever.
+
+  #+BEGIN_SRC scheme :tangle attributes.scm :shebang #!/usr/bin/env chicken-scheme
+    (use debug R)
+    
+    (R library "debug")
+    (R debug (R rep.int times: 2 x: 3))
+    (R debug (R-attributes (R list a: 2 b: 3) "names"))
+    (debug (R* attr (R list a: 2 b: 3) "names"))
+  #+END_SRC
+* DONE Initialization function
+  CLOSED: [2012-10-07 Sun 04:22]
+  - CLOSING NOTE [2012-10-07 Sun 04:22] \\
+    We're doing it anyway; at least until we have explicit shutdown.
+  Isn't it a little rude to initialize on =use=?
+* DONE Parse positional and keyword arguments.
+  CLOSED: [2012-10-07 Sun 04:22]
+  Iterate with a little state machine: last keyword seen, &c. Two
+  lists: keyword and positional lists. Pass them to C.
+* DONE =R-value= or =R-get=
+  CLOSED: [2012-10-07 Sun 04:23]
+  - CLOSING NOTE [2012-10-07 Sun 04:23] \\
+    Handled by R-eval.
+  which is really just a wrapper around =Reval= that calls =get=,
+  isn't it; with optional =rho= (environment)?
+* DONE Be able to designate an object opaque.
+  CLOSED: [2012-09-23 Sun 12:44]
+  That works! =R-apply= instead of =R-eval= when the contents are
+  fragile; kind of sucks that we're lossy, though. Really should work
+  on that. As long as we don't have to unpack it, though. /Olympioi
+  sei Preis und Dank/!
+* DONE Segfaults on =qplot=
+  CLOSED: [2012-09-23 Sun 12:45]
+  - CLOSING NOTE [2012-09-23 Sun 12:45] \\
+    Fixed, for the time being, with the =R-apply=-hack; need to work on a
+    less-lossy translation, though.
+  Compare =debug= with =str= output; load external file. Maybe it's
+  that we don't preserve names on lists?
+
+  #+BEGIN_SRC scheme
+    (((R-eval "qplot" 2)
+      #(#()
+        #(#<tagged pointer sexp 204d430>)
+        #<tagged pointer sexp 321f2f0>
+        #(2)
+        #(#("2L" "count"))
+        #(#(#<unspecified> #<unspecified>))
+        #(#t)
+        #<tagged pointer sexp 1f16d78>)))
+  #+END_SRC
+
+  #+BEGIN_SRC R
+    > str(qplot(c(1,2,3)))
+    List of 8
+     $ data       :'data.frame':    0 obs. of  0 variables
+     $ layers     :List of 1
+      ..$ :proto object 
+     .. .. $ mapping    : NULL 
+     .. .. $ geom_params: Named list() 
+     .. .. $ stat_params: Named list() 
+     .. .. $ stat       :proto object  
+     .. .. .. $ calculate_groups:function (., data, ...)    
+     .. .. .. $ objname         : chr "bin"  
+     .. .. .. $ default_aes     :function (.)    
+     .. .. .. $ default_geom    :function (.)    
+     .. .. .. $ calculate       :function (., data, scales, binwidth = NULL, origin = NULL, breaks = NULL,   
+        width = 0.9, drop = FALSE, right = FALSE, ...)    
+     .. .. .. $ required_aes    : chr "x"  
+     .. .. .. $ informed        : logi TRUE  
+     .. ..  ..parent: proto object  
+     .. .. .. .. parent: proto object  
+     .. .. $ inherit.aes: logi TRUE 
+     .. .. $ geom       :proto object  
+     .. .. .. $ objname: chr "histogram"  
+     .. ..  ..parent: proto object  
+     .. .. .. .. parent: proto object  
+     .. .. .. .. .. parent: proto object  
+     .. .. $ position   :proto object  
+     .. .. .. $ width : NULL  
+     .. .. .. $ height: NULL  
+     .. ..  ..parent: proto object  
+     .. .. .. .. parent: proto object  
+     .. .. .. .. .. parent: proto object  
+     .. .. $ subset     : NULL 
+     .. .. $ data       : list() 
+     .. ..  ..- attr(*, "class")= chr "waiver" 
+     .. .. $ show_guide : logi NA 
+      .. ..parent: proto object 
+     $ scales     :Formal class 'Scales' [package "ggplot2"] with 1 slots
+      .. ..@ .xData:<environment: 0x2e7ae48> 
+     $ mapping    :List of 1
+      ..$ x: language c(1, 2, 3)
+     $ options    :List of 1
+      ..$ labels:List of 2
+      .. ..$ x: chr "c(1, 2, 3)"
+      .. ..$ y: chr "count"
+     $ coordinates:List of 1
+      ..$ limits:List of 2
+      .. ..$ x: NULL
+      .. ..$ y: NULL
+      ..- attr(*, "class")= chr [1:2] "cartesian" "coord"
+     $ facet      :List of 1
+      ..$ shrink: logi TRUE
+      ..- attr(*, "class")= chr [1:2] "null" "facet"
+     $ plot_env   :<environment: R_GlobalEnv> 
+     - attr(*, "class")= chr "ggplot"    
+  #+END_SRC
+
+  See what happens, for the time being, if we treat named objects as
+  opaque; if we still get something, maybe it's memory management.
+* DONE Names
+  CLOSED: [2012-09-23 Sun 12:47]
+  - CLOSING NOTE [2012-09-23 Sun 12:47] \\
+    Still tries to look up names, though.
+  From [[http://stat.ethz.ch/R-manual/R-devel/library/base/html/name.html][Names and Symbols]]:
+
+  #+BEGIN_QUOTE
+  A ‘name’ (also known as a ‘symbol’) is a way to refer to R objects
+  by name (rather than the value of the object, if any, bound to that
+  name).
+  #+END_QUOTE
+
+  It seems like a natural translation of symbols; what's its
+  relationship to =Rf_install=?
+
+  They're still a little wonky, though, since it tries to evaluate
+  them.
+* DONE Imaginary numbers
+  CLOSED: [2012-09-23 Sun 04:30]
+  The nice thing about being in Scheme is that we can take advantage
+  of the =numbers= egg without too much trouble. Other specialized
+  things we can do for e.g. matrices?
+* DONE What does =NULL= correspond to?
+  CLOSED: [2012-09-23 Sun 04:30]
+  - CLOSING NOTE [2012-09-23 Sun 04:30] \\
+    We're using (void) for the time being (NB: there's a pun with ()).
+  Is it simply =()=? That's a little weird, though, with null-vectors.
+
+  We'll continue to have an impedence mismatch, I think, with these
+  vector-list puns. Let's make it =()= for the time being.
+
+  What stops us, incidentally, from using lists all the way down? We
+  don't have a mechanism, namely, to distinguish =VECSXP= from the
+  vector types; unless we do a little type calculus to figure out
+  whether the list can be specialized.
+* DONE Finalizers
+  CLOSED: [2012-09-23 Sun 04:30]
+  I'm not sure what the scope of =R_PreserveObject= and
+  =R_ReleaseObject= is; if it applies even to scalars, then can every
+  R-value can be a non-immediate object (a promise, thunk or record)
+  on which we =set-finalizer!=?
+
+  Let's ignore it for the time being; at the very least, I suspect
+  we'll have to use it on opaque pointers. If records, indeed, are
+  non-immediate; maybe we can =set-finalizer!= on those.
+
+  Look at this artifact, incidentally, from sdl-ttf:
+
+  #+BEGIN_SRC scheme
+    (define-foreign-type TTF_Font (c-pointer "TTF_Font")
+      ttf-font-pointer
+      (lambda (p)
+       (set-finalizer! ((pointer-to-record-lambda ttf-font) p)
+               ttf-close-font)))
+  #+END_SRC
+
+  Sets the finalizer right in the foreign-type declaration.
+  Interesting. Another artifact, where they convert pointers to
+  blocks:
+
+  #+BEGIN_SRC scheme
+    (define (-sdl-unbox-ttf-glyph e)
+      (let ((p (##sys#make-pointer)))
+        (if e (##core#inline "C_pointer_to_block" p (ttf-glyph-buffer e)))
+        p))
+    
+    (define-foreign-type GlyphMetrics (c-pointer "GlyphMetrics")
+      -sdl-unbox-ttf-glyph)
+  #+END_SRC
+
+  sdl-base does a =pointer-to-record-lambda=:
+
+  #+BEGIN_SRC scheme
+    (define-syntax pointer-to-record-lambda
+      (ir-macro-transformer
+       (lambda (e i c)
+         (let ((record-name (cadr e)))
+           `(lambda (pointer)
+          (and pointer
+               (,(i (symbol-append 'make- (strip-syntax record-name))) pointer)))))))
+  #+END_SRC
+
+  Here's the classic tagged-pointer from cairo:
+
+  #+BEGIN_SRC scheme
+    (define-foreign-type cairo_t (c-pointer "cairo_t")
+      values
+      (cut tag-pointer <> 'cairo))
+  #+END_SRC
+
+  What's happens when we're not merely dealing with a pointer but a
+  scalar? Maybe we're constrained to dealing with pointers; or maybe
+  we have to actually define the struct.
+
+  What happens, furthermore, when we've protected a pointer (e.g. a
+  string-vector); Scheme has no reference to the vector itself; but
+  merely a string within the vector? Can we protect that string, too?
+  Do we need to actually ref-count so that we preserve the parent
+  vector?
+* DONE Vectors or lists?
+  CLOSED: [2012-09-23 Sun 04:30]
+  - CLOSING NOTE [2012-09-23 Sun 04:30] \\
+    Vectors all the way down for now.
+  Here's the hierarchy of vector-types:
+
+  #+BEGIN_SRC c
+    /* If a non-vector argument was encountered (perhaps a list if */
+    /* recursive is FALSE) then we must return a list.    Otherwise, */
+    /* we use the natural coercion for vector types. */
+    
+    mode = NILSXP;
+    if (data.ans_flags & 512)    mode = EXPRSXP;
+     else if (data.ans_flags & 256) mode = VECSXP;
+     else if (data.ans_flags & 128) mode = STRSXP;
+     else if (data.ans_flags &  64) mode = CPLXSXP;
+     else if (data.ans_flags &  32) mode = REALSXP;
+     else if (data.ans_flags &  16) mode = INTSXP;
+     else if (data.ans_flags & 2) mode = LGLSXP;
+     else if (data.ans_flags & 1) mode = RAWSXP;
+  #+END_SRC
+
+  They seem to be talking about VECSXP as a list (the so-called "new
+  list") as opposed to vectors of lower types. Maybe it makes sense,
+  therefore, to translate the former as lists; latter, vectors.
+
+  What about EXPRSXP? From [[http://cran.r-project.org/doc/manuals/R-ints.html][internals]]: "Expressions are of type
+  EXPRSXP: they are a vector of (usually language) objects most often
+  seen as the result of parse()."
+
+  So: VECSXPs as lists; STR-, CPLX-, REAL-, INT- and LGLSXPs as
+  vectors (maybe alternatively as lists, if dealing with vectors is
+  too cumbersome).
+
+  Indeed:
+
+  #+BEGIN_SRC c
+    if (mode == VECSXP || mode == EXPRSXP) {
+      if (!recurse) {
+        while (args != R_NilValue) {
+          ListAnswer(CAR(args), 0, &data, call);
+          args = CDR(args);
+        }
+      }
+      else ListAnswer(args, recurse, &data, call);
+      data.ans_length = length(ans);
+     }
+     else if (mode == STRSXP)
+       StringAnswer(args, &data, call);
+     else if (mode == CPLXSXP)
+       ComplexAnswer(args, &data, call);
+     else if (mode == REALSXP)
+       RealAnswer(args, &data, call);
+     else if (mode == RAWSXP)
+       RawAnswer(args, &data, call);
+     else if (mode == LGLSXP)
+       LogicalAnswer(args, &data, call);
+     else /* integer */
+       IntegerAnswer(args, &data, call);    
+  #+END_SRC
+
+  Shit: I'm tempted to listify everything, so we can actually work
+  with it; on the other side: pass to "c" to do the vector-type
+  calculus (eventually, we can reproduce it on our side; but that's
+  optimization).
+* DONE Embedded R
+  CLOSED: [2012-09-23 Sun 04:30]
+  [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/introduction.html][rpy2]] has =robjects=, which does lookup on =.globalEnv=. Has a
+  callable R-vector type; allows calling of arbitrary R code. The
+  ``R singleton.'' There's =r_repr=: R-representation? Deals with
+  the specific vector-types.
+
+  Have to call on vectors:
+
+  #+BEGIN_EXAMPLE
+    >>> rsum = robjects.r['sum']
+    >>> rsum(robjects.IntVector([1,2,3]))[0]
+    6L    
+  #+END_EXAMPLE
+
+  Passes keyword arguments:
+
+  #+BEGIN_EXAMPLE
+    >>> rsort = robjects.r['sort']
+    >>> res = rsort(robjects.IntVector([1,2,3]), decreasing=True)
+    >>> print(res.r_repr())
+    c(3L, 2L, 1L)
+  #+END_EXAMPLE
+
+  Has a specific =r.X11()= call; there's a whole spiel about
+  processing interactive events; they talk about that a little [[http://cran.r-project.org/doc/manuals/R-exts.html#Meshing-event-loops][here]].
+
+  It looks like the example code deals a lot with special
+  vector-types.
+
+  There's mechanisms for accessing fields:
+
+  #+BEGIN_EXAMPLE
+    >>> print(lm_D9.names)
+     [1] "coefficients"  "residuals"     "effects"       "rank"
+     [5] "fitted.values" "assign"        "qr"            "df.residual"
+     [9] "contrasts"     "xlevels"       "call"          "terms"
+    [13] "model"
+  #+END_EXAMPLE
+
+  A lot of invocation of the R-singleton:
+
+  #+BEGIN_EXAMPLE
+    import rpy2.robjects as robjects
+
+    r = robjects.r
+
+    m = r.matrix(r.rnorm(100), ncol=5)
+    pca = r.princomp(m)
+    r.plot(pca, main="Eigen values")
+    r.biplot(pca, main="biplot")
+  #+END_EXAMPLE
+
+  Importing packages:
+
+  #+BEGIN_EXAMPLE
+    from rpy2.robjects.packages import importr
+
+    base     = importr('base')
+    stats    = importr('stats')
+    graphics = importr('graphics')
+
+    m = base.matrix(stats.rnorm(100), ncol = 5)
+    pca = stats.princomp(m)
+    graphics.plot(pca, main = "Eigen values")
+    stats.biplot(pca, main = "biplot")
+  #+END_EXAMPLE
+
+  It assigns variables to the imported packages so that you can
+  reference shit.
+
+  [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/robjects_rinstance.html][The instance of R]]; on which: call arbitrary code, too:
+
+  #+BEGIN_EXAMPLE
+    >>> print(robjects.r('1+2'))
+    [1] 3
+    >>> sqr = robjects.r('function(x) x^2')
+    >>> print(sqr)
+    function (x)
+    x^2
+    >>> print(sqr(2))
+    [1] 4
+  #+END_EXAMPLE
+
+  Something about an R-representation:
+
+  #+BEGIN_QUOTE
+  The astute reader will quickly realize that R objects named by
+  python variables can be plugged into code through their R
+  representation:
+
+  #+BEGIN_EXAMPLE
+    >>> x = robjects.r.rnorm(100)
+    >>> robjects.r('hist(%s, xlab="x", main="hist(x)")' %x.r_repr())
+  #+END_EXAMPLE
+  #+END_QUOTE
+
+  [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/robjects_environments.html][Assigning to environment]]:
+
+  #+BEGIN_EXAMPLE
+    >>> robjects.r.ls(globalenv)
+    >>> robjects.globalenv["a"] = 123
+    >>> print(robjects.r.ls(globalenv))
+  #+END_EXAMPLE
+
+  Oh, shit: [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/robjects_formulae.html][formulae]]; [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/robjects_oop.html][fucking OO]]; [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/vector.html][specialized vectors]], along with
+  subsetting. Specialized =NA=, too. Special-casing operators, too.
+  =DataFrame=.
+
+  [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/robjects_convert.html][Type-conversion]] between R <-> Python: =ri2py=, =py2ri=, =py2ro=,
+  &c. [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/graphics.html][Graphics]] require special handling. [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/interactive.html][Interactive]].
+
+  [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/rinterface.html][Low-level interface]]: =initr=, =endr=, &c. =globalenv=, =baseenv=,
+  &c.
+
+  Oh, shit:
+
+  #+BEGIN_QUOTE
+  Rpy2 is using its own reference counting system in order to bridge
+  R with Python and keep the pass-by-reference approach familiar to
+  Python users.
+  #+END_QUOTE
+
+  Calling Python from R:
+
+  #+BEGIN_QUOTE
+  As could be expected from R’s functional roots, functions are
+  first-class objects. This means that the use of callback functions
+  as passed as parameters is not seldom, and this also means that
+  the Python programmer has to either be able write R code for
+  functions as arguments, or have a way to pass Python functions to
+  R as genuine R functions. That last option is becoming possible,
+  in other words one can write a Python function and expose it to R
+  in such a way that the embedded R engine can use as a regular R
+  function.
+  #+END_QUOTE
+
+  They have support for closures; [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/rinterface.html#index-19][enumeration of R-types]]. Don't
+  forget about [[http://rpy.sourceforge.net/rpy2/doc-2.3/html/server.html#][Rserve]].
+
+  [[http://rpy.sourceforge.net/rpy/doc/rpy_html/Invocation.html#Invocation][rpy]] looks less magical; [[http://rpy.sourceforge.net/rpy/doc/rpy_html/R-objects-look-up.html#R-objects-look-up][name-munging]]; [[http://rpy.sourceforge.net/rpy/doc/rpy_html/Methods-of-Robj-type.html#Methods-of-Robj-type][awkward calling]]; [[http://rpy.sourceforge.net/rpy/doc/rpy_html/Sequence-protocol.html#Sequence-protocol][slices are
+  not supported]]; [[http://rpy.sourceforge.net/rpy/doc/rpy_html/R-to-Python.html#R-to-Python][conversions]]; [[http://rpy.sourceforge.net/rpy/doc/rpy_html/No-conversion.html#No-conversion][Robj object]]; 
+
+  [[http://www.omegahat.org/RSPython/overview.pdf][RSPython]] looks lower-level and possibly simpler; is it a good
+  candidate for emulation? Heh: they did the [[http://www.omegahat.org/RSPython/PythonFromR.pdf][reverse]] with a
+  =.Python= form in R.
+
+  Ah: the [[http://www.omegahat.org/RSPython/Conversion.pdf][customizable convertes]] you see in =rpy=, too.
+
+  They also [[file:/usr/local/src/RSPython/src/RCall.c][count references]], apparently; [[file:/usr/local/src/RSPython/inst/Python/RS.py][RS.py]] is refreshingly (or
+  deceptively) simple. (The whole thing is packaged as an R-package,
+  by the way.)
+
+  Here's [[file:/usr/local/src/RSPython/src/PythonCall.c][some meat]]; see:
+
+  #+BEGIN_QUOTE
+  This handles calling R from Python.
+
+  This code is quickly thrown together for the purposes of a)
+  learning about the Python internals and C API, and b) to
+  illustrate to others how one might embed R in Python or other
+  applications and programming environments.
+
+  There is a lot more to come, specifically the ability to be able
+  to pass Python objects to R by "reference" and have R operate on
+  these by calling methods in those objects that result in calls to
+  Python functions/methods.
+  #+END_QUOTE
+
+  Interesting:
+
+  #+BEGIN_QUOTE
+  This is the routine that implements Python calling an S function
+  with a simple, ordered list of arguments (i.e. no named S
+  arguments, etc.). This converts the Python arguments into S
+  objects.
+
+  This gets 4 arguments:
+    1) the name of the function to call
+    2) the un-named arguments as a Tuple
+    3) the named arguments (that do not use ``reserved'' words)
+    4) a convert argument.    
+  #+END_QUOTE
+
+  [[http://cran.r-project.org/doc/manuals/R-exts.html#Attributes][Install]] pops things in the symbol-table, incidentally.
+
+  #+BEGIN_SRC c :tangle Reval.h
+    #include <chicken.h>
+
+    C_word Reval(char* function, C_word args);
+
+  #+END_SRC
+
+  #+BEGIN_SRC c :tangle Reval.c
+    #include <assert.h>
+    #include <string.h>
+        
+    #include <Rinternals.h>
+    #include <Rdefines.h>
+    #include <Rembedded.h>
+        
+    #include <chicken.h>
+        
+    SEXP toR(C_word arg) {
+    if (C_truep(C_i_flonump(arg))) {
+    return ScalarReal(C_flonum_magnitude(arg));
+    } else if (C_truep(C_fixnump(arg))) {
+      return ScalarInteger(C_num_to_int(arg));
+     } else if (C_truep(C_booleanp(arg))) {
+      return ScalarLogical(C_truep(arg) ? 1 : 0);
+     } else if (C_truep(C_stringp(arg))) {
+      return ScalarString(Rf_mkChar(C_string_or_null(arg)));
+     } else if (C_truep(C_vectorp(arg))) {
+      /* Is this where we need to type the vector; or can we just
+         VECSXP? We probably need to type the vector. Can we stick e.g.
+         STRSXP in an INTSXP, though?
+        
+         See e.g. getListElementType in RPythonConverters.c; see also
+         do_c_dflt in bind.c. What about calling the actual R function?
+         It's too bad do_c or do_c_dflt aren't exposed in
+         Rinternals.h.
+        
+         The call to R is slower, but guaranteed to be semantically
+         correct. */
+      int length = C_unfix(C_i_vector_length(arg));
+      SEXP c = allocVector(LANGSXP, length + 1);
+      SEXP ci = c;
+      SETCAR(c, Rf_findFun(Rf_install("c"), R_GlobalEnv));
+      int i;
+      for (i = 0; i < length; i++) {
+        ci = CDR(ci);
+        SETCAR(ci, toR(C_i_vector_ref(arg, C_fix(i))));
+      }
+      int error = 0;
+      return R_tryEval(c, R_GlobalEnv, &error);
+     } else if (C_truep(C_pointerp(arg))) {
+      return *((SEXP *) C_c_pointer_or_null(arg));
+     }
+    /* What the fuck is this, if not above? There should be some
+       symmetry: if I don't know what the hell it is, it's a pointer
+       (and vice versa). */
+     return R_NilValue;
+    }
+        
+    void Reval(C_word c, C_word self, C_word k, C_word name, C_word args) {
+      int nargs = C_num_to_int(C_i_length(args));
+      SEXP expression = allocVector(LANGSXP, nargs + 1);
+      /* Have to check this for R_NilValue; see e.g. RNamedCall.c. */
+      SEXP function = Rf_findFun(Rf_install(C_c_string(name)), R_GlobalEnv);
+        
+      SETCAR(expression, function);
+      SEXP iterexp = CDR(expression);
+        
+      while (!C_truep(C_i_nullp(args))) {
+        SETCAR(iterexp, toR(C_i_car(args)));
+        args = C_i_cdr(args);
+        iterexp = CDR(iterexp);
+      }
+        
+      int error = 0;
+      SEXP Rvalue = R_tryEval(expression, R_GlobalEnv, &error);
+      if (!error) {
+        switch (TYPEOF(Rvalue)) {
+        case REALSXP:
+          {
+            int length = Rf_length(Rvalue);
+            if (length == 1) {
+              C_word *value = C_alloc(C_SIZEOF_FLONUM);
+              C_kontinue(k, C_flonum(&value, REAL(Rvalue)[0]));
+            } else {
+              C_word *v = C_alloc(C_SIZEOF_VECTOR(length)),
+                *v0 = v;
+              *(v++) = C_VECTOR_TYPE | length;
+              int i;
+              for (i = 0; i < length; i++) {
+                C_word *value = C_alloc(C_SIZEOF_FLONUM);
+                *(v++) = C_flonum(&value, REAL(Rvalue)[i]);
+                /* We're going to have to make a continuation and do CPS
+                   for this to work; should we try the Schemely way
+                   first?
+        
+                   Calling closures over continuations gets deep into the
+                   bowels; call_cc_values_wrapper uses e.g. C_save.
+        
+                   Yup, heard it from sjamaan: memory corruption if you
+                   return; have to create a closure object. */
+              }
+              C_kontinue(k, (C_word) v0);
+            }
+          }
+        case INTSXP:
+          {
+            int length = Rf_length(Rvalue);
+            if (length == 1) {
+              C_kontinue(k, C_fix(INTEGER(Rvalue)[0]));
+            } else {
+              C_word *v = C_alloc(C_SIZEOF_VECTOR(length)),
+                *v0 = v;
+              *(v++) = C_VECTOR_TYPE | length;
+              int i;
+              for (i = 0; i < length; i++)
+                *(v++) = C_fix(INTEGER(Rvalue)[i]);
+              C_kontinue(k, (C_word) v0);
+            }
+          }
+        case LGLSXP:
+          {
+            int length = Rf_length(Rvalue);
+            if (length == 1) {
+              C_kontinue(k, LOGICAL(Rvalue)[0] ? C_SCHEME_TRUE : C_SCHEME_FALSE);
+            } else {
+              C_word *v = C_alloc(C_SIZEOF_VECTOR(length)),
+                *v0 = v;
+              *(v++) = C_VECTOR_TYPE | length;
+              int i;
+              for (i = 0; i < length; i++)
+                *(v++) = LOGICAL(Rvalue)[i] ?
+                  C_SCHEME_TRUE : C_SCHEME_FALSE;
+              C_kontinue(k, (C_word) v0);
+            }
+          }
+        case STRSXP:
+          {
+            int length = Rf_length(Rvalue);
+            if (length == 1) {
+              const char *string = CHAR(STRING_ELT(Rvalue, 0));
+              C_word *value = C_alloc(C_SIZEOF_STRING(strlen(string)));
+              C_kontinue(k, C_string(&value, strlen(string), (char *) string));
+            } else {
+              C_word *v = C_alloc(C_SIZEOF_VECTOR(length)),
+                *v0 = v;
+              *(v++) = C_VECTOR_TYPE | length;
+              int i;
+              for (i = 0; i < length; i++) {
+                const char *string = CHAR(STRING_ELT(Rvalue, i));
+                C_word *value = C_alloc(C_SIZEOF_STRING(strlen(string)));
+                *(v++) = C_string(&value, strlen(string), (char *) string);
+              }
+              C_kontinue(k, (C_word) v0);
+            }
+          }
+        case VECSXP:
+          {
+            int length = Rf_length(Rvalue);
+            C_word *l = C_alloc(C_SIZEOF_LIST(length + 1)),
+              *l0 = l;
+            printf("length: %d; ", C_SIZEOF_LIST(length + 1));
+            int i = 0;
+            for (i = 0; i < length; i++) {
+              *(l++) = C_PAIR_TYPE | (C_SIZEOF_PAIR - 1);
+              /* This is where we get into trouble without being able to
+                 recurse into to_scheme. Or, can we create an
+                 inline-function? */
+              /* *(l++) = CAR(Rvalue); */
+              *(l++) = C_fix(1);
+              Rvalue = CDR(Rvalue);
+            }
+            *(l++) = C_SCHEME_END_OF_LIST;
+            C_kontinue(k, C_fix(1));
+          }
+        default:
+          {
+            C_word *pointer = C_alloc(C_SIZEOF_POINTER);
+            /* We probably need to allocate a new structure, copy Rvalue
+               thither, and free at some point; don't we? Or at least
+               protect the value?
+        
+               PROTECT and UNPROTECT preserve within calls, while
+               R_PreserveObject and R_ReleaseObject preserve past calls;
+               see:
+               <http://r.789695.n4.nabble.com/R-PreserveObject-R-ReleaseObject-reference-counting-needed-td997167.html>*/
+            C_kontinue(k, C_mpointer(&pointer, &Rvalue));
+          }
+        }
+      }
+      C_kontinue(k, C_SCHEME_UNDEFINED);
+    }
+  #+END_SRC
+
+  #+BEGIN_SRC scheme :tangle R-test.scm
+    (use debug dollar lolevel miscmacros test)
+    
+    #>
+    #include "Reval.h"
+    #include <Rembedded.h>
+    <#
+    
+    (foreign-code
+     #<<END
+     Rf_initEmbeddedR(4, (char*[]) {"R-test",
+                                    "--slave",
+                                    "--vanilla",
+                                    "--args"}) ;
+    END
+    )
+    
+    (define Reval (##core#primitive "Reval"))
+    
+    ;;; We should avoid this trick and just use varargs.
+    (define (R-eval f . args)
+      (Reval f args))
+    
+    ;;; Yikes: this segfaults; should we check for whether there's a valid
+    ;;; representation of something? What happens when the coercion fails?
+    ;;;
+    ;;; No, it's merely failing on VECSXP.
+    ;; (debug (R-eval "c" 2 "harro" 2.1 #f #t (R-eval "new.env")))
+    ;;; This doesn't, however.
+    (debug (R-eval "c" 2 "harro" 2.1 #f #t (R-eval "c" 2)))
+    (debug (R-eval "rep" 2 10))
+    (debug (R-eval "rep" 2.1 10))
+    (debug (R-eval "rep" #t 10))
+    (debug (R-eval "rep" #f 10))
+    (debug (R-eval "rep" "harro" 10))
+    (debug (R-eval "c" 2.023989823989823))
+    (debug (R-eval "c" 1))
+    (debug (R-eval "c" 2))
+    (debug (R-eval "c" 3))
+    (debug (R-eval "c" "harro"))
+    (debug (R-eval "c" '#(10 11)))
+    (debug (R-eval "list" "harro" "yes"))
+    (let ((env (R-eval "new.env")))
+      (R-eval "print" env))
+    
+  #+END_SRC
+
+  #+BEGIN_SRC makefile :tangle R-test.mk :shebang #!/usr/bin/unexpand -t 4
+    R_FLAGS := $(shell R CMD config --cppflags) \
+        $(shell R CMD config --ldflags)
+    
+    CHICKEN_FLAGS := $(shell csc -cflags -ldflags -libs)
+    
+    all: R-test
+    
+    Reval.o: Reval.c
+        gcc $(R_FLAGS) $(CHICKEN_FLAGS) -c -o $@ $^
+    
+    R-test: Reval.o R-test.scm
+        csc $(R_FLAGS) -o $@ $^
+  #+END_SRC
+
+  Keep [[file:/usr/local/lib64/R/include/Rinternals.h][Rinternals.h]] handy: there's good stuff in there about types,
+  &c. Not to mention the [[http://cran.r-project.org/doc/manuals/R-ints.html][R internals]] doc. [[file:/usr/local/lib64/R/include/Rdefines.h][Rdefines.h]] has stuff like
+  =NEW_NUMERIC=, by the way.
+
+  There's a missing argument marker:
+
+  #+BEGIN_SRC c
+    LibExtern SEXP  R_MissingArg;       /* Missing argument marker */
+  #+END_SRC
+
+  Do we need to have a special symbol, e.g. =*missing*=? Named
+  variables have to be handled, too. See e.g. keywords and kvlists.
+
+  Can we create a SEXP in Scheme before we pass it to R, and
+  UNPROTECT it in the destructor? I wonder if we'll have impedence
+  mismatch between R and Scheme GC. God, I hope not. Or can we pass
+  primitive types to see and do the primitive -> SEXP calculus in C?
+
+  Look at the [[http://wiki.call-cc.org/eggref/4/lua][lua egg]], by the way, for a good, basic, thoughtful
+  API; cf. [[http://wiki.call-cc.org/eggref/4/bind][bind]] and [[http://wiki.call-cc.org/eggref/4/dollar][dollar]]. Lua doesn't drop into C at all, it's
+  all-dollar. Ah, it's all in the associated =.c= and =.h= files;
+  wait: that's the entirety of Lua? Wow. =lua-main.scm= is
+  beautiful, but maybe that's because Lua was built from the ground
+  up as an embeddable. R, maybe not so much. Can be coerced, though.
+
+  Can we confine the complexities of e.g. =SEXP= to embedded C; or
+  do we have to go through the whole =define-foreign-record-type=
+  rigmarole?
+
+  See [[file:/usr/local/src/RSPython/src/RPythonConverters.c][RPythonConverters.c]], incidentally, for some conversion
+  goodness. [[file:/usr/local/src/RSPython/inst/include/RSCommon.h][Mother-fuckers]]:
+
+  #+BEGIN_SRC c
+    typedef SEXP USER_OBJECT_;
+  #+END_SRC
+
+  Uses =getListElementType= to simplify to vectors when there are
+  homogenous datatypes; we can just use native vectors, right?
+  Native vectors are of course heterogenous in Scheme.
+
+  Can we write write a C-function that takes a =C_word=
+  (representing a list somehow), and returns a =C_word= representing
+  the R-object? RSPython has an optional translate thing. Should we
+  force the user to package things as R-objects; or should we
+  translate transparently? I'm loathe to do the latter; initial
+  hypothesis, however?
+
+  See [[file:/usr/local/src/chicken-4.7.0.6/chicken.h][chicken.h]] for things like =C_inline C_word C_a_i_list1(C_word
+  **a, int n, C_word x1)=, which create lists;
+
+  On [[http://cran.r-project.org/doc/manuals/R-exts.html#Garbage-Collection][PROTECT]]: they unprotect return before =return=. How much of the
+  conversion can we do in Scheme? Seems more flexible that way.
+
+  Is =C_c_pointer= useful for returning opaque R-objects, by the
+  way? =C_pointer_to_object=?
+
+  There's a [[file:/usr/local/lib64/R/include/Rinternals.h][reason]], incidentally, why things come up as both vectors
+  and lists:
+
+  #+BEGIN_SRC c
+    #define IS_LIST(x)      IS_VECTOR(x)
+  #+END_SRC
+
+  How do we distinguish true lists from vectors? Maybe try the
+  =Rf_isList=, =Rf_isPairList=, &c. from =Rinternals.h=.
+
+  Here's the list:
+
+  #+BEGIN_SRC c
+    Rboolean Rf_isArray(SEXP);
+    Rboolean Rf_isFactor(SEXP);
+    Rboolean Rf_isFrame(SEXP);
+    Rboolean Rf_isFunction(SEXP);
+    Rboolean Rf_isInteger(SEXP);
+    Rboolean Rf_isLanguage(SEXP);
+    Rboolean Rf_isList(SEXP);
+    Rboolean Rf_isMatrix(SEXP);
+    Rboolean Rf_isNewList(SEXP);
+    Rboolean Rf_isNumber(SEXP);
+    Rboolean Rf_isNumeric(SEXP);
+    Rboolean Rf_isPairList(SEXP);
+    Rboolean Rf_isPrimitive(SEXP);
+    Rboolean Rf_isTs(SEXP);
+    Rboolean Rf_isUserBinop(SEXP);
+    Rboolean Rf_isValidString(SEXP);
+    Rboolean Rf_isValidStringF(SEXP);
+    Rboolean Rf_isVector(SEXP);
+    Rboolean Rf_isVectorAtomic(SEXP);
+    Rboolean Rf_isVectorList(SEXP);
+    Rboolean Rf_isVectorizable(SEXP);
+  #+END_SRC
+
+  Oh, yeah: there was that whole [[http://cran.r-project.org/doc/manuals/R-exts.html#Handling-lists][newList]] thing. Can we cherry-pick
+  the things that have obvious Scheme counterparts
+
+  From [[http://cran.r-project.org/doc/manuals/R-lang.html#Attributes][R-lang]]:
+
+  #+BEGIN_QUOTE
+  Matrices and arrays are simply vectors with the attribute dim and
+  optionally dimnames attached to the vector.
+  #+END_QUOTE
+
+  [[http://cran.r-project.org/doc/manuals/R-lang.html#Factors][Factors]] sounds like enums:
+
+  #+BEGIN_QUOTE
+  Factors are currently implemented using an integer array to
+  specify the actual levels and a second array of names that are
+  mapped to the integers.
+  #+END_QUOTE
+
+  I wonder if =Rf_isFrame= applies to dataframes.
+
+  This is cool, by the way; these guys dispatch on [[http://cran.r-project.org/doc/manuals/R-exts.html#Calling-_002eExternal][TYPEOF(el)]]:
+
+  #+BEGIN_SRC c
+    #include <R_ext/PrtUtil.h>
+
+    SEXP showArgs(SEXP args)
+    {
+      args = CDR(args); /* skip 'name' */
+      for(int i = 0; args != R_NilValue; i++, args = CDR(args)) {
+        const char *name =
+          isNull(TAG(args)) ? "" : CHAR(PRINTNAME(TAG(args)));
+        SEXP el = CAR(args);
+        if (length(el) == 0) {
+          Rprintf("[%d] '%s' R type, length 0\n", i+1, name);
+          continue;
+        }
+        switch(TYPEOF(el)) {
+        case REALSXP:
+          Rprintf("[%d] '%s' %f\n", i+1, name, REAL(el)[0]);
+          break;
+        case LGLSXP:
+        case INTSXP:
+          Rprintf("[%d] '%s' %d\n", i+1, name, INTEGER(el)[0]);
+          break;
+        case CPLXSXP:
+          {
+            Rcomplex cpl = COMPLEX(el)[0];
+            Rprintf("[%d] '%s' %f + %fi\n", i+1, name, cpl.r, cpl.i);
+          }
+          break;
+        case STRSXP:
+          Rprintf("[%d] '%s' %s\n", i+1, name,
+                  CHAR(STRING_ELT(el, 0)));
+          break;
+        default:
+          Rprintf("[%d] '%s' R type\n", i+1, name);
+        }
+      }
+      return(R_NilValue);
+    }
+  #+END_SRC
+
+  Here's another list:
+
+  #+BEGIN_SRC c
+    #undef isNull
+    #define isNull(s)   (TYPEOF(s) == NILSXP)
+    #undef isSymbol
+    #define isSymbol(s) (TYPEOF(s) == SYMSXP)
+    #undef isLogical
+    #define isLogical(s)    (TYPEOF(s) == LGLSXP)
+    #undef isReal
+    #define isReal(s)   (TYPEOF(s) == REALSXP)
+    #undef isComplex
+    #define isComplex(s)    (TYPEOF(s) == CPLXSXP)
+    #undef isExpression
+    #define isExpression(s) (TYPEOF(s) == EXPRSXP)
+    #undef isEnvironment
+    #define isEnvironment(s) (TYPEOF(s) == ENVSXP)
+    #undef isString
+    #define isString(s) (TYPEOF(s) == STRSXP)
+    #undef isObject
+    #define isObject(s) (OBJECT(s) != 0)
+  #+END_SRC
+
+  And yet another unadorned list:
+
+  #+BEGIN_SRC c
+    #define isArray         Rf_isArray
+    #define isBasicClass            Rf_isBasicClass
+    #define isComplex       Rf_isComplex
+    #define isEnvironment       Rf_isEnvironment
+    #define isExpression        Rf_isExpression
+    #define isFactor        Rf_isFactor
+    #define isFrame         Rf_isFrame
+    #define isFree          Rf_isFree
+    #define isFunction      Rf_isFunction
+    #define isInteger       Rf_isInteger
+    #define isLanguage      Rf_isLanguage
+    #define isList          Rf_isList
+    #define isLogical       Rf_isLogical
+    #define isSymbol        Rf_isSymbol
+    #define isMatrix        Rf_isMatrix
+    #define isNewList       Rf_isNewList
+    #define isNull          Rf_isNull
+    #define isNumeric       Rf_isNumeric
+    #define isNumber        Rf_isNumber
+    #define isObject        Rf_isObject
+    #define isOrdered       Rf_isOrdered
+    #define isPairList      Rf_isPairList
+    #define isPrimitive     Rf_isPrimitive
+    #define isReal          Rf_isReal
+    #define isS4            Rf_isS4
+    #define isString        Rf_isString
+    #define isTs            Rf_isTs
+    #define isUnordered     Rf_isUnordered
+    #define isUnsorted      Rf_isUnsorted
+    #define isUserBinop     Rf_isUserBinop
+    #define isValidString       Rf_isValidString
+    #define isValidStringF      Rf_isValidStringF
+    #define isVector        Rf_isVector
+    #define isVectorAtomic      Rf_isVectorAtomic
+    #define isVectorizable      Rf_isVectorizable
+    #define isVectorList        Rf_isVectorList
+  #+END_SRC
+
+  Here's a list of SEXP-types that we could dispatch on via e.g.
+  =switch= or some data-driven mechanism:
+
+  #+BEGIN_SRC c
+    #define NILSXP       0    /* nil = NULL */
+    #define SYMSXP       1    /* symbols */
+    #define LISTSXP      2    /* lists of dotted pairs */
+    #define CLOSXP       3    /* closures */
+    #define ENVSXP       4    /* environments */
+    #define PROMSXP      5    /* promises: [un]evaluated closure arguments */
+    #define LANGSXP      6    /* language constructs (special lists) */
+    #define SPECIALSXP   7    /* special forms */
+    #define BUILTINSXP   8    /* builtin non-special forms */
+    #define CHARSXP      9    /* "scalar" string type (internal only)*/
+    #define LGLSXP      10    /* logical vectors */
+    #define INTSXP      13    /* integer vectors */
+    #define REALSXP     14    /* real variables */
+    #define CPLXSXP     15    /* complex variables */
+    #define STRSXP      16    /* string vectors */
+    #define DOTSXP      17    /* dot-dot-dot object */
+    #define ANYSXP      18    /* make "any" args work.
+                     Used in specifying types for symbol
+                     registration to mean anything is okay  */
+    #define VECSXP      19    /* generic vectors */
+    #define EXPRSXP     20    /* expressions vectors */
+    #define BCODESXP    21    /* byte code */
+    #define EXTPTRSXP   22    /* external pointer */
+    #define WEAKREFSXP  23    /* weak reference */
+    #define RAWSXP      24    /* raw bytes */
+    #define S4SXP       25    /* S4, non-vector */
+
+    /* used for detecting PROTECT issues in memory.c */
+    #define NEWSXP      30    /* fresh node creaed in new page */
+    #define FREESXP     31    /* node released by GC */
+
+    #define FUNSXP      99    /* Closure or Builtin or Special */
+  #+END_SRC
+
+  No, the whole fucking calculus in [[file:/usr/local/src/R/src/include/Rinlinedfuns.h][Rinlinedfuns.h]] regarding e.g.
+  =isPairList= is relatively complex. Yeah; frame is dataframe, by
+  the way:
+
+  #+BEGIN_SRC c
+    INLINE_FUN Rboolean isFrame(SEXP s)
+    {   
+      SEXP klass;
+      int i;
+      if (OBJECT(s)) {
+        klass = getAttrib(s, R_ClassSymbol);
+        for (i = 0; i < length(klass); i++)
+          if (!strcmp(CHAR(STRING_ELT(klass, i)), "data.frame")) return TRUE;
+      }
+      return FALSE;
+    }      
+  #+END_SRC
+
+  Levels can be symbols, can't they?
+
+  Here's the difference between numeric and number:
+
+  #+BEGIN_SRC c
+    INLINE_FUN Rboolean isNumeric(SEXP s)
+    {   
+      switch(TYPEOF(s)) {
+      case INTSXP:
+        if (inherits(s,"factor")) return FALSE;
+      case LGLSXP:
+      case REALSXP:
+        return TRUE;
+      default:
+        return FALSE;
+      }
+    }
+
+    /** Is an object "Numeric" or  complex */
+    INLINE_FUN Rboolean isNumber(SEXP s)
+    {   
+      switch(TYPEOF(s)) {
+      case INTSXP:
+        if (inherits(s,"factor")) return FALSE;
+      case LGLSXP:
+      case REALSXP:
+      case CPLXSXP:
+        return TRUE;
+      default:
+        return FALSE;
+      }
+    }
+  #+END_SRC
+
+  That's cool; they have scalar constructors:
+
+  #+BEGIN_SRC c
+    INLINE_FUN SEXP ScalarLogical(int x)
+    {   
+      SEXP ans = allocVector(LGLSXP, 1);
+      if (x == NA_LOGICAL) LOGICAL(ans)[0] = NA_LOGICAL;
+      else LOGICAL(ans)[0] = (x != 0);
+      return ans;
+    }
+  #+END_SRC
+
+  Making a named vector:
+
+  #+BEGIN_SRC c
+    /**
+     * Create a named vector of type TYP
+     *
+     * @example const char *nms[] = {"xi", "yi", "zi", ""};
+     *          mkNamed(VECSXP, nms);  =~= R  list(xi=, yi=, zi=)
+     *
+     * @param TYP a vector SEXP type (e.g. REALSXP)
+     * @param names names of list elements with null string appended
+     *
+     * @return (pointer to a) named vector of type TYP
+     */
+    INLINE_FUN SEXP mkNamed(SEXPTYPE TYP, const char **names)
+    {   
+      SEXP ans, nms;
+      int i, n;
+
+      for (n = 0; strlen(names[n]) > 0; n++) {}
+      ans = PROTECT(allocVector(TYP, n));
+      nms = PROTECT(allocVector(STRSXP, n));
+      for (i = 0; i < n; i++)
+        SET_STRING_ELT(nms, i, mkChar(names[i]));
+      setAttrib(ans, R_NamesSymbol, nms);
+      UNPROTECT(2);
+      return ans;
+    }      
+  #+END_SRC
+
+  Making strings:
+
+  #+BEGIN_SRC c
+    /* short cut for  ScalarString(mkChar(s)) : */
+    INLINE_FUN SEXP mkString(const char *s)
+    {   
+      SEXP t;
+
+      PROTECT(t = allocVector(STRSXP, 1));
+      SET_STRING_ELT(t, 0, mkChar(s));
+      UNPROTECT(1);
+      return t;
+    }      
+  #+END_SRC
+
+  More basic tests:
+
+  #+BEGIN_SRC c
+    Rboolean (Rf_isNull)(SEXP s);
+    Rboolean (Rf_isSymbol)(SEXP s);
+    Rboolean (Rf_isLogical)(SEXP s);
+    Rboolean (Rf_isReal)(SEXP s);
+    Rboolean (Rf_isComplex)(SEXP s);
+    Rboolean (Rf_isExpression)(SEXP s);
+    Rboolean (Rf_isEnvironment)(SEXP s);
+    Rboolean (Rf_isString)(SEXP s);
+    Rboolean (Rf_isObject)(SEXP s);
+  #+END_SRC
+
+  [[http://www.jetcafe.org/jim/c-style.html#Naming][Funny]]:
+
+  #+BEGIN_QUOTE
+  In short, follow "Mike's Rule" to make variable name size
+  proportional to scope:
+  #+BEGIN_EXAMPLE
+  length(name(variable)) ~ log(countlines(scope(variable)))
+  #+END_EXAMPLE
+  #+END_QUOTE
+
+  Need an =Rvalue=, =Rfind=, or =Rget= to look up variables in a
+  given environment (default to e.g. =R_GlobalEnv=).
+
+  [[http://api.call-cc.org/doc/cairo][Cairo]] is replete with instances of allocating f64-vectors for e.g.
+  pointers in Scheme before descending into C. We could probably do
+  that before-hand, since we know the arguments; not necessarily the
+  size, though? Sure: if we do the translation from within Scheme.
+  Nursery takes care of garbage collection, I believe.
+
+  #+BEGIN_SRC scheme :tangle minimal-segv.scm
+    (use debug
+         miscmacros)
+
+    (define (give-me-some-shit)
+      ((foreign-primitive
+        scheme-object
+        ()
+        "C_word *value = C_alloc(C_SIZEOF_FLONUM);"
+        "return(C_flonum(&value, 1.234));")))
+
+    (dotimes (i 100000)
+      (debug (give-me-some-shit)))      
+  #+END_SRC
+
+  Is [[http://paste.call-cc.org/pasteid%3Dd91e9ef5c6f671e7d20b408ea9144cacc1fbae47][this]] interesting? I like [[file:/usr/local/src/chicken-eggs/s11n/trunk/s11n-c.c][s11n-c.c]]. What's the equivalent of
+  symbols in R, by the way?
+
+  Disjoint predicates in Scheme:
+
+  - boolean?
+  - symbol?
+  - char?
+  - vector?
+  - procedure?
+  - pair?
+  - number?
+  - string?
+  - port?
+
+  How many of them can we support without trickery? Yet to do: char,
+  pair, symbol, vector.
+
+  To return opaque pointers, do we need =C_pointer_to_object=? How
+  do we tag it? =C_taggedmpointer=, =C_taggedmpointer_or_false=.
+  =C_make_pointer=, =C_make_tagged_pointer=. Shit: they're CPS.
+
+  [[https://groups.google.com/d/msg/julia-dev/p5R7_xo7sRE/VnC6ZoCv-OUJ][Length vs. truelength]]; [[http://r.789695.n4.nabble.com/R-PreserveObject-R-ReleaseObject-reference-counting-needed-td997167.html][R_PreserveObject and R_ReleaseObject]]. We
+  might have to use them.
+
+  [[file:/usr/local/src/R/src/main/bind.c][Vector-type calculus]]:
+
+  #+BEGIN_SRC c
+    SEXP attribute_hidden do_c_dflt(SEXP call, SEXP op, SEXP args, SEXP env)
+    {
+      SEXP ans, t;
+      int mode, recurse, usenames;
+      struct BindData data;
+      struct NameData nameData;
+
+      /*    data.deparse_level = 1;  Initialize this early. */
+
+      /* Method dispatch has failed; run the default code. */
+      /* By default we do not recurse, but this can be over-ridden */
+      /* by an optional "recursive" argument. */
+
+      usenames = 1;
+      recurse = 0;
+      /* this was only done for length(args) > 1 prior to 1.5.0,
+         _but_ `recursive' might be the only argument */
+      PROTECT(args = ExtractOptionals(args, &recurse, &usenames, call));
+
+      /* Determine the type of the returned value. */
+      /* The strategy here is appropriate because the */
+      /* object being operated on is a pair based list. */
+
+      data.ans_flags  = 0;
+      data.ans_length = 0;
+      data.ans_nnames = 0;
+
+      for (t = args; t != R_NilValue; t = CDR(t)) {
+        if (usenames && !data.ans_nnames) {
+          if (!isNull(TAG(t))) data.ans_nnames = 1;
+          else data.ans_nnames = HasNames(CAR(t));
+        }
+        AnswerType(CAR(t), recurse, usenames, &data);
+      }
+
+      /* If a non-vector argument was encountered (perhaps a list if */
+      /* recursive is FALSE) then we must return a list.    Otherwise, */
+      /* we use the natural coercion for vector types. */
+
+      mode = NILSXP;
+      if (data.ans_flags & 512)    mode = EXPRSXP;
+      else if (data.ans_flags & 256) mode = VECSXP;
+      else if (data.ans_flags & 128) mode = STRSXP;
+      else if (data.ans_flags &  64) mode = CPLXSXP;
+      else if (data.ans_flags &  32) mode = REALSXP;
+      else if (data.ans_flags &  16) mode = INTSXP;
+      else if (data.ans_flags & 2) mode = LGLSXP;
+      else if (data.ans_flags & 1) mode = RAWSXP;
+
+      /* Allocate the return value and set up to pass through */
+      /* the arguments filling in values of the returned object. */
+
+      PROTECT(ans = allocVector(mode, data.ans_length));
+      data.ans_ptr = ans;
+      data.ans_length = 0;
+      t = args;
+
+      if (mode == VECSXP || mode == EXPRSXP) {
+        if (!recurse) {
+          while (args != R_NilValue) {
+            ListAnswer(CAR(args), 0, &data, call);
+            args = CDR(args);
+          }
+        }
+        else ListAnswer(args, recurse, &data, call);
+        data.ans_length = length(ans);
+      }
+      else if (mode == STRSXP)
+        StringAnswer(args, &data, call);
+      else if (mode == CPLXSXP)
+        ComplexAnswer(args, &data, call);
+      else if (mode == REALSXP)
+        RealAnswer(args, &data, call);
+      else if (mode == RAWSXP)
+        RawAnswer(args, &data, call);
+      else if (mode == LGLSXP)
+        LogicalAnswer(args, &data, call);
+      else /* integer */
+        IntegerAnswer(args, &data, call);
+      args = t;
+
+      /* Build and attach the names attribute for the returned object. */
+
+      if (data.ans_nnames && data.ans_length > 0) {
+        PROTECT(data.ans_names = allocVector(STRSXP, data.ans_length));
+        data.ans_nnames = 0;
+        while (args != R_NilValue) {
+          nameData.seqno = 0;
+          nameData.firstpos = 0;
+          nameData.count = 0;
+          NewExtractNames(CAR(args), R_NilValue, TAG(args), recurse, &data, &nameData);
+          args = CDR(args);
+        }
+        setAttrib(ans, R_NamesSymbol, data.ans_names);
+        UNPROTECT(1);
+      }
+      UNPROTECT(2);
+      R_FreeStringBufferL(&cbuff);
+      return ans;
+    } /* do_c */
+
+  #+END_SRC
+** On [[http://cran.r-project.org/doc/manuals/R-exts.html#Handling-lists][lists]]
+   #+BEGIN_QUOTE
+   List elements can be retrieved or set by direct access to the
+   elements of the generic vector. Suppose we have a list object a
+   <- list(f = 1, g = 2, h = 3)
+
+   Then we can access a$g as =a[[2]]= by 
+   #+BEGIN_SRC c
+     double g;
+     ....
+     g = REAL(VECTOR_ELT(a, 1))[0];
+   #+END_SRC
+
+   This can rapidly become tedious, and the following function
+   (based on one in package stats) is very useful:
+
+   #+BEGIN_SRC c
+     /* get the list element named str, or return NULL */
+
+     SEXP getListElement(SEXP list, const char *str)
+     {
+       SEXP elmt = R_NilValue, names = getAttrib(list,
+                                                 R_NamesSymbol);
+
+       for (R_len_t i = 0; i < length(list); i++)
+         if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
+           elmt = VECTOR_ELT(list, i);
+           break;
+         }
+       return elmt;
+     }
+   #+END_SRC
+
+   and enables us to say 
+
+   #+BEGIN_SRC c
+     double g;
+     g = REAL(getListElement(a, "g"))[0];
+   #+END_SRC
+   #+END_QUOTE
+** Finding [[http://cran.r-project.org/doc/manuals/R-exts.html#Finding-and-setting-variables][variables]]
+   #+BEGIN_SRC c
+     SEXP getvar(SEXP name, SEXP rho)
+     {
+       SEXP ans;
+
+       if(!isString(name) || length(name) != 1)
+         error("name is not a single string");
+       if(!isEnvironment(rho))
+         error("rho should be an environment");
+       ans = findVar(install(CHAR(STRING_ELT(name, 0))), rho);
+       Rprintf("first value is %f\n", REAL(ans)[0]);
+       return(R_NilValue);
+     }
+   #+END_SRC
+
+   #+BEGIN_SRC c
+     void defineVar(SEXP symbol, SEXP value, SEXP rho);
+     void setVar(SEXP symbol, SEXP value, SEXP rho);
+   #+END_SRC
+** [[http://cran.r-project.org/doc/manuals/R-exts.html#Named-objects-and-copying][Copying]] objects
+   #+BEGIN_QUOTE
+   It is safe to modify the value of any SEXP for which NAMED(foo)
+   is zero, and if NAMED(foo) is two, the value should be duplicated
+   (via a call to duplicate) before any modification. Note that it
+   is the responsibility of the author of the code making the
+   modification to do the duplication, even if it is x whose value
+   is being modified after y <- x.
+   #+END_QUOTE
+** [[http://cran.r-project.org/doc/manuals/R-exts.html#Evaluating-R-expressions-from-C][Evaluating]] R expressions
+   #+BEGIN_SRC c
+     SEXP lapply(SEXP list, SEXP expr, SEXP rho)
+     {
+       R_len_t i, n = length(list);
+       SEXP ans;
+
+       if(!isNewList(list)) error("'list' must be a list");
+       if(!isEnvironment(rho)) error("'rho' should be an environment");
+       PROTECT(ans = allocVector(VECSXP, n));
+       for(i = 0; i < n; i++) {
+         defineVar(install("x"), VECTOR_ELT(list, i), rho);
+         SET_VECTOR_ELT(ans, i, eval(expr, rho));
+       }
+       setAttrib(ans, R_NamesSymbol, getAttrib(list, R_NamesSymbol));
+       UNPROTECT(1);
+       return(ans);
+     }
+   #+END_SRC
+
+   Protects a SEXP =ans= to return; this constructs a functions via
+   =lang2=:
+
+   #+BEGIN_SRC c
+     SEXP lapply2(SEXP list, SEXP fn, SEXP rho)
+     {
+       R_len_t i, n = length(list);
+       SEXP R_fcall, ans;
+
+       if(!isNewList(list)) error("'list' must be a list");
+       if(!isFunction(fn)) error("'fn' must be a function");
+       if(!isEnvironment(rho)) error("'rho' should be an environment");
+       PROTECT(R_fcall = lang2(fn, R_NilValue));
+       PROTECT(ans = allocVector(VECSXP, n));
+       for(i = 0; i < n; i++) {
+         SETCADR(R_fcall, VECTOR_ELT(list, i));
+         SET_VECTOR_ELT(ans, i, eval(R_fcall, rho));
+       }
+       setAttrib(ans, R_NamesSymbol, getAttrib(list, R_NamesSymbol));
+       UNPROTECT(2);
+       return(ans);
+     }
+   #+END_SRC
+** [[http://cran.r-project.org/doc/manuals/R-exts.html#Zero_002dfinding][Zero]] finding
+   #+BEGIN_SRC c
+     SEXP mkans(double x)
+     {
+       SEXP ans;
+       PROTECT(ans = allocVector(REALSXP, 1));
+       REAL(ans)[0] = x;
+       UNPROTECT(1);
+       return ans;
+     }
+
+     double feval(double x, SEXP f, SEXP rho)
+     {
+       defineVar(install("x"), mkans(x), rho);
+       return(REAL(eval(f, rho))[0]);
+     }
+
+     SEXP zero(SEXP f, SEXP guesses, SEXP stol, SEXP rho)
+     {
+       double x0 = REAL(guesses)[0], x1 = REAL(guesses)[1],
+         tol = REAL(stol)[0];
+       double f0, f1, fc, xc;
+
+       if(tol <= 0.0) error("non-positive tol value");
+       f0 = feval(x0, f, rho); f1 = feval(x1, f, rho);
+       if(f0 == 0.0) return mkans(x0);
+       if(f1 == 0.0) return mkans(x1);
+       if(f0*f1 > 0.0) error("x[0] and x[1] have the same sign");
+
+       for(;;) {
+         xc = 0.5*(x0+x1);
+         if(fabs(x0-x1) < tol) return  mkans(xc);
+         fc = feval(xc, f, rho);
+         if(fc == 0) return  mkans(xc);
+         if(f0*fc > 0.0) {
+           x0 = xc; f0 = fc;
+         } else {
+           x1 = xc; f1 = fc;
+         }
+       }
+     }
+   #+END_SRC
+
+   Good stuff in there with =mkans=.
+** [[http://cran.r-project.org/doc/manuals/R-exts.html#Parsing-R-code-from-C][Parsing]] R
+   #+BEGIN_SRC c
+          #include <R.h>
+          #include <Rinternals.h>
+          #include <R_ext/Parse.h>
+
+     SEXP menu_ttest3()
+     {
+       char cmd[256];
+       SEXP cmdSexp, cmdexpr, ans = R_NilValue;
+       ParseStatus status;
+             ...
+         if(done == 1) {
+           PROTECT(cmdSexp = allocVector(STRSXP, 1));
+           SET_STRING_ELT(cmdSexp, 0, mkChar(cmd));
+           cmdexpr = PROTECT(R_ParseVector(cmdSexp, -1, &status, R_NilValue));
+           if (status != PARSE_OK) {
+             UNPROTECT(2);
+             error("invalid call %s", cmd);
+           }
+           /* Loop is needed here as EXPSEXP will be of length > 1 */
+           for(R_len_t i = 0; i < length(cmdexpr); i++)
+             ans = eval(VECTOR_ELT(cmdexpr, i), R_GlobalEnv);
+           UNPROTECT(2);
+         }
+         return ans;
+     }
+   #+END_SRC
+** [[http://cran.r-project.org/doc/manuals/R-exts.html#Printing][Printing]]
+   #+BEGIN_QUOTE
+   The most useful function for printing from a C routine compiled
+   into R is Rprintf. This is used in exactly the same way as
+   printf, but is guaranteed to write to R's output (which might be
+   a GUI console rather than a file, and can be re-directed by
+   sink). It is wise to write complete lines (including the "\n")
+   before returning to R. It is defined in R_ext/Print.h. 
+
+   The function REprintf is similar but writes on the error stream
+   (stderr) which may or may not be different from the standard
+   output stream. 
+
+   Functions Rvprintf and REvprintf are analogues using the vprintf
+   interface. Because that is a C99 interface, they are only defined
+   by R_ext/Print.h in C++ code if the macro R_USE_C99_IN_CXX is
+   defined when it is included.
+   #+END_QUOTE
+
+   Hence, we can define [[http://cran.r-project.org/doc/manuals/R-exts.html#Setting-R-callbacks][callbacks]] like e.g.:
+
+   #+BEGIN_SRC c
+     extern void (*ptr_R_WriteConsole)(const char *, int);
+   #+END_SRC
+
+   I vaguely remember doing this for rJava.
+** The [[http://cran.r-project.org/doc/manuals/R-exts.html#Organization-of-header-files][headers]]
+* DONE Do less in C, more in Scheme.
+  CLOSED: [2012-09-23 Sun 04:30]
+# <<less-in-c>>
+  Maybe we can avoid some of the bizarre memory corruptions when we
+  tried to e.g. procedurize =to_scheme=.
+
+  It should be trivial to do things like allocate vectors.
+
+  Is it also possible to use some sort of Chicken-destructor to call
+  things like e.g. =R_ReleaseObject=? That would be fucking fantastic.
+
+  #+BEGIN_SRC scheme :tangle R-less-c.scm
+    (use debug
+         lolevel
+         matchable
+         moremacros
+         numbers
+         srfi-1
+         test)
+    
+    (debug? #f)
+    
+    #>
+    #include <Rembedded.h>
+    #include <Rinternals.h>
+    <#
+    
+    (foreign-code
+     #<<END
+     Rf_initEmbeddedR(4, (char*[]) {"R-less-c",
+                                    "--slave",
+                                    "--vanilla",
+                                    "--args"});
+    END
+    )
+    
+    (define (named×unnamed arguments)
+      (let iter ((arguments arguments)
+                 (keyword #f)
+                 (named '())
+                 (unnamed '()))
+        (if (null? arguments)
+            (values (reverse named) (reverse unnamed))
+            (let ((argument (car arguments))
+                  (rest (cdr arguments)))
+              (if (keyword? argument)
+                  (iter rest argument named unnamed)
+                  (if keyword
+                      (iter rest
+                            #f
+                            (alist-cons (keyword->string keyword)
+                                        argument named)
+                            unnamed)
+                      (iter rest #f named (cons argument unnamed))))))))
+    
+    (define-foreign-type SEXP
+      (c-pointer "SEXP")
+      values
+      ;; Can we cast here, too, so we don't have to keep doing `(SEXP)s'
+      ;; all over the place?
+      ;;
+      ;; What if we tagged pointers like R-int, &c.?
+      (lambda (sexp)
+        ((foreign-lambda*
+          void
+          ((SEXP sexp))
+          "R_PreserveObject((SEXP) sexp);")
+         sexp)
+        (set-finalizer!
+         (tag-pointer sexp 'sexp)
+         (lambda (sexp)
+           ((foreign-lambda*
+             void
+             ((SEXP sexp))
+             "R_ReleaseObject((SEXP) sexp);")
+            sexp)))))
+    
+    (define R-null (foreign-value "R_NilValue" SEXP))
+    
+    (define R-missing (foreign-value "R_MissingArg" SEXP))
+    
+    (define (R-symbol symbol)
+      ((foreign-lambda*
+        SEXP
+        ((c-string symbol))
+        "C_return(Rf_install(symbol));")
+       (symbol->string symbol)))
+    
+    (define (R-boolean boolean)
+      ((foreign-lambda*
+        SEXP
+        ((bool bool))
+        "C_return(ScalarLogical(bool ? 1 : 0));")
+       boolean))
+    
+    (define (R-integer integer)
+      ((foreign-lambda*
+        SEXP
+        ((int integer))
+        "C_return(ScalarInteger(integer));")
+       integer))
+    
+    (define (R-real real)
+      ((foreign-lambda*
+        SEXP
+        ((double real))
+        "C_return(ScalarReal(real));")
+       real))
+    
+    (define (R-complex real imaginary)
+      ((foreign-lambda*
+        SEXP
+        ((double real)
+         (double imaginary))
+        "SEXP complex = allocVector(CPLXSXP, 1);"
+        "COMPLEX(complex)[0].r = real;"
+        "COMPLEX(complex)[0].i = imaginary;"
+        "C_return(complex);")
+       real
+       imaginary))
+    
+    (define (R-string string)
+      ((foreign-lambda*
+        SEXP
+        ((c-string string))
+        "C_return(ScalarString(Rf_mkChar(string)));")
+       string))
+    
+    (define (R-vector vector)
+      (R-apply "c" (vector->list vector)))
+    
+    (define (scheme->R value)
+      (type-case* value
+        (null R-null)
+        (symbol (R-symbol it))
+        (boolean (R-boolean it))
+        (integer (R-integer it))
+        ((real rational) (R-real it))
+        (complex (R-complex (real-part it) (imag-part it)))
+        (string (R-string it))
+        (vector (R-vector it))
+        (else it)))
+    
+    (trace scheme->R)
+    
+    (define-foreign-variable R-null-type int "NILSXP")
+    (define-foreign-variable R-symbol-type int "SYMSXP")
+    (define-foreign-variable R-boolean-type int "LGLSXP")
+    (define-foreign-variable R-integer-type int "INTSXP")
+    (define-foreign-variable R-real-type int "REALSXP")
+    (define-foreign-variable R-complex-type int "CPLXSXP")
+    (define-foreign-variable R-string-type int "STRSXP")
+    (define-foreign-variable R-list-type int "VECSXP")
+    
+    (define (R-type value)
+      ((foreign-lambda int "TYPEOF" c-pointer) value))
+    
+    (define (R-type? value type)
+      (= (R-type value) type))
+    
+    (define R-null? (cut R-type? <> R-null-type))
+    (define R-symbol? (cut R-type? <> R-symbol-type))
+    (define R-boolean? (cut R-type? <> R-boolean-type))
+    (define R-integer? (cut R-type? <> R-integer-type))
+    (define R-real? (cut R-type? <> R-real-type))
+    (define R-complex? (cut R-type? <> R-complex-type))
+    (define R-string? (cut R-type? <> R-string-type))
+    (define R-list? (cut R-type? <> R-list-type))
+    
+    (define (R-length value)
+      ((foreign-lambda*
+        int
+        ((SEXP value))
+        "C_return(Rf_length((SEXP) value));")
+       value))
+    
+    ;; (define (R-symbol-ref vector i)
+    ;;   ((foreign-lambda*
+    ;;     c-string
+    ;;     ((SEXP vector)
+    ;;      (int i))
+    ;;     "C_return(CHAR(PRINTNAME((SEXP) vector)[i]));")
+    ;;    vector
+    ;;    i))
+    
+    (define (R-boolean-ref vector i)
+      ((foreign-lambda*
+        bool
+        ((SEXP vector)
+         (int i))
+        "C_return(LOGICAL((SEXP) vector)[i]);")
+       vector
+       i))
+    
+    (define (R-integer-ref vector i)
+      ((foreign-lambda*
+        int
+        ((SEXP vector)
+         (int i))
+        "C_return(INTEGER((SEXP) vector)[i]);")
+       vector
+       i))
+    
+    (define (R-vector-ref vector i)
+      ((foreign-lambda*
+        SEXP
+        ((SEXP vector)
+         (int i))
+        "C_return(VECTOR_ELT((SEXP) vector, i));")
+       vector
+       i))
+    
+    (define (R-string-ref vector i)
+      ((foreign-lambda*
+        c-string
+        ((SEXP vector)
+         (int i))
+        "C_return(CHAR(STRING_ELT((SEXP) vector, i)));")
+       vector
+       i))
+    
+    (define (R-real-ref vector i)
+      ((foreign-lambda*
+        double
+        ((SEXP vector)
+         (int i))
+        "C_return(REAL((SEXP) vector)[i]);")
+       vector
+       i))
+    
+    (define (R-complex-ref vector i)
+      (receive (real imaginary)
+        ((foreign-primitive
+          void
+          ((SEXP vector)
+           (int i))
+          "Rcomplex complex = COMPLEX((SEXP) vector)[i];"
+          "C_word *real = C_alloc(C_SIZEOF_FLONUM);"
+          "C_word *imag = C_alloc(C_SIZEOF_FLONUM);"
+          "C_values(4, C_SCHEME_UNDEFINED, C_k, C_flonum(&real, complex.r), C_flonum(&imag, complex.i));")
+         vector
+         i)
+        (make-rectangular real imaginary)))
+    
+    (define (scheme-symbol symbol)
+      (string->symbol
+       ((foreign-lambda*
+         c-string
+         ((SEXP symbol))
+         "C_return(CHAR(PRINTNAME((SEXP) symbol)));")
+        symbol)))
+    
+    (trace scheme-symbol)
+    (trace R-symbol)
+    
+    (define scheme-vector
+      (case-lambda
+       ((value ref)
+        (scheme-vector value ref (R-length value)))
+       ((value ref length)
+        (do ((vector (make-vector length))
+             (i 0 (+ i 1)))
+            ((= i length) vector)
+          (vector-set! vector i (ref value i))))))
+    
+    (define (scheme-vector-or-scalar value ref)
+      (let ((length (R-length value)))
+        (if (= length 1)
+            (ref value 0)
+            (scheme-vector value ref length))))
+    
+    (define (R->scheme value)
+      (debug 'r->scheme
+             value
+             (R-length value)
+             (R-type value))
+      (type-case* value
+        (R-null (void))
+        (R-integer
+         (scheme-vector-or-scalar it R-integer-ref))
+        (R-list
+         (scheme-vector it (compose R->scheme R-vector-ref)))
+        (R-string
+         (scheme-vector-or-scalar it R-string-ref))
+        (R-real
+         (scheme-vector-or-scalar it R-real-ref))
+        (R-boolean
+         (scheme-vector-or-scalar it R-boolean-ref))
+        (R-complex
+         (scheme-vector-or-scalar it R-complex-ref))
+        (R-symbol
+         (scheme-symbol it))
+        (else value)))
+    
+    (trace R->scheme)
+    
+    (define (R-function name)
+      ((foreign-lambda*
+        SEXP
+        ((c-string name))
+        "C_return(Rf_findFun(Rf_install(name), R_GlobalEnv));")
+       name))
+    
+    (define (R-apply f args)
+      (receive (named-args unnamed-args)
+        (named×unnamed args)
+        (let ((named-args (map (match-lambda ((name . arg)
+                                         (cons name (scheme->R arg))))
+                               named-args))
+              (unnamed-args (map scheme->R unnamed-args))
+              (f (R-function f)))
+          (debug named-args unnamed-args)
+          ((foreign-lambda*
+            SEXP
+            ((SEXP f)
+             (int error)
+             (scheme-object named)
+             (scheme-object unnamed))
+            "int nargs = C_unfix(C_fixnum_plus(C_i_length(named), C_i_length(unnamed)));"
+            "SEXP expression = allocVector(LANGSXP, nargs + 1);"
+            "SETCAR(expression, (SEXP) f);"
+            "SEXP ei = CDR(expression);"
+            "while (!C_truep(C_i_nullp(unnamed))) {"
+            "  SETCAR(ei, (SEXP) C_c_pointer_or_null(C_i_car(unnamed)));"
+            "  unnamed = C_i_cdr(unnamed);"
+            "  ei = CDR(ei);"
+            "}"
+            "while (!C_truep(C_i_nullp(named))) {"
+            "  SEXP arg = (SEXP) C_c_pointer_or_null(C_i_cdar(named));"
+            "  SET_TAG(arg, install(C_c_string(C_i_caar(named))));"
+            "  SETCAR(ei, arg);"
+            "  named = C_i_cdr(named);"
+            "  ei = CDR(ei);"
+            "}"
+            "C_return(R_tryEval(expression, R_GlobalEnv, &error));")
+           f
+           0
+           named-args
+           unnamed-args))))
+    
+    (trace R-apply)
+    
+    (define (R-eval f . args)
+      (R->scheme (R-apply f args)))
+    
+    (test "Pi via named arguments to get"
+          3.14159265358979
+          (R-eval "get" x: "pi"))
+    (test 2 (R-eval "c" 2))
+    (test '#(2 3) (R-eval "c" 2 3))
+    (test '#(2 3 4 5) (R-eval "c" 2 3 (R-eval "c" 4 5)))
+    (test '#(2 3 #(4 5)) (R-eval "list" 2 3 (R-eval "list" 4 5)))
+    (test "harro" (R-eval "c" "harro"))
+    (test '#("harro" "harro") (R-eval "rep" "harro" 2))
+    (test 2.1 (R-eval "c" 2.1))
+    (test '#(2.1 2.1) (R-eval "rep" 2.1 2))
+    (test #f (R-eval "c" #f))
+    (test #t (R-eval "c" #t))
+    (test '#(#f #f) (R-eval "rep" #f 2))
+    ;; Doesn't respect exactness; i.e., complex numbers are represented
+    ;; by doubles in R.
+    (test (make-rectangular 3.0 3.0)
+          (R-eval "c" (make-rectangular 3 3)))
+    (test (make-vector 2 (make-rectangular 3.0 3.0))
+          (R-eval "rep" (make-rectangular 3 3) 2))
+    (let ((env (R-eval "new.env")))
+      (R-eval "assign" "a" 2 R-missing env)
+      (test-assert (R-eval "exists" "a" R-missing env)))
+    (R-eval "library" "ggplot2")
+    (R-eval "pdf")
+    (R-eval "plot"
+            (R-apply "%+%"
+                     (list
+                      (R-apply "qplot"
+                               (list (R-eval ":" 1 10)
+                                     (R-eval "rnorm" 10)))
+                      (R-apply "geom_point" '()))))
+    
+  #+END_SRC
+
+  #+BEGIN_SRC makefile :tangle R-less-c.mk :shebang #!/usr/bin/unexpand -t 4
+    R_FLAGS := $(shell R CMD config --cppflags) \
+        $(shell R CMD config --ldflags)
+    
+    all: R-less-c
+    
+    R-less-c.c: R-less-c.scm
+        csc $(R_FLAGS) -t -o $@ $^
+    
+    R-less-c: R-less-c.c
+        csc $(R_FLAGS) -o $@ $^
+  #+END_SRC
+* DONE Tests
+  CLOSED: [2012-09-23 Sun 04:31]
+* DONE Recursive =to_scheme=
+  CLOSED: [2012-09-23 Sun 04:31]
+  - CLOSING NOTE [2012-09-23 Sun 04:31] \\
+    Thank the Olympians for Schemely code.
+  Possibly related to [[less-in-c]]?
+* CANCELED Convenience functions for `[`, &c.?
+  CLOSED: [2012-10-09 Tue 14:14]
+* CANCELED =NULL= probably depends upon the type.
+  CLOSED: [2012-10-09 Tue 14:14]
+  If it's a vector or list, empty. =(void)= is lossy, isn't it?
+* CANCELED Demo
+  CLOSED: [2012-10-09 Tue 14:14]
+  The demo/vignette should use some of those Clojure-like constructs
+  for sexiness.
+* CANCELED Modularize type-translations.
+  CLOSED: [2012-10-09 Tue 14:14]
+  That way, users can modify =R->scheme= and =scheme->R=; since
+  there's no easy =typeof= (there is, however, =C_block_header= and
+  =C_header_bits=), can we search linearly through arbitrary
+  predicates?
+
+  We have to do that anyway, since things like =complex?= apply
+  equally to integers; and we have to specify that the =integer?=
+  predicate comes first.
+* CANCELED Complex numbers don't respect exactness.
+  CLOSED: [2012-10-09 Tue 14:14]
+  For example, 3+3i becomes 3.0+3.0i; this is an artifact of the fact
+  that complex numbers are represented by pairs of doubles in R.
+* CANCELED Graphics subsystem
+  CLOSED: [2012-10-09 Tue 14:14]
+  There has to be a running thread, &c.
+* CANCELED Should AIMA have an R-library for dependencies?
+  CLOSED: [2012-10-07 Sun 04:22]
+* CANCELED Function objects
+  CLOSED: [2012-10-07 Sun 04:21]
+  Check for them instead of a string and dispatch on those without
+  lookup.
+* CANCELED Memoize function lookups?
+  CLOSED: [2012-09-23 Sun 12:47]
+  - CLOSING NOTE [2012-09-23 Sun 12:47] \\
+    See [[R-form]].
+* CANCELED R-eval as a macro.
+  CLOSED: [2012-09-23 Sun 12:47]
+  - CLOSING NOTE [2012-09-23 Sun 12:47] \\
+    See [[R-form]].
+  It could e.g. delay evaluation of the second parameter and stringify
+  it.
+
+  An =R= macro that just does the right thing?
+* CANCELED Call R-functions naturally?
+  CLOSED: [2012-09-23 Sun 12:48]
+  - CLOSING NOTE [2012-09-23 Sun 12:48] \\
+    See [[R-form]].
+  I.e., without the =R-eval= adornment.
+* CANCELED Simply =eval= and =get=; allow the user to prefix on import?
+  CLOSED: [2012-09-23 Sun 04:31]
+  Seems like a shitty thing to have to do by default.
+
+* =eval= dispatches on type, and will do symbol-lookups.
+  In other words, we don't have to do =findFun=.
+* What is SEXP?
+  It turns out SEXP is a pointer, after all; see Rinternals.h:
+
+  #+BEGIN_SRC c
+    typedef struct SEXPREC {
+        SEXPREC_HEADER;
+        union {
+        struct primsxp_struct primsxp;
+        struct symsxp_struct symsxp;
+        struct listsxp_struct listsxp;
+        struct envsxp_struct envsxp;
+        struct closxp_struct closxp;
+        struct promsxp_struct promsxp;
+        } u;
+    } SEXPREC, *SEXP;
+  #+END_SRC
+
+  Compare [[http://stackoverflow.com/a/1543720][this SO answer]]:
+
+  #+BEGIN_QUOTE
+  Absolutely valid. Usually, you can take full advantage of this way
+  by defining two types together:
+
+  #+BEGIN_SRC c
+    typedef struct
+    {
+     int a;
+     int b;
+    } S1, *S1PTR;
+  #+END_SRC
+
+  Where S1 is a struct and S1PTR is the pointer to this struct.
+  #+END_QUOTE
+
+* Iterating down a list in R
+  See e.g. [[file:/usr/local/src/R/src/main/util.c][util.c]]:
+
+  #+BEGIN_SRC c
+    while( n-- > 0 ) {
+      if (s == R_NilValue)
+        error(_("'nthcdr' list shorter than %d"), n);
+      s = CDR(s);
+     }    
+  #+END_SRC

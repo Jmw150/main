@@ -1,0 +1,8 @@
+;;; schelog.meta -*- Scheme -*-
+
+((synopsis "Dorai Sitaram's embedding of logic programming into Scheme")
+ (category logic)
+ (license "LGPL-2")
+ (doc-from-wiki)
+ (author "Dorai Sitaram, substantially optimized by Brad Lucier, ported to CHICKEN by felix")
+ (files "schelog.setup" "schelog.scm" "schelog-support.scm" "tests/run.scm" "tests/houses.scm" "tests/games.scm" "tests/puzzle.scm"))

@@ -1,0 +1,29 @@
+;;;; kanren.setup -*- Scheme -*-
+
+
+(use make)
+
+
+(make (("kanren" ("kanren.so" "kanren.import.so"))
+       ("kanren.so" ("kanren-runtime.scm")
+	(run (csc -s -O2 -d1 kanren-runtime.scm -j kanren -o kanren.so)) )
+       ("kanren.import.so" ("kanren.import.scm")
+	(run (csc -s -O2 -d0 kanren.import.scm)) ) )
+  "kanren")
+
+(make (("reasoned-schemer" ("reasoned-schemer.so" "reasoned-schemer.import.so"))
+       ("reasoned-schemer.so" ("reasoned-schemer-runtime.scm")
+	(run (csc -s -O2 -d1 reasoned-schemer-runtime.scm -j reasoned-schemer -o reasoned-schemer.so)))
+       ("reasoned-schemer.import.so" ("reasoned-schemer.import.scm")
+	(run (csc -s -O2 -d0 reasoned-schemer.import.scm)) ) )
+  "reasoned-schemer")
+
+(install-extension
+ 'reasoned-schemer
+ '("reasoned-schemer.so" "reasoned-schemer.import.so")
+ '((version 4.505)))
+
+(install-extension
+ 'kanren
+ '("kanren.so" "kanren.import.so")
+ '((version 4.505)))

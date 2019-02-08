@@ -1,0 +1,20 @@
+;;;;;; Setup file for the Dissector egg            -*- Mode: Scheme -*-
+
+;;; Copyright (C) 2004, Taylor Campbell
+;;; All rights reserved.
+;;; See the LICENCE file for details.
+
+(use make)
+
+(make (("dissector.so" ("chicken_load.scm" "chicken_compat.scm"
+			"util.scm" "stream.scm" "parameters.scm"
+			"chicken_dissect.scm" "command.scm" "dissection.scm"
+			"menu.scm" "top.scm")
+        (run (csc -s chicken_load.scm -o dissector.so -j dissector)))
+       ("dissector.import.so" ("dissector.import.scm")
+	(run (csc -s dissector.import.scm))))
+  '("dissector.so" "dissector.import.so"))
+
+(install-extension 'dissector
+  '("dissector.so" "dissector.import.so")
+  '((version "1.7.7")))

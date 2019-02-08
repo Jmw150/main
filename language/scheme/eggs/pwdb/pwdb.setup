@@ -1,0 +1,2 @@
+(compile "pwdb.scm")
+(install-program 'pwdb "pwdb" '((version "1.2")))

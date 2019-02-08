@@ -1,0 +1,5 @@
+(repo fossil "https://www.kitten-technologies.co.uk/project/{egg-name}")
+(uri zip "https://www.kitten-technologies.co.uk/project/{egg-name}/zip/{egg-name}.zip?uuid={egg-release}")
+(release "1.0")
+(release "1.1")
+(release "1.2")

@@ -1,0 +1,10 @@
+;;; opengl.meta -*- Hen -*-
+
+((egg "opengl.egg")
+ (synopsis "OpenGL bindings")
+ (category graphics)
+ (license "BSD")
+ (doc-from-wiki)
+ (needs silex easyffi make)
+ (author "[[felix winkelmann]]")
+ (files "glu.scm" "opengl.release-info" "opengl.setup" "gl.scm" "opengl.meta"))

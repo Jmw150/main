@@ -1,0 +1,8 @@
+;;;; arrays.meta -*- Scheme -*-
+
+((synopsis "Functional arrays and sets")
+ (category lang-exts)
+ (license "BSD")
+ (test-depends simple-tests)
+ (author "Juergen Lorenz")
+ (files "arrays.setup" "arrays.release-info" "arrays.meta" "arrays.scm" "tests/run.scm"))

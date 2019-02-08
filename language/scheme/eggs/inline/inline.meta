@@ -1,0 +1,9 @@
+;;;; inline.meta -*- Scheme -*-
+
+((synopsis "Use compiled code inside interpreter scripts")
+ (category code-generation)
+ (license "BSD")
+ (doc-from-wiki)
+ (depends bind simple-sha1)
+ (author "felix winkelmann")
+ (files "inline.setup" "inline.meta" "inline.release-info" "tests/run.scm" "inline.scm"))

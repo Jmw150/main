@@ -1,0 +1,8 @@
+;;; kanren.meta -*- Scheme -*-
+
+((synopsis "A declarative applicative logic programming system.")
+ (category logic)
+ (license "MIT")
+ (author "Oleg Kiselyov and Dan Friedman")
+ (depends make)
+ (files "chicken-specific.scm" "mini-kanren-runtime.scm" "kanren-term.scm" "kanren.scm" "kanren-runtime.scm" "kanren.meta" "tests/lips.scm" "tests/run.scm" "tests/zebra.scm" "mini-kanren.scm" "kanren.release-info" "kanren.setup") )

@@ -1,0 +1,12 @@
+;;;; arrays.setup -*- Scheme -*-
+
+(compile -O3 -s -d1 arrays.scm -J)
+(compile -O3 -d0 -s array-handlers.import.scm)
+(compile -O3 -d0 -s arrays.import.scm)
+(compile -O3 -d0 -s array-sets.import.scm)
+
+(install-extension
+ 'arrays
+ '("arrays.so" "array-handlers.import.so" "arrays.import.so" "array-sets.import.so")
+ '((version "0.3")))
+

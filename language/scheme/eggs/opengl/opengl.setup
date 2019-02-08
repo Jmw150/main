@@ -1,0 +1,27 @@
+;;;; opengl.setup -*- Scheme -*-
+
+
+(use make)
+
+
+(define compile-options
+  (cond-expand
+    (macosx "-FOpenGL")
+    (else "")))
+
+(define link-options
+  (cond-expand
+    (macosx "-framework OpenGL")
+    (windows "-lglu32 -lopengl32")
+    (else "-L/usr/X11R6/lib -L/usr/X11/lib -lGL -lGLU -LX11")))
+
+(make (("gl.so" ("gl.scm") (compile -s -O3 -d0 gl.scm ,compile-options ,link-options -J))
+       ("gl.import.so" ("gl.so") (compile -s -O3 -d0 gl.import.scm))
+       ("glu.so" ("glu.scm") (compile -s -O3 -d0 glu.scm ,compile-options ,link-options -J))
+       ("glu.import.so" ("glu.so") (compile -s -O3 -d0 glu.import.scm)))
+  '("gl.so" "gl.import.so" "glu.so" "glu.import.so"))
+
+(install-extension 
+ 'opengl
+ '("gl.so" "glu.so" "gl.import.so" "glu.import.so")
+ '((version 1.20)))

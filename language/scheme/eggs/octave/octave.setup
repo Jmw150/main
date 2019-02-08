@@ -1,0 +1,8 @@
+(compile -s -O2 octave-chicken.scm -o octave.so -j octave)
+(compile -s -O2 octave.import.scm)
+
+(install-extension
+  'octave
+  '("octave.so" "octave.import.so" "octave.setup")
+  '((version 0.4)
+    (documentation "octave.html")))
