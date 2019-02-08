@@ -1,0 +1,24 @@
+;;;; string-utils.meta  -*- Hen -*-
+
+((egg "string-utils.egg")
+ (category data)
+ (author "[[kon lovett]]")
+ (license "BSD")
+ (doc-from-wiki)
+ (synopsis "String Utilities")
+ (depends
+	(miscmacros "2.9")
+	(check-errors "1.12.1")
+	(utf8 "3.4.4")
+	(setup-helper "1.5.2"))
+ (test-depends test)
+ (files
+  "string-utils.setup" "string-utils.meta"
+  "string-utils.scm"
+  "to-hex.scm" "string-hexadecimal.scm"
+  "unicode-utils.scm"
+  "memoized-string.scm"
+  "string-utils-extensions.scm"
+  "string-interpolation-syntax.scm"
+  "string-interpolation.scm" "utf8-string-interpolation.scm" "string-interpolation-body.scm"
+  "tests/run.scm" "trunk/tests/string-utils-test.scm") )

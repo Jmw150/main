@@ -1,0 +1,9 @@
+;;; oblist.meta -*- Scheme -*-
+
+((files "oblist.scm" "oblist.meta" "oblist.setup")
+ (synopsis "Obtain list of all interned symbols and variables")
+ (category misc)
+ (doc-from-wiki)
+ (depends regex)
+ (license "BSD")
+ (author "felix winkelmann") )

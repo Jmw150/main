@@ -1,0 +1,28 @@
+;; -*- Hen -*-
+
+(define (dynld-name fn)		
+  (make-pathname #f fn ##sys#load-dynamic-extension))	
+
+(compile -O3 -d0 -S -s abnf.scm -j abnf)
+(compile -s abnf.import.scm)
+
+(compile -O3 -d0 -S -s abnf-charlist.scm -j abnf-charlist)
+(compile -s abnf-charlist.import.scm)
+
+(compile -O3 -d0 -S -s abnf-consumers.scm -j abnf-consumers)
+(compile -s abnf-consumers.import.scm)
+
+(install-extension
+
+ ;; Name of your extension:
+  'abnf
+
+  ;; Files to install for your extension:
+  `(,(dynld-name "abnf") ,(dynld-name "abnf.import") 
+    ,(dynld-name "abnf-charlist") ,(dynld-name "abnf-charlist.import") 
+    ,(dynld-name "abnf-consumers") ,(dynld-name "abnf-consumers.import") 
+    )
+
+  ;; Assoc list with properties for your extension:
+  '((version 7.0)
+    ))

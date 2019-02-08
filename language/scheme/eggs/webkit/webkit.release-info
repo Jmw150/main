@@ -1,0 +1,8 @@
+;; -*- mode: Scheme; -*-
+(repo fossil "http://www.chust.org/fossils/{egg-name}")
+
+(uri targz "http://www.chust.org/fossils/{egg-name}/tarball/{egg-name}.tar.gz?uuid=v{egg-release}")
+(release "1.1.2")
+(release "1.1.1")
+(release "1.1.0")
+(release "1.0.0")

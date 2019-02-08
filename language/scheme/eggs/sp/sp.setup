@@ -1,0 +1,22 @@
+;;;; sp.setup -*- Scheme -*-
+
+
+(compile -O3 -d1 -s sp-runtime.scm -J -inline-global 
+	 -emit-type-file sp-runtime.types
+	 -emit-inline-file sp-runtime.inline)
+(compile -O3 -d0 -s sp-runtime.import.scm)
+
+(install-extension 
+ 'sp-runtime
+ '("sp-runtime.so" "sp-runtime.import.so"
+   "sp-runtime.inline" "sp-runtime.types")
+ '((version "0.3")))
+
+(standard-extension 'sp "0.3")
+
+(compile -O3 -d1 -b chicken-parse.scm)
+
+(install-program
+ 'chicken-parse
+ '("chicken-parse")
+ '((version "0.3")))

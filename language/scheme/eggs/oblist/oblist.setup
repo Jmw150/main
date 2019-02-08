@@ -1,0 +1,6 @@
+(compile -s -O2 -d1 oblist.scm -j oblist)
+(compile -s -O2 -d0 oblist.import.scm)
+
+(install-extension
+ 'oblist '("oblist.so" "oblist.import.so") 
+ '((version 1.2)))

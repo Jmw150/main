@@ -1,0 +1,75 @@
+
+  SP Grammar-Specification Syntax
+  ===============================
+
+
+* Lexical declarations:
+
+  <identifier> "=" <string>            <identifier> names a token specified by the regular 
+  	       	   		       expression in <string>.
+
+  Defining a lexical token called "whitespace" will override the
+  internal whitespace matching which defaults to "[ \t\n\r]+".
+
+* Code inclusion:
+
+  <string>                             include file with name <string> directly in the generated 
+  				       parser code.
+  (...)                                include s-expression in the generated code.
+
+* Parsing rule declarations:
+
+  <identifier> "->" <rule>             defines a parsing rule named <identifier>.
+
+    <rule> -> <match> "|" <match> "|" ... [":" <action>]      alternatives and optional semantic 
+    	      	      	  	      	       		       action
+    <match> -> "(" <match> "|" <match> "|" ... ")"            nested alternatives
+            |  "[" <match> "]"                 		      optional match
+	    |  "{" <match> "}" ["+"]			      zero/one or more matches
+	    |  <match> "..."   				      zero or more matches
+	    |  "_" [<string>]				      failed match with syntax error
+	    |  "~"					      failed match and rule
+	    |  "!"					      match with current position
+	    |  <string>	["(" "~" <string> ... ")"]	      match literal string (optionally
+                                                              with test for non-match)
+	    |  <char>					      match literal character
+	    |  <identifier> "=" <match>			      bind variable to match-result
+	    |  <identifier>				      match token definition
+	    |  <s-expression>				      match if expression is true
+    <action> -> <string> 				      produce <string>
+    	     |  <integer> 				      produce N-th match in rule
+	     |  <s-expression>				      produce result of expression
+ 	     |  "*" 					      use default action
+
+* Semantic actions:
+
+  Actions may be either:
+
+    <string>              return <string> as parse result.
+    <integer>             return <integer>-th submatch in this alternative branch.
+    <expression>          Scheme code returning a parse result
+
+  The code in a semantic action should return a value that represents
+  the matched input.  Inside the dynamic extent of a semantic action
+  the Scheme procedure "return-to" may be called with the result of a
+  "!"  submatch and a semantic value to restore the input position to
+  the point where the "!" matched.
+
+  Inside test- and action-expressions "(current-state)",
+  "(current-line)", "(current-column)", "(current-source)" and
+  "(current-position)" can be used to access the current parsing
+  state.
+
+  Inside test- and action-expression the variables defined by
+  "<identifier> = <match>" (for the current rule) are visible and can
+  be accessed freely.
+
+
+* Start rule:
+
+  Parsing begins by invoking the rule "start".
+
+
+* Limitations
+
+  Left-recursion is detected but must be dealed with manually.

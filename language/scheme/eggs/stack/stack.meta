@@ -1,0 +1,15 @@
+;;;; stack.meta -*- Hen -*-
+
+((category data)
+ (synopsis "Provides LIFO queue (stack) operations")
+ (author "[[kon lovett]]")
+ (egg "stack.egg")
+ (license "BSD")
+ (doc-from-wiki)
+ (depends
+	(setup-helper "1.5.2")
+	(check-errors "1.9.0"))
+ (test-depends test)
+ (files "stack.meta" "stack.setup" "stack.scm"
+  "chicken-primitive-object-inlines.scm"  "inline-type-checks.scm"
+  "tests/run.scm"))

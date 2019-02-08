@@ -1,0 +1,139 @@
+;;;; -*- Hen -*-
+
+(define (dynld-name fn)		
+  (make-pathname #f fn ##sys#load-dynamic-extension))	
+
+(define version 1.11)
+
+(use make)
+
+(make (
+       ((dynld-name "miniML") ("miniML.scm" )
+	(compile -O -d2 -S -s miniML.scm -j miniML))
+
+       ((dynld-name "miniML.import") ("miniML.import.scm")
+	(compile  -s miniML.import.scm))
+       )
+
+  (list (dynld-name "miniML")
+	(dynld-name "miniML.import"))
+  )
+
+
+(install-extension
+
+  ; Name of your extension:
+  'miniML
+
+  ; Files to install for your extension:
+  `(,(dynld-name "miniML") ,(dynld-name "miniML.import") )
+
+  ; Assoc list with properties for your extension:
+  `((version ,version)
+    ))
+
+
+(make (
+       ((dynld-name "miniMLsyntax") ("miniMLsyntax.scm" )
+	(compile -O -d2 -S -s miniMLsyntax.scm -j miniMLsyntax))
+
+       ((dynld-name "miniMLsyntax.import") ("miniMLsyntax.import.scm")
+	(compile  -s miniMLsyntax.import.scm))
+       )
+
+  (list (dynld-name "miniMLsyntax")
+	(dynld-name "miniMLsyntax.import"))
+  )
+
+(install-extension
+
+  ; Name of your extension:
+  'miniMLsyntax
+
+  ; Files to install for your extension:
+  `(,(dynld-name "miniMLsyntax") ,(dynld-name "miniMLsyntax.import") )
+
+  ; Assoc list with properties for your extension:
+  `((version ,version)
+    ))
+
+(make (
+       ("miniML.grm.scm" ("miniML.grm")
+	(run (csi -s miniML.grm)))
+
+       ("miniML.l.scm" ("miniML.l")
+	(run (csi -n -R silex
+		  -e "'(lex \"miniML.l\" \"miniML.l.scm\" (quote counters) (quote line))'")))
+  
+       ((dynld-name "miniMLparse") ("miniMLparse.scm" "miniML.l.scm" "miniML.grm.scm")
+	(compile -O -d2 -S -s miniMLparse.scm -j miniMLparse))
+
+       ((dynld-name "miniMLparse.import") ("miniMLparse.import.scm")
+	(compile -s miniMLparse.import.scm))
+       )
+
+  (list (dynld-name "miniMLparse")
+	(dynld-name "miniMLparse.import"))
+  )
+
+
+(install-extension
+
+  ; Name of your extension:
+  'miniMLparse
+
+  ; Files to install for your extension:
+  `(,(dynld-name "miniMLparse") ,(dynld-name "miniMLparse.import") )
+
+  ; Assoc list with properties for your extension:
+  `((version ,version)
+    ))
+
+
+(make (
+       ((dynld-name "miniMLvalue") ("miniMLvalue.scm" )
+	(compile -O -d2 -S -s miniMLvalue.scm -j miniMLvalue))
+
+       ((dynld-name "miniMLvalue.import") ("miniMLvalue.import.scm")
+	(compile  -s miniMLvalue.import.scm))
+       )
+
+  (list (dynld-name "miniMLvalue")
+	(dynld-name "miniMLvalue.import"))
+  )
+
+(install-extension
+
+  ; Name of your extension:
+  'miniMLvalue
+
+  ; Files to install for your extension:
+  `(,(dynld-name "miniMLvalue") ,(dynld-name "miniMLvalue.import") )
+
+  ; Assoc list with properties for your extension:
+  `((version ,version)
+    ))
+
+(make (
+       ((dynld-name "miniMLeval") ("miniMLeval.scm" )
+	(compile -O -d2 -s miniMLeval.scm -j miniMLeval))
+
+       ((dynld-name "miniMLeval.import") ("miniMLeval.import.scm")
+	(compile  -s miniMLeval.import.scm))
+       )
+
+  (list (dynld-name "miniMLeval")
+	(dynld-name "miniMLeval.import"))
+  )
+
+(install-extension
+
+  ; Name of your extension:
+  'miniMLeval
+
+  ; Files to install for your extension:
+  `(,(dynld-name "miniMLeval") ,(dynld-name "miniMLeval.import") )
+
+  ; Assoc list with properties for your extension:
+  `((version ,version)
+    ))

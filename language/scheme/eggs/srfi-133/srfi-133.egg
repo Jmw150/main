@@ -1,0 +1,14 @@
+;; -*- Hen -*-
+
+((synopsis "SRFI-133: Vector Library (R7RS-compatible)")
+ (version "1.6")
+ (license "BSD")
+ (category data)
+ (test-dependencies test)
+ (author "John Cowan, Taylor Campbell, Will Clinger")
+ (maintainer "Jeremy Steward")
+ (components
+  (extension
+   srfi-133
+   (types-file)
+   (csc-options "-O3" "-d0"))))

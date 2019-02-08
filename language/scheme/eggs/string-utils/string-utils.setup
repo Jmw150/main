@@ -1,0 +1,49 @@
+;;;; string-utils.setup  -*- Hen -*-
+
+(use setup-helper-mod)
+
+(verify-extension-name "string-utils")
+
+(setup-shared-extension-module 'string-interpolation-syntax (extension-version "1.6.1")
+  ;#:inline? #t
+  #:types? #t
+  #:compile-options '(-scrutinize -O3 -d1 -no-procedure-checks))
+
+(setup-shared-extension-module 'string-interpolation (extension-version "1.6.1")
+  ;#:inline? #t
+  #:types? #t
+  #:compile-options '(-scrutinize -O3 -d1 -no-procedure-checks))
+
+(setup-shared-extension-module 'utf8-string-interpolation (extension-version "1.6.1")
+  ;#:inline? #t
+  #:types? #t
+  #:compile-options '(-scrutinize -O3 -d1 -no-procedure-checks))
+
+(setup-shared-extension-module 'unicode-utils (extension-version "1.6.1")
+  #:inline? #t
+  #:types? #t
+  #:compile-options '(-scrutinize -fixnum-arithmetic -O3 -d1 -no-procedure-checks))
+
+(setup-shared-extension-module 'memoized-string (extension-version "1.6.1")
+  #:inline? #t
+  #:types? #t
+  #:compile-options '(
+    -disable-interrupts ;could use synch but ...
+    -scrutinize -fixnum-arithmetic -O3 -d1 -no-procedure-checks))
+
+(setup-shared-extension-module 'to-hex (extension-version "1.6.1"))
+
+(setup-shared-extension-module 'string-hexadecimal (extension-version "1.6.1")
+  #:inline? #t
+  #:types? #t
+  #:compile-options '(-scrutinize -fixnum-arithmetic -O3 -d1 -no-procedure-checks))
+
+(setup-shared-extension-module 'string-utils-extensions (extension-version "1.6.1")
+  #:inline? #t
+  #:types? #t
+  #:compile-options '(-scrutinize -fixnum-arithmetic -O3 -d1 -no-procedure-checks))
+
+(setup-shared-extension-module 'string-utils (extension-version "1.6.1")
+  #:inline? #t
+  #:types? #t
+  #:compile-options '(-scrutinize -fixnum-arithmetic -O3 -d1 -no-procedure-checks))

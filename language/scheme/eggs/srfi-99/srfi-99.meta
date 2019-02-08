@@ -1,0 +1,9 @@
+;; -*- mode: Scheme; -*-
+((category data)
+ (license "BSD")
+ (author "Thomas Chust")
+ (synopsis "SRFI-99 record types")
+ (doc-from-wiki)
+ (needs)
+ (test-depends test)
+ (files "srfi-99.scm"))
