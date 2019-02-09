@@ -1,5 +1,0 @@
-((files "/home/jordan/Downloads/chicken-4.13.0/tests/test-repository/reverser.so"
-        "/home/jordan/Downloads/chicken-4.13.0/tests/test-repository/reverser.import.so")
- (egg-name "reverser")
- (version "1.1")
- (egg-name "reverser"))
