@@ -4,7 +4,7 @@
 #ifndef mainlibc
 #define mainlibc
 
-#define mainlibVersion "Fri Oct  5 17:17:12 EDT 2018"
+#define mainlibVersion "Fri Feb 22 17:45:48 EST 2019"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -87,7 +87,7 @@ void choose (mpz_t ret, mpz_t n, mpz_t k)
 #endif /* bignums */
 
 double stringToFloat(char* input);
-/****************************************************************
+/***************************************************************
 | Name: stringToFloat
 |    
 | Precodition: <stdio.h>, <stdlib>, <math.h> used
@@ -99,7 +99,7 @@ double stringToFloat(char* input);
 |   Out: none
 |   
 | Returns: a float 
-\****************************************************************/
+\**************************************************************/
 /* need to error proof */
 double stringToFloat(char* input) 
 //char* assumed to come from main argv which has a lot of space on it

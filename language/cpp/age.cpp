@@ -1,4 +1,4 @@
-// tells ae of something
+// tells age of something
 // could be imporved to include new years day
 // and automatically get current date
 
@@ -59,11 +59,13 @@ int main ()
         default: cout << "We only have 12 months.";           
     }
     
-    difDay = (365*yearToday+mToday+dayToday)-(365*yearBirth+mBirth+dayBirth);
+    difDay = (365*yearToday+mToday+dayToday)
+           - (365*yearBirth+mBirth+dayBirth);
     difYear = difDay/365;
-    cout << "That was this ling ago\n" 
+    cout << "That was this long ago\n" 
          << "Days: " << difDay << endl 
-         << "Years: "<< difYear << " plus days: " << difDay % 365 << endl;
+         << "Years: "<< difYear << " plus days: " 
+         << difDay % 365 << endl;
     
     
     return 0;

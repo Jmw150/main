@@ -1,17 +1,13 @@
-#include <algorithm>
-#include <cmath>
+// lambda-ish ability in c++
 
-void abssort(float* x, unsigned n) {
-    std::sort(x, x + n,
-        // Lambda expression begins
-        [](float a, float b) {
-            return (std::abs(a) < std::abs(b));
-        } // end of lambda expression
-    );
-}
+#include <iostream>
 
-int main ()
+int main() 
 {
+    //declaration of lambda function in c++
+    auto f = [](int x) { return x*42; }; 
+
+    std::cout << "f() = " << f(2) << std::endl;
 
     return 0;
-}
+

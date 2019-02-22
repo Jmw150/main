@@ -3,7 +3,7 @@
 # this file is for common functions
 
 # functions made:
-# exit, return, read str, print str, prompt for str, say hello
+# exit, return, read str, print str, prompt for str, say hello, main(argc,args), strlen
 
 # functions still to implement
 # tag_exists, open file, read from file, print to file, close file, read char file, read char
@@ -16,7 +16,7 @@
 
 main:                           # spim specific tag, spim forces it
 #print integer	1	$a0 = value	(none)
-    
+    jal     sum
     j       exit
 
 
@@ -109,6 +109,8 @@ strlen_loop:
     addi    $t0, $t0, 1         # increment the count
     j       strlen_loop                # return to the top of the loop
 
+    j return
+
 
 max:
     lw      $t0, 0($a0)         # load the first array value into t0
@@ -122,6 +124,8 @@ max_loop:
     move    $t0, $t2            # found a new maximum, store it in t0
 max_end_if:
     j       max_loop                # repeat the loop
+
+    j return
     
     
 
@@ -131,8 +135,9 @@ max_end_if:
 ################# Data segment #####################
 .data
 
-sum_inputString:  .asciiz "Input a number: "
-sum_outputString:  .asciiz "Total sum of numbers: "
+sum_inputString: .asciiz "Input a number: "
+sum_outputString: .asciiz "Total sum of numbers: "
+sum_newline:.asciiz "\n"
 ################# Code segment #####################
 .text
 
@@ -156,6 +161,12 @@ sum_Loop: li   $v0, 4             # Load system call to print input string
       li   $v0, 1             # Load system call to print string
       add  $a0, $s1, $zero    # Load sum into $a0 for printing
       syscall
+
+      li   $v0, 4             # Load system call to print output string
+    la      $a0, sum_newline    # Load output string for newline
+      syscall
+
+    j       return
 
 
 
