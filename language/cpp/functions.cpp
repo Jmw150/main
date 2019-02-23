@@ -63,7 +63,7 @@ t factorial (t N)
 template<class t>
 t choose (t N, t K)
 {
-    if (N < 0 || K < 0 || K > N) //for some problems it is better
+    if (N < 0 or K < 0 or K > N) //for some problems it is better
         return 0;                //for 0 to represent failure
 
     return (factorial(N))/(factorial(K)*(factorial(N-K)));
@@ -300,7 +300,7 @@ int gcdLong(int aa, int qq)
 int getInt()
 {
     const int ARRAY_SIZE = int(log10(pow(2, sizeof(int)*8))+1);
-    char UserInput[ARRAY_SIZE];
+    char UserInput[ARRAY_SIZE] = {0};
     for (int i = 0 ; i < ARRAY_SIZE ; i++)
         UserInput[i] = 0;
     int ArraySpot = 0;
@@ -562,7 +562,7 @@ long int getLong()
 {
     const int ARRAY_SIZE = 
             int(log10(pow(2, sizeof(long int)*8))+1);
-    char UserInput[ARRAY_SIZE];
+    char UserInput[ARRAY_SIZE] = {0};
     for (int i = 0 ; i < ARRAY_SIZE ; i++)
         UserInput[i] = 0; // version 98...
     int ArraySpot = 0;
