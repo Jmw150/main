@@ -5,6 +5,7 @@
 */
 #define broken
 
+#include <limits>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -650,7 +651,7 @@ bool isPrime(int number)
     return 1;
 }
 
-/****************************************************************
+/*************************************************************
 | Name: timesCalled
 |    
 | Precodition: nothing, or has been called before
@@ -664,7 +665,7 @@ bool isPrime(int number)
 |   
 | Returns: an integer for how many times function was called in
 |          the program
-\****************************************************************/
+\************************************************************/
 int timesCalled()
 {
     static int n = 0;
@@ -3991,15 +3992,6 @@ int dnd_dice_roll(int argc, char* argv[])
     return 0;
 }
 
-// name:     Jordan Winkler
-// date:     6/26/2017
-// process:  c style double linked list, a special function was added
-//           to allow changing what the double linked list 
-//           carries
-
-//include <iostream>
-//include <math.h>
-//include <stdlib.h>
  
 
 struct dll
@@ -6560,134 +6552,12 @@ int wrap41()
 	else cout << "File successfully named\n";
 	return 0;
 }
-// c++ riemanSum function without function parser
-// useless
-
-//include <iostream>
-//include <math.h>
- 
-class riemann_sum 
-{
-
-    double function (x) { return x*x; };
-double leftSideSum(double start, double end, int intervals);
-double rightSideSum(double start, double end, int intervals);
-double midSum(double start, double end, int intervals);
-
-    int lowerbound = 1, upperbound = 4, intervals = 30;
-int sum_test()
-{
-	cout << "reimann Sum\n";
-	cout << "-----------\n";
-	cout << leftSideSum(lowerbound,upperbound,intervals) << endl;
-	cout << rightSideSum(lowerbound,upperbound,intervals) << endl;
-	cout << midSum(lowerbound,upperbound,intervals) << endl;
-
-	return 0;
-}
-
-//calculates a riemann sum using the left side of rectangles for height
-double leftSideSum(double start, double end, int intervals)
-{
-	double deltaX = (end - start)/intervals;
-
-	double rightPush = 0;
-
-	double Sum = 0;
-	for (int i = 0 ; i < intervals ; start += deltaX, i++)
-	{
-		Sum += function(start+rightPush)*deltaX;
-	}
-
-	return Sum;
-}
-
-//calculates a riemann sum using the right side of rectangles for height
-double rightSideSum(double start, double end, int intervals)
-{
-	double deltaX = (end - start)/intervals;
-
-	double rightPush = deltaX;
-
-	double Sum = 0;
-	for (int i = 0 ; i < intervals ; start += deltaX, i++)
-	{
-		Sum += function(start+rightPush)*deltaX;
-	}
-
-	return Sum;
-}
-
-//calculates a riemann sum using the middle of rectangles for height
-double midSum(double start, double end, int intervals)
-{
-	double deltaX = (end - start)/intervals;
-
-	double rightPush = deltaX/2;
-
-	double Sum = 0;
-	for (int i = 0 ; i < intervals ; start += deltaX, i++)
-	{
-		Sum += function(start+rightPush)*deltaX;
-	}
-
-	return Sum;
-}
-
-}
-//takes a string and puts it in a linked list, prints that list
-
-
-dll* add_head(char character);
-dll* add_tail(dll* head, char character);
-
-void print_list(dll* head);
-void print_debug(dll* head);
 
 //formalize statement
 
 void mult_before_paren(dll* head, int strLength);
 void add_symmetry(dll* head, int strLength);
 
-int wrap42(int argc, char* argv[])
-{
-    //repeat entered string
-    cout << "starting phrase: ";
-	for (int i = 1 ; i < argc ; i++)
-	    cout << argv[i] << ' ';
-	cout << endl;
-
-	int stringLength = 0;
-
-	cout << "first word: ";
-	if (argc > 0)
-	{
-		for (int i = 0 ; argv[1][i] ; i++)
-		{
-	    	cout << argv[1][i];
-			stringLength++;
-		}
-		cout << endl;
-	}
-
-	//make and add each element to string
-    dll* head = add_head(argv[1][0]);
-	for (int i = 1 ; argv[1][i] ; i++)
-	{
-		add_tail(head, argv[1][i]);
-	}
-
-	//print out doubly linked list
-	cout << "first word, according to list: ";
-	print_list(head);	
-
-	add_symmetry(head, stringLength);
-
-	cout << "first word, after change: ";
-	print_list(head);	
-
-	return 0;
-}
 
 dll* add_tail(dll* head, char character)
 {
@@ -7079,30 +6949,6 @@ void flipString(char a[], int start, int end) //some bug
 }
 
 
-ll stringToValue(char a[], int start, int end)
-{
-#ifdef DEBUG
-    cout << "inside stringToValue\n";
-#endif //DEBUG
-    ll value = 0;
-
-    flipString(a);
-
-    for (int i = 0, j = start ; j <= end && a[j] ; j++, i++) 
-    {
-        if (numeric_limits<ll>::max() > long(pow(256, i)))
-            value += a[j] * long(pow(1000, i)); //replace 1k w 256
-        else
-        {
-            cout << "\nerror: need more memory\n";
-            exit(1);
-        }
-    }
-
-    flipString(a);
-
-    return value;
-}
 
 void valueToString(ll value, char string[], int start, int end)
 {
@@ -7222,25 +7068,6 @@ ll getJ(ll k, ll p, ll q)
     return j;
 }
 
-/****************************************************************
-| Name: getPrime
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: 2^power of the lower bound of the prime
-|   Out: nothing
-|   
-| Returns: the next prime after that power
-\****************************************************************/
-ll getPrime(ll power)
-{
-    ll lowerBound = expt(2, power); 
-    
-    return nextPrime(lowerBound);
-}
 
 
 /****************************************************************
@@ -7269,61 +7096,7 @@ ll nextPrime(ll n)
     }
 }
 
-/****************************************************************
-| Name: isPrime
-|    
-| Precodition: a number to check
-| Postcondition: 1 or 0 if the number is prime
-|
-| Parameters:
-|       
-|   IN: int number
-|   Out: nothing
-|   
-| Returns: bool prime or not prime
-\****************************************************************/
-bool isPrime(ll number)
-{
-    if (number < 2)
-        return 0;
 
-    ll top = number;
-    if (number > 100)  //uses sieve of Eratosthenes
-        top = ceilSquareRoot(number);
-    for (int i = 2 ; i < top ; i++)        
-        if (number % i == 0)
-            return 0;
-    return 1;
-}
-
-/****************************************************************
-| Name: expt
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: a^b = c
-|   Out: nothing
-|   
-| Returns: c
-\****************************************************************/
-/*
-ll expt(ll a, ll n)
-{
-    ll x = a;
-    ll y = (((n >> 0) & 1) == 1)?a:1;
-    ll k = 4096; //for now
-    for (int i = 1 ; i <= k ; i++)
-    {
-        x = (x*x) ;
-        if (((n >> i) & 1) == 1)
-            y = (y == 1)?x:((x*y));
-    }                                //loses large values, then y=0
-    return y; 
-}
-*/
 ll expt(ll a, ll b)
 {
     ll c = 1;
@@ -7339,7 +7112,7 @@ ll expt(ll a, ll b)
     return c;
 }
 
-/****************************************************************
+/*************************************************************
 | Name: ceilSquareRoot
 |    
 | Precodition: nothing
@@ -7449,62 +7222,6 @@ ll toNum(char a[], int start, int end)
     return toReturn;
 }
 
-/****************************************************************
-| Name: changeToBase
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: number, base to change it to, string representing number
-|       max size of string
-|   Out: nothing
-|   
-| Returns: nothing
-\****************************************************************/
-void changeToBase(ll x, int base, char string[], int Max)
-{
-    for (int i = 0 ; i < Max ; i++) //clean array
-        string[i] = 0;
-
-    for (int i = 0 ; toChar(x) && i < Max ; i++)
-    {
-        string[i] = toChar(x) % base;
-        x = x/base;
-    }
-}
-/****************************************************************
-| Name: changeToBase
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: number, base it turns into, number array representing
-|       this, max size of this string
-|   Out: nothing
-|   
-| Returns: number of digits of new number 
-\****************************************************************/
-int changeToBase(ll x, int base, ll string[], int Max)
-{
-    for (int i = 0 ; i < Max ; i++) //clean array
-        string[i] = 0;
-
-    int i = 0;
-    while (1)
-    {
-        string[i] = x % base; 
-        x = x/base;
-
-        if (x == 0)
-            break;
-        if (i >= Max)
-            break;
-        i++;
-    }
 /* //original
     for (int i = 0 ; toChar(x) && i < Max ; i++)
     {
@@ -7512,47 +7229,8 @@ int changeToBase(ll x, int base, ll string[], int Max)
         x = x/base;
     }
 */
-    return i; //length of array
-}
 
-/****************************************************************
-| Name: toChar
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: number being changed to a char*, max size of char*
-|   Out: nothing
-|   
-| Returns: char* representing number in characters
-\****************************************************************/
-char* toChar(ll num, int Max)
-{
-    char* temp = new char[Max];
-    changeToBase(num, 256, temp, Max);
 
-    return temp;
-}
-
-/****************************************************************
-| Name: toChar
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: number to be turned into a char (truncates at 256)
-|   Out: nothing
-|   
-| Returns: the char 
-\****************************************************************/
-char toChar(ll num) //will give wrong value if ll is too large
-{
-    return char(num.get_ui());
-}
 
 /* 
     RSA encryption
@@ -7570,908 +7248,6 @@ char toChar(ll num) //will give wrong value if ll is too large
     j : 1 < j < phi(n), kj = 1 (mod phi(n))
 */
 
-//include <iostream>
-//include <fstream>
-//include <string>
-//include <math.h>
-//include <cstdlib>
-
- 
-
-/*================================================================
-|| 
-|| Object: bigInt 
-|| 
-|| Purpose: a data type to calculate large integers
-||      
-|| Atributes: 
-||      num, length, max
-||
-|| Functions:
-||      + - * / % == <= >= < > = 
-||      constructor, destructor, copy constructor, value,
-||      print, confirmLength, resize, complement, bitshift
-||      changeToBase, flipString
-||
-\*==============================================================*/
-class bigInt
-{ 
-    public:
-        //store of size __ call it __
-        bigInt(); 
-        bigInt(unsigned int twoToN);
-
-        bigInt(const bigInt& obj);
-
-        ~bigInt(); 
-
-        /* input number */
-        /* all in binary for now */
-        void value(unsigned long int theNum); //from program
-        void value(string fileName); // ./for file, else num
-        void value(); //from cin 
-
-        /* output number */
-        void print(); //default base 2
-
-        /* speed up */
-        int confirmLength(); //faster computation
-        void resize(); //less memory use
-
-        friend const bigInt operator +(const bigInt &a,
-                                       const bigInt &b);
-        friend const bigInt operator -(const bigInt &a,
-                                       const bigInt &d);
-        friend const bigInt operator *(const bigInt &a, 
-                                       const bigInt &b);
-        friend const bigInt operator /(const bigInt &a, 
-                                       const bigInt &b);
-        friend const bigInt operator %(const bigInt &a, 
-                                       const bigInt &mod);
-        
-        friend bool operator >=(const bigInt &a,
-                                       const bigInt &b);
-        friend bool operator <=(const bigInt &a,
-                                       const bigInt &b);
-        friend bool operator ==(const bigInt &a,
-                                       const bigInt &b);
-        friend bool operator !=(const bigInt &a,
-                                       const bigInt &b);
-        friend bool operator <(const bigInt &a,
-                                       const bigInt &b);
-        friend bool operator >(const bigInt &a,
-                                       const bigInt &b);
-        
-        bigInt& operator =(const bigInt& rhs); 
-
-        void complement();
-
-        void setEqualTo(unsigned long int theNum);
-
-        void bitShift(int n);
-
-        friend void flipString(bool a[], int start, int end);
-
-        friend void changeToBase(int x, int base, 
-                                 int string[], int Max);
-        /*
-            could use all operators designed to non bigInt 
-        */
-        
-    private:
-        bool* num; //the number
-        int length; //the length of storage
-        int max; //4096
-};
-
-
-
-bigInt::bigInt() 
-{
-    max = 4096;
-    num = new bool[max];
-    length = max;
-
-    for (int i = 0 ; i < max ; i++)
-        num[i] = 0;
-}
-bigInt::bigInt(unsigned int twoToN)
-{
-    max = 4096;
-  
-    if (twoToN <= max)
-        length = twoToN;
-    else
-    {
-        cout << "\nerror: change size limit of bigInt\n";
-        exit(1);
-    } 
-
-    num = new bool[length];
-
-    for (int i = 0 ; i < length ; i++)
-        num[i] = 0;
-
-}
-
-bigInt::bigInt(const bigInt& rhs)
-{
-    cout << "\ncopy constructor call\n";
-
-    max = rhs.max;
-    length = rhs.length;
-    num = new bool[length];
-    for (int i = 0 ; i < length ; i++)
-        num[i] = rhs.num[i];
-}
-
-bigInt::~bigInt()
-{
-    cout << "\ndeconstructor running\n";
-    cout << "times called: " << timesCalled() << endl;
-    
-//  delete [] num;
-}
-
-bigInt& bigInt::operator =(const bigInt& rhs)
-{
-    if (this == &rhs)
-        return *this;
-    
-
-    length = rhs.length;
-    max = rhs.max;
-    for (int i = 0 ; i < max ; i++)
-        num[i] = rhs.num[i];
-        
-    return *this;
-}
-
-//good for smaller values
-void bigInt::value(unsigned long int theNum)
-{
-    max = 4096;
-    num = new bool[max];
-    length = max;
-
-    for (int i = 0 ; i < max ; i++)
-        num[i] = 0;
-
-    if (theNum == 1) //common enough to get its own bypass
-        num[0] = 1;
-        
-    //convert base 10 to base 2 array
-    changeToBase(theNum, 2, num, 64); //unsigned long int is 2^64
-
-}
-void bigInt::value(string fileName)
-{
-    fstream inData;
-    inData.open(fileName.c_str());
-    char userInput;
-    int userLength = 0;
-    while (inData >> userInput)
-    {
-        if (userInput == '1' || userInput == '0')
-        {
-            num[userLength] = bool(userInput - '0');
-            userLength++;
-        }
-        else 
-            break;
-        if (userLength > max)
-            break;
-    } 
-
-    if (userLength > 1)
-        flipString(num, 0, userLength-1);
-    if (userLength == 0)
-    {
-        cout << "\nerror: did not read a num\n";
-        exit(1);
-    }
-    
-    inData.close();
-}
-void bigInt::value()
-{
-    char userInput;
-    int userLength = 0;
-    do
-    {
-        userInput = cin.get();
-        if (userInput == '1' || userInput == '0')
-        {
-            num[userLength] = (userInput - '0');
-            userLength++;
-        }
-        if (userLength > 4096)
-            break;
-    } while (userInput == '1' || userInput == '0');
-    
-    
-    if (userLength > 1)
-        flipString(num, 0, userLength-1);
-    if (userLength == 0)
-    {
-        cout << "\nerror: did not read a num\n";
-        exit(1);
-    }
-}
-
-
-
-//save on computation
-int bigInt::confirmLength()
-{
-    int index = max-1;
-
-    while (1)
-    {
-        if (index == 0) break;
-        if (num[index] == 1) break;
-        index--;
-    }
-    length = index + 1; 
-
-    return length;
-}
-//save on memory
-void bigInt::resize()
-{
-    confirmLength();
-    bool* temp = new bool[max];
-
-    for (int i = 0 ; i < length ; i++)
-        temp[i] = num[i];
-
-    delete [] num;
-
-    num = new bool[length];
-    
-    for (int i = 0 ; i < length ; i++)
-        num[i] = temp[i];
-
-    delete [] temp;
-}
-
-
-void bigInt::print()
-{
-    confirmLength();
-    for (int i = length-1 ; i >= 0 ; i--)
-        cout << num[i];
-
-    cout << endl;
-}
-
-void bigInt::setEqualTo(unsigned long int theNum)
-{
-    for (int i = 0 ; i < length ; i++)
-        num[i] = 0;
-
-    int lengthOr64 = (length > 64)?64:length;
-
-    changeToBase(theNum, 2, num, lengthOr64); //unsigned long int is 2^64
-}
-    
-
-const bigInt operator +(const bigInt &a, const bigInt &b)
-{
-    bigInt c;
-
-    int shortest = a.max;
-    /* save on computaion */
-    //int shortest = (a.length > b.length)?b.length:a.length;
-
-    int carry = 0;
-    for (int i = 0 ; i < shortest ; i++)
-    {
-        c.num[i] = (a.num[i] + b.num[i] + carry) % 2;
-        if ((a.num[i]+b.num[i]+carry) < 2)
-            carry = 0;
-        else
-            carry = 1;
-    }
-            
-    return c;
-}
-
-const bigInt operator -(const bigInt &a, const bigInt &b)
-{
-    bigInt tempA;
-    tempA = a;
-    tempA.confirmLength();
-
-    bigInt tempB;
-    tempB = b;
-    tempB.length = tempA.length;
-    tempB.complement();
-
-    tempA = tempA + tempB;
-
-    bigInt one;
-    one.value(1);
-
-    tempA = tempA + one;
-    
-    
-    tempA.num[tempA.confirmLength()-1] = 0; //take off last bit
-
-    tempA.length = tempA.max;
-
-    return tempA;
-    //what if a > b and b - a?
-}
-
-void bigInt::complement()
-{
-    for (int i = 0 ; i < length ; i++)
-        num[i] = num[i] ^ 1;
-}
-void bigInt::bitShift(int n)
-{
-    if (n > 0)
-    {
-        for (int i = length-1 ; i >= 0 ; i--)
-            if (1 + n <= max-1)
-                num[i+n] = num[i];
-        for (int i = 0 ; i < n ; i++)
-            num[i] = 0;
-    }
-    if (n < 0)
-    {
-        for (int i = 0 ; i < length ; i++)
-            if (i+n >= 0)
-                num[i+n] = num[i];
-        for (int i = length-1 ; i >= max-1-n ; i--)
-            num[i] = 0;
-    }
-}
-    
-
-const bigInt operator *(const bigInt &a, const bigInt &b)
-{
-    bigInt one;
-    one.value(1);
-
-    bigInt temp;
-    temp = a;
-
-    if (b.num[0] == 1) temp = temp + one;
-    int i = 1;
-    while (1)
-    {
-        if (b.num[i] == 1)
-            temp.bitShift(i);
-        i++;
-        if (i == a.max)
-            break;
-    }
-
-    return temp;
-}
-
-
-const bigInt operator /(const bigInt &a, const bigInt &b)
-{
-    bigInt one;
-    one.value(1);
-
-    bigInt temp;
-    temp = a;
-
-    if (b.num[0] == 1) temp = temp - one;
-    int i = 1;
-    while (1)
-    {
-        if (b.num[i] == 1)
-            temp.bitShift(-i);
-        i++;
-        if (i == a.max)
-            break;
-    }
-
-    return temp;
-}
-
-
-const bigInt operator %(const bigInt &a, const bigInt &mod)
-{
-    bigInt c;
-    c = a;
-
-    while (c >= mod)
-    {
-        c = c - mod;
-    }
-
-    return c;
-}
-
-bool operator ==(const bigInt &a, const bigInt &b)
-{
-    if (a.length != b.length)
-        return 0;
-    
-    int i = a.length-1;
-    while (1)
-    {
-        if (a.num[i] != b.num[i])
-            return 0;
-        if (i == 0)
-            break;
-        i--;
-    } 
-
-    return 1;
-}
-
-bool operator !=(const bigInt &a, const bigInt &b)
-{
-    return !(a == b);
-}
-
-bool operator >(const bigInt &a, const bigInt &b)
-{
-    if (a.length > b.length)
-        return 1;
-
-    if (a.length < b.length)
-        return 0;
-
-    int i = a.length;
-    while (1)
-    {
-        if (a.num[i] == b.num[i])
-            i--;
-        else
-            if (a.num[i] > b.num[i])
-                return 1;
-            else
-                return 0;
-        if (i <= 0)
-            return 0;
-    }
-}
-
-
-bool operator <=(const bigInt &a, const bigInt &b)
-{
-    return !(a > b);
-}
-
-bool operator <(const bigInt &a, const bigInt &b)
-{
-    if (a.length < b.length)
-        return 1;
-
-    if (a.length > b.length)
-        return 0;
-
-    int i = a.length;
-    while (1)
-    {
-        if (a.num[i] == b.num[i])
-            i--;
-        else
-            if (a.num[i] < b.num[i])
-                return 1;
-            else
-                return 0;
-        if (i <= 0)
-            return 0;
-    }
-
-}
-
-bool operator >=(const bigInt &a, const bigInt &b)
-{
-    return !(a < b);
-}
-
-/*
-encryption: 
-    public encryption key: (n,k)
-    computation: M^k ≡ r (mod n)
-    k : 1 < k < phi(n), gcd(k, phi(n)) = 1
-    n : n = pq
-
-decryption:
-    private decryption key: (p, q, j)
-    computation: r^j ≡ M (mod n)
-    j : 1 < j < phi(n), kj = 1 (mod phi(n))
-*/
-
-
-//Replace unsigned long ll with integer like data structure 
-//Must be defined for operations: + * % - / > < != == =
-
-#define DEBUG
-
-ll encrypt(ll M, ll n, ll k);
-ll decrypt(ll r, ll p, ll q, ll j);
-ll modInv(ll u, ll v);
-ll gcdExtended(ll a, ll b, ll *x, ll *y);
-ll gcd(ll A, ll B);
-ll phi_encrypt(ll p, ll q); 
-ll expMod(ll base, ll exponent, ll mod);
-
-ll getK();
-ll getJ();
-ll getPrime(unsigned int power);
-
-int wrap43()
-{
-    cout << "program loading\n";
-
-    bigInt one;
-    one.value(1);
-
-    bigInt zero;
-    zero.value(0);
-
-    ll p;
-    p.value(5);
-    ll q;
-    q.value(7);
-    
-    ll n;
-    n = p * q;
-    ll k;
-    k.value(5);
-
-
-    //if ((gcd(k, phi(p,q)) != one) || (k > phi(p,q))) 
-//      cout << "bad k\n";
-
-    ll phin;
-    phin = phi(p,q);
-
-    ll j;
-    j = modInv(k, phin);
-
-//  if (j > phi(p,q) || (k*j) % phi(p,q) != 1)
-//      cout << "bad j\n";
-
-    ll M;
-    M.value(5);
-    ll r;
-
-    cout << "number to encrypt: ";
-    M.print();
-    cout << endl;
-
-    r = encrypt(M, n, k);
-    
-    cout << "encrypted: ";
-    r.print();
-    cout << endl;
-
-    M = decrypt(r, p, q, j);
-
-    cout << "decrypted: ";
-    M.print();
-    cout << endl;
-
-#ifdef DEBUG
-    cout << "(n, k) : ";
-    n.print();
-    cout << ' ';
-    k.print();
-    cout << endl;
-
-    cout << "(p, q, j) : ";
-    p.print();
-    cout << ' ';
-    q.print(); 
-    cout << ' ';
-    j.print(); 
-    cout << endl;
-
-    cout << "M: ";
-    M.print(); 
-    cout << endl;
-    cout << "r: ";
-    r.print();
-    cout << endl;
-#endif //DEBUG
-
-    return 0;
-}
-/****************************************************************
-| Name: encrypt
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: integers M, n, k of the equation M^k ≡ r (mod n)
-|   Out: nothing
-|   
-| Returns: r, a number with an RSA encryption on it
-\****************************************************************/
-ll encrypt(ll M, ll n, ll k)
-{
-    return expMod(M, k, n);
-}
-
-/****************************************************************
-| Name: decrypt
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: integer r, p, q, j of the equation r^j ≡ M (mod p*q)
-|   Out: nothing
-|   
-| Returns: M, a number that has had the RSA encryption removed
-\****************************************************************/
-ll decrypt(ll r, ll p, ll q, ll j)
-{
-    return expMod(r, j, (p*q));
-}
-
-/****************************************************************
-| Name: modInv
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: u and v for equation u^-1(mod v)
-|   Out: nothing
-|   
-| Returns: integer equal to u^-1(mod v)
-\****************************************************************/
-ll modInv(ll a, ll m)
-{
-    ll m0 = m, t, q;
-    ll x0;
-    x0.value(0);
-    ll x1; x1.value(1);
-
-    ll one; one.value(1);
-    ll zero; zero.value(0);
- 
-    if (m == one)
-      return zero;
- 
-    while (a > one)
-    {
-        // q is quotient
-        q = a / m;
- 
-        t = m;
- 
-        // m is remainder now, process same as
-        // Euclid's algo
-        m = a % m; a = t;
- 
-        t = x0;
- 
-        x0 = x1 - (q * x0);
- 
-        x1 = t;
-    }
- 
-    // Make x1 positive
-    if (x1 < zero)
-       x1 = x1 + m0;
- 
-    return x1; //then destructor gets called several thousand times
-}
-/*
-ll modInv(ll a, ll m)
-{
-    bigInt one;
-    one.value(1);
-    
-    bigInt zero;
-    zero.value(0);
-
-    ll x, y;
-    ll g;
-    g = gcdExtended(a, m, &x, &y); 
-    if (g != one)
-        cout << "Inverse doesn't exist";
-    else
-    {
-        ll res;
-        res = (x%m + m) % m;
-        return res;
-    }
-}
-*/ 
-
-/****************************************************************
-| Name: gcdExtended
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: integers a,b,x,y such that gcd(a,b) = ax + by = c
-|   Out: integers x and y
-|   
-| Returns: integer c
-\****************************************************************/
-ll gcdExtended(ll a, ll b, ll *x, ll *y)
-{
-    bigInt one;
-    one.value(1);
-    
-    bigInt zero;
-    zero.value(0);
-
-    // Base Case
-    if (a == zero)
-    {
-        *x = zero, *y = one;
-        return b;
-    }
- 
-    ll x1, y1; // To store results of recursive call
-    ll gcd;
-    gcd = gcdExtended(b%a, a, &x1, &y1);
- 
-    // Update x and y using results of recursive
-    // call
-    *x = y1 - (b/a) * x1;
-    *y = x1;
- 
-    return gcd;
-}
-
-
-/****************************************************************
-| Name: gcd
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: two integers
-|   Out: none
-|   
-| Returns: int the greatest common divisor of those two numbers
-\****************************************************************/
-ll gcd(ll A, ll B)
-{
-    bigInt zero;
-    zero.value(0);
-
-    ll T;
-    while (B != zero)
-    {
-        T = B;
-        B = A % B;
-        A = T;
-    }
-    return A;
-}    
-
-ll expMod(ll base, ll exponent, ll mod) 
-{
-    bigInt one;
-    one.value(1);
-
-    bigInt zero;
-    zero.value(0);
-
-    if (mod == one)
-        return zero;
-    ll c;
-    c = one;
-    bigInt i;
-    i = one;
-    while (1)
-    {
-        c = (c * base) % mod;
-        i = i + one;
-        if (i > exponent)
-            break;
-    }
-    //for (int i = 1 ; i <= exponent ; i++) //uh oh
-    //  c = (c * base) % mod;
-
-    return c;
-}
-
-    
-// never worked, old attempt at hilbert curve
-
-//convert (x,y) tp d
-int xy2d (int n, int x, int y) {
-    int rx, ry, s, d = 0;
-    for (s = n/2; s > 0; s/=2) {
-        rx = (x & s) > 0;
-        ry = (y & s) > 0;
-        d += s * s * ((3 * rx) ^ ry);
-        rot(s, &x, &y, rx, ry);
-    }
-    return d;
-}
-
-//convert d to (x,y)
-void d2xy (int n, int d, int *x, int *y)
-{
-    int rx, ry, s, t=d;
-    *x = *y = 0;
-    for (s = 1 ; s < n ; s *=2) {
-        rx = 1 & (t/2);
-        ry = 1 & (t ^ rx);
-        rot (s,x,y,rx,ry); //rotate?
-        *x += s * rx;
-        *y += s * ry;
-        t /=4;
-    }
-}
-
-//rotate/flip a quadrant approximately
-void rot(int n, int *x, int *y, int rx, int ry) {
-    if (ry == 0) {
-        if (rx == 1) {
-            *x = n - 1 - *x;
-            *y = n - 1 - *y;
-        }
-        //Swap x and y
-        int t = *x;
-        *x = *y;
-        *y = t;
-    }
-}
-//broken, demonstration of time library
-
-//include <iostream>
-//include <math.h>
-//include <ctime>
- 
-double timeDifference(int day, int month, int year);
-
-int wrap44()
-{
-    int day=3, int month, int year
-    time_t now;
-    struct tm start;
-    double seconds;
-    
-    time(&now);  /* get current time; same as: now = time(NULL)  */
-    
-    start = *localtime(&now);
-    
-    start.tm_hour = 0; start.tm_min = 0; start.tm_sec = 0;
-    start.tm_mon = month-1;  start.tm_mday = day; start.tm_year = year-1900;
-    
-    seconds = difftime(now,mktime(&start));
-    
-    (seconds/ (60*60*24)); //returns day
-    return 0;
-}
-
-double timeDifference(int day, int month, int year)
-{
-    time_t now;
-    struct tm start;
-    double seconds;
-    
-    time(&now);  /* get current time; same as: now = time(NULL)  */
-    
-    start = *localtime(&now);
-    
-    start.tm_hour = 0; start.tm_min = 0; start.tm_sec = 0;
-    start.tm_mon = month-1;  start.tm_mday = day; start.tm_year = year-1900;
-    
-    seconds = difftime(now,mktime(&start));
-    
-    return (seconds/ (60*60*24)); //returns day
-}
 //Scans a document or several docuemnts for a string
 //returns if it is found and what line it is on
 // grep already does this, so this program is useless
@@ -8606,7 +7382,6 @@ int wrap48(int argc, char** argv)
 
 //include <iostream>
 //include <math.h>
-//include <limits>
  
 
 int wrap49()
@@ -8790,111 +7565,6 @@ int wrap51()
     return 0;
 
 }
-// demonstration of changing arrays to linked lists
-// takes a string and puts it in a linked list, prints that list
-
-//include <iostream>
- 
-
-//is used to capture the string as a list
-struct dll
-{
-    char symbol;
-    dll* prev;
-    dll* next;
-};
-
-dll* add_head(char character);
-dll* add_tail(dll* head, char character);
-
-void print_list(dll* head);
-void print_debug(dll* head);
-
-int wrap52(int argc, char* argv[])
-{
-    //repeat entered string
-    cout << "starting phrase: ";
-	for (int i = 1 ; i < argc ; i++)
-	    cout << argv[i] << ' ';
-	cout << endl;
-
-	cout << "first word: ";
-	if (argc > 0)
-	{
-		for (int i = 0 ; argv[1][i] ; i++)
-	    	cout << argv[1][i];
-		cout << endl;
-	}
-
-	//make and add each element to string
-    dll* head = add_head(argv[1][0]);
-	for (int i = 1 ; argv[1][i] ; i++)
-	{
-		add_tail(head, argv[1][i]);
-	}
-
-	//print out doubly linked list
-	cout << "first word, according to list: ";
-	print_list(head);	
-
-//  print_debug(head);
-
-	return 0;
-}
-
-dll* add_tail(dll* head, char character)
-{
-	while (head -> next != NULL)
-		head = head -> next;
-
-	dll* tail = new dll;
-	head -> next = tail;
-	tail -> prev = head;
-	tail -> next = NULL;
-	
-	tail -> symbol = character;
-
-	return tail;
-}
-
-dll* add_head(char first)
-{
-    dll* head = new dll;
-	head -> prev = NULL;
-	head -> next = NULL;
-
-	head -> symbol = first;
-
-	return head;
-}
-
-void print_list(dll* head)
-{
-	dll* p = head;
-	while (p -> next != NULL)
-	{
-		cout << p -> symbol;
-		p = p -> next;
-	}
-	cout << p -> symbol;
-	cout << endl;
-}
-
-void print_debug(dll* head)
-{
-	dll* p = head;
-	while (p -> next != NULL)
-	{
-		cout << "prev: " << p -> prev << endl;
-		cout << "node: " << p << endl;
-		cout << "next: " << p -> next << endl;
-		cout << "char: " << p -> symbol << endl;
-		p = p -> next;
-	}
-	cout << "prev: " << p -> prev << endl;
-	cout << "node: " << p << endl;
-	cout << "char: " << p -> symbol << endl;
-}
 
 int wrap53(int argc, char* argv[])
 {
@@ -8997,15 +7667,13 @@ int wrap55()
     c = a * b;
     cout << "c: " << c.Real << c.Imaginary << endl;
 
-    c = a / b;
-    cout << "c: " << c.Real << c.Imaginary << endl;
 
     return 0;
 }
 
-//test program for a class of rational numbers called rat
+#ifndef broken
 
-int wrap53()
+int wrap533()
 {
     cout << "choose two rational numbers ";
     int anum, aden, bnum, bden;
@@ -9028,88 +7696,15 @@ int wrap53()
 
 
 
-hello?
-
-lol
-//t function demonstration, seems useless
-
-//include <iostream>
  
 
-int tFunction (int A);
 
-int wrap54()
-{
-	int X = 0;
-	cout << "pick an integer greater than 1 --> ";
-	cin >> X;
-
-	while (X != 1 )
-	{
-		X = tFunction(X);
-		cout << X << ' ';
-	}
-
-	cout << endl;	
-  	return 0;
-}
-
-int tFunction (int A)
-{
-	if ((A % 2) == 0)
-	{
-		return A/2;
-	}
-	else
-		return ((3*A)+1)/2;
-}
 
 // experimenting with time functions
 
 //include <iostream>
 //include <time.h>
  
-int wrap55()
-{
-    
-    
-    time_t now;
-    struct tm start;
-    
-    time(&now);  /* get current time; same as: now = time(NULL)  */
-    
-    start = *localtime(&now);
-    
-    start.tm_hour = 0; start.tm_min = 0; start.tm_sec = 0;
-    start.tm_mon = 7;  start.tm_mday = 2;
-    
-    seconds = difftime(now,mktime(&start));
-    
-    
-    return 0;
-}
-// Translates ascii characters to their literal numbers in decimal
-
-//include <iostream>
- 
-
-int wrap56(int argc, char* argv[])
-{
-    int j;
-    for (int i = 1 ; i < argc ; i++)
-    {
-        j = 0;
-        while (argv[i][j]) 
-        { 
-            cout << int(argv[i][j]);
-            j++;
-        }
-        cout << ' ' ;
-    }
-    cout << endl;
-
-    return 0;
-}
 // This is a comment
 /*
  * Multi-line comment
@@ -9945,7 +8540,6 @@ int countwords(char* string, int size)
 // demonstration of writing to a file
 
 //include <fstream>
- 
 
 int wrap59()
 {
@@ -9964,8 +8558,9 @@ int wrap59()
  
 
 
+#endif 
 
-int 60()
+int wrap60()
 {
     int width = pow(2, 5);
     int height = pow(2, 5);
@@ -10000,72 +8595,7 @@ int 60()
 
 //something is wrong with the math
 
-#define debug
-
-//include <iostream>
-//include <math.h>
- 
- 
-
-int ChooseTransform(int UserInput);
-
-struct twoVector
-{
-    double a;
-    double b;
-};
-
-twoVector transform(twoVector a, double pi);
-
-int 61(int argc, char* argv[])
-{
-    if (argc != 4)
-	{
-	   cout << "2dTransform [a] [b] [pi]\n";
-	   return 0;
-	}
-
-    double a = stringToFloat(argv[1]);
-	double b = stringToFloat(argv[2]);
-	double pi = stringToFloat(argv[2]);
-#ifdef debug
-    cout << a << b << pi << endl;
-#endif
-    twoVector num;
-    num.a = a;
-    num.b = b;
-    twoVector toOut = transform(num, pi);
-
-    cout << toOut.a << ' ' << toOut.b << endl;
-
-    return 0;
-}
-
-twoVector transform(twoVector a, double pi)
-{
-    double TranformMatrix[2][2] = {{cos(pi),-sin(pi)}
-				  ,{sin(pi),cos(pi)}};
-
-    double InputVector[2];
-    double OutputVector[2];
-
-    InputVector[0] = a.a;
-    InputVector[1] = a.b;
-
-    OutputVector[0] = TranformMatrix[0][0]*InputVector[0]  //problem maybe here?
-	 	+ TranformMatrix[1][0]*InputVector[1];
-    OutputVector[1] = TranformMatrix[0][1]*InputVector[0] 
-		+ TranformMatrix[1][1]*InputVector[1];
-
-    a.a = OutputVector[0];
-    a.b = OutputVector[1];
-
-    return a;
-}
-
- 
-
-int 62()
+int wrap62()
 {
     for (int i = 1 ; i < 1000 ; i++)
     {
@@ -10078,7 +8608,6 @@ int 62()
 // tells age of something
 // could be imporved to include new years day
 // and automatically get current date
-
 
 
 int wrap63() 
@@ -10195,83 +8724,6 @@ int wrap56(int argc, char** argv)
 // this is the pretty version, practical version is in mainlib
 // by: Jordan Winkler
 
-//include <iostream>
-//include <cstdlib>
-//include <string>
- 
-
-
-class InVal
-{
-public:
-    void PrintAsBase(int base);
-    InVal();
-    void init_val(int, int);
-
-private:
-    int num;
-    int base;		
-};
-
-int wrap55(int argc, char** argv)
-{
-	InVal num_c;
-	
-    if (argc != 3)
-    {
-        cout << "baseconvert [number] [base]\n";
-        return 1;
-    }
-	int num = stringToInt(argv[1]); // number to convert
-	int base = stringToInt(argv[2]); // number to convert
-
-
-	if (base < 2 || base > 25) //to lengthen base
-	{
-		cout << "You have entered a base that is outside of\n"
-		     << "the valid range.\n\n";
-		return 1;
-	}
-
-	num_c.init_val(num,10);
-
-	num_c.PrintAsBase(base);
-}
-
-InVal::InVal()
-{
-	num = base = 0;
-}
-
-void InVal::init_val(int in_num, int in_base)
-{
-	num = in_num;
-	base = in_base;
-}
-
-void InVal::PrintAsBase(int out_base)
-{
-	string digits("0123456789ABCDEFGHIJKLMNO"); //to lengthen base
-	string result;
-	int in_num = num;
-	int in_base = out_base;
-
-	for (; in_num; in_num /= in_base) //the number theory bit
-	{
-		result.insert(result.begin(), digits[abs(in_num % in_base)]);
-	}
-
-	if (num < 0)
-	{
-		result.insert(result.begin(), '-');
-	}
-
-	cout << result << '\n';
-
-}
-
-
-//include <iostream>
  
 int wrap57()
 {
@@ -15497,26 +13949,6 @@ int changeToBase(ll x, int base, ll string[], int Max)
     return i; //length of array
 }
 
-/****************************************************************
-| Name: toChar
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: number being changed to a char*, max size of char*
-|   Out: nothing
-|   
-| Returns: char* representing number in characters
-\****************************************************************/
-char* toChar(ll num, int Max)
-{
-    char* temp = new char[Max];
-    changeToBase(num, 256, temp, Max);
-
-    return temp;
-}
 
 /****************************************************************
 | Name: toChar
@@ -16083,84 +14515,6 @@ ll getK();
 ll getJ();
 ll getPrime(unsigned int power);
 
-int wrap ()
-{
-    cout << "program loading\n";
-
-    bigInt one;
-    one.value(1);
-
-    bigInt zero;
-    zero.value(0);
-
-    ll p;
-    p.value(5);
-    ll q;
-    q.value(7);
-    
-    ll n;
-    n = p * q;
-    ll k;
-    k.value(5);
-
-
-    //if ((gcd(k, phi(p,q)) != one) || (k > phi(p,q))) 
-//      cout << "bad k\n";
-
-    ll phin;
-    phin = phi(p,q);
-
-    ll j;
-    j = modInv(k, phin);
-
-//  if (j > phi(p,q) || (k*j) % phi(p,q) != 1)
-//      cout << "bad j\n";
-
-    ll M;
-    M.value(5);
-    ll r;
-
-    cout << "number to encrypt: ";
-    M.print();
-    cout << endl;
-
-    r = encrypt(M, n, k);
-    
-    cout << "encrypted: ";
-    r.print();
-    cout << endl;
-
-    M = decrypt(r, p, q, j);
-
-    cout << "decrypted: ";
-    M.print();
-    cout << endl;
-
-#ifdef DEBUG
-    cout << "(n, k) : ";
-    n.print();
-    cout << ' ';
-    k.print();
-    cout << endl;
-
-    cout << "(p, q, j) : ";
-    p.print();
-    cout << ' ';
-    q.print(); 
-    cout << ' ';
-    j.print(); 
-    cout << endl;
-
-    cout << "M: ";
-    M.print(); 
-    cout << endl;
-    cout << "r: ";
-    r.print();
-    cout << endl;
-#endif //DEBUG
-
-    return 0;
-}
 /****************************************************************
 | Name: encrypt
 |    
@@ -17047,70 +15401,13 @@ int ()
 }
 
 
-
-hello?
-
-lol
-//t function demonstration, seems useless
-
-//include <iostream>
- 
-
-int tFunction (int A);
-
-int wrap ()
-{
-	int X = 0;
-	cout << "pick an integer greater than 1 --> ";
-	cin >> X;
-
-	while (X != 1 )
-	{
-		X = tFunction(X);
-		cout << X << ' ';
-	}
-
-	cout << endl;	
-  	return 0;
-}
-
-int tFunction (int A)
-{
-	if ((A % 2) == 0)
-	{
-		return A/2;
-	}
-	else
-		return ((3*A)+1)/2;
-}
-
 // experimenting with time functions
 
 //include <iostream>
 //include <time.h>
  
-int wrap ()
-{
-    
-    
-    time_t now;
-    struct tm start;
-    
-    time(&now);  /* get current time; same as: now = time(NULL)  */
-    
-    start = *localtime(&now);
-    
-    start.tm_hour = 0; start.tm_min = 0; start.tm_sec = 0;
-    start.tm_mon = 7;  start.tm_mday = 2;
-    
-    seconds = difftime(now,mktime(&start));
-    
-    
-    return 0;
-}
 // Translates ascii characters to their literal numbers in decimal
 
-//include <iostream>
  
 
 int wrap (int argc, char* argv[])
@@ -18013,5 +16310,4 @@ int wrap1()
 }
 
 
-// can prototype main
-int main(int argc, char** argv, char** lol);
+int main(){return 0;};
