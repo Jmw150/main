@@ -1,3 +1,0 @@
-(repo git "git://bitbucket.org/evhan/{egg-name}.git")
-(uri targz "https://bitbucket.org/evhan/{egg-name}/get/{egg-release}.tar.gz")
-(release "0.0.6")

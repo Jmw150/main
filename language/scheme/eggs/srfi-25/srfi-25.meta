@@ -1,8 +1,0 @@
-;;; srfi-25.meta -*- Scheme -*-
-
-((category data)
- (synopsis "Multidimensional arrays")
- (author "Jussi Piitulainen")
- (doc-from-wiki)
- (files "srfi-25.setup" "srfi-25.scm" "tests/run.scm" "srfi-25.meta")
- (license "SRFI"))

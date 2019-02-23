@@ -1,7 +1,0 @@
-((egg "pwdb.egg")
- (synopsis "A command-line-based password manager")
- (author "Alaric Snell-Pym")
- (maintainer "Alaric Snell-Pym")
- (category crypt)
- (license "BSD")
- (needs stty tweetnacl args srfi-27 matchable))

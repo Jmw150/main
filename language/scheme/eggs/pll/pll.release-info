@@ -1,7 +1,0 @@
-(repo git "git://github.com/jpellegrini/{egg-name}.git")
-(uri targz "https://github.com/jpellegrini/{egg-name}/tarball/{egg-release}")
-(release "v1.5")
-(release "v1.6")
-(release "v1.6.2")
-(release "v1.6.3")
-

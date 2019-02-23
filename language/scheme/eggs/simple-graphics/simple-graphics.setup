@@ -1,7 +1,0 @@
-(compile -s -O3 -d1 simple-graphics.scm -j simple-graphics)
-(compile -s -O3 -d1 simple-graphics.import.scm)
-(compile -c -O3 -d1 simple-graphics.scm -unit simple-graphics)
-
-(install-extension 'simple-graphics '("simple-graphics.so" "simple-graphics.o" "simple-graphics.import.so")
-                   '((version "0.2")
-                     (static "simple-graphics.o")))

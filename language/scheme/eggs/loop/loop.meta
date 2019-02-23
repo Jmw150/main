@@ -1,8 +1,0 @@
-;;; loop.meta -*- Scheme -*-
-
-((synopsis "The Common Lisp LOOP macro")
- (license "GPL-2")
- (author "Heinrich Taube")
- (category lang-exts)
- (depends make)
- (files "loop.meta" "loop.scm" "loop.setup" "loop-support.scm" "tests/run.scm"))

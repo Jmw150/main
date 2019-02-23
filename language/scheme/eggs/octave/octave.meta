@@ -1,9 +1,0 @@
-;;; octave.meta -*- Hen -*-
-
-((egg "octave.egg")
- (synopsis "Interface to GNU/Octave")
- (category graphics)
- (license "BSD")
- (doc-from-wiki)
- (author "Pierre-Alexandre Fournier")
- (files "octave-chicken.scm" "UPGRADING" "octave.setup" "octave.scm" "octave.meta"))

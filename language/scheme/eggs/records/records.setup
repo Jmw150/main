@@ -1,9 +1,0 @@
-(compile -s -O2 -d1 records.scm -j records)
-(compile -c -O2 -d1 records.scm)
-(compile -s -O2 -d0 records.import.scm)
-(install-extension
- 'records
- '("records.so" "records.import.so" "records.o")
- '((documentation "records.html")
-   (static "records.o")
-   (version 1.3) ) )

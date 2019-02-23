@@ -1,9 +1,0 @@
-;-*- Scheme -*-
-
-(run (csc -sSJ -O3 -d0 inline.scm))
-(run (csc -s -O3 -d0 inline.import.scm))
-
-(install-extension
- 'inline
- '("inline.so" "inline.import.so")
- '((version 1.9)))

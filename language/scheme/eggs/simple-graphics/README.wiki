@@ -1,7 +1,0 @@
-This is simple-graphics, a turtle graphics library for Chicken Scheme.
-
-It is designed for educational use, to let new programmers quickly
-have something interesting they can program the computer to do: draw
-pictures. This has more immediate appeal than arithmetic...
-
-Please see [https://wiki.call-cc.org/eggref/4/simple-graphics|the egg page in the Chicken Wiki for the documentation].

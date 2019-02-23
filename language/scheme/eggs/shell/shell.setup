@@ -1,4 +1,0 @@
-;;;; -*- Scheme -*-
-
-
-(standard-extension 'shell 0.3)
