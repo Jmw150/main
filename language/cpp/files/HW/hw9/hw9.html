@@ -1,0 +1,95 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+   <meta name="Author" content="Dana Vrajitoru">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (X11; U;
+Linux 2.2.12-20 i5
+86) [Netscape]">
+   <title>DV C243 Homework 9</title>
+</head>
+<body text="#EEEFFF" link="#FFFFAA" vlink="#FFCCFF" alink="#FFCCCC" 
+bgcolor="#191970">
+
+<b><a href="../../">Dana Vrajitoru</a></b>
+
+<br><b><a href="./">C243 Data Structures</a></b>
+<hr>                            
+
+<center>
+<h2>C243 Homework 9</h2></center>
+
+<b>Due date:</b> Wednesday, November 15, 2017.
+
+<p><b>Ex. 1. </b> This is a team homework.
+
+<p>Implement a sorting algorithm that is O(n log<sub>2</sub> n) on
+average, such as Quicksort, Merge Sort, Heapsort.  Your programs will
+the tested on a number of randmly generated arrays of various sizes
+(the same arrays for everyone). The fastest algorithm in the entire
+class turned in on time receives 5 extra credit points. Do not use the
+function sort from the STL, or any other function from the STL.
+
+<p>The main program should do the following, in this order:
+<ul>
+<li>ask the user for the size of the array;
+<li>allocate a dynamic array of the appropriate size;
+<li>input all the elements of the array from the <tt>cin</tt> (I will
+use redirection from a file for the test);
+<li>sort the array and time the sorting functions alone (see below);
+<li>output the sorted array;
+<li>output the timing information.
+</ul>
+
+To test the algorithm you can generate the array using a random number
+generator, only change it before you turn the array in. This is
+designed so that we can use the Linux redirection to input the array
+from a file. Here is an example of a test file with 500 numbers to
+sort:<br>
+<a href="./test500.txt">test500.txt</a>
+
+<p>In the test, the integers can be from the entire integer range,
+even though in the file it looks like the are in the range 0 to 9999.
+
+<p><b>Timing.</b> Here's some information about timing your sorting
+function.  Note that this might not work just like this on Windows or
+Mac - you'd have to look for the appropriate header on that
+system. First, include this header file:
+
+<pre>
+#include &lt;sys/time.h&gt
+</pre>
+
+Then declare the following variables:
+<pre>
+struct timeval before, after;
+double timing;
+</pre>
+
+Before the sorting function:
+
+<pre>
+gettimeofday(&amp;before, 0);
+</pre>
+
+After the function call:
+<pre>
+gettimeofday(&amp;after, 0);
+timing = (double) ((double)after.tv_sec +
+                   (double)after.tv_usec/(1000*1000)) -
+         (double) ((double)before.tv_sec +
+                   (double)before.tv_usec/(1000*1000));
+</pre>
+
+The timing is your final timing of the sorting function.
+
+<!The best timing function I found so far is from a  
+library called MPI. You must include the header file &lt;mpi.h&gt;. The 
+function is MPI_Wtime() with no parameters and returning a double value. 
+If you find another function returning the time more precisely than in 
+seconds, let me know. You must use a compiler called hcp with MPI and 
+include the libraries -lmpi and -llam.>
+
+</body>
+</html>

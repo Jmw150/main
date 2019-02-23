@@ -6824,6 +6824,7 @@ ll stringToValue(char a[], int start, int end);
 
 void valueToString(ll value, char string[], int start, int end);
 
+/*
 int llwrap2()
 {
     ll p = 1000003; //prime 1
@@ -6904,6 +6905,7 @@ int llwrap2()
 
     return 0;
 }
+*/
 
 void flipString(char a[])
 {
@@ -8610,7 +8612,7 @@ int wrap62()
 // and automatically get current date
 
 
-int wrap63() 
+int wrap632() 
 {
 
     enum MonthLength {JAN_LENGTH = 31, FEB_LENGTH = 28, MAR_LENGTH = 31,
@@ -8742,152 +8744,11 @@ int wrap57()
          << " bottles of beer on the wall.\n";
     return 0; 
 }
-//include <stdio.h>
 
-static double f (double x)
-{
-  return (x-0.5)*(x-0.5);
-}
-
-double bisection (double start, double stop, int iterations)
-{
-  double mid = (start+stop)/2;
-  if (iterations == 0) return mid;
-  
-  if (f(start) > 0) 
-      if (f(mid) > 0)
-    	return bisection(mid, stop, iterations-1);
-      else if (f(mid) < 0)
-    	return bisection(start, mid, iterations-1);
-      else if (f(mid) == 0)
-    	return mid;
-  if (f(start) < 0) 
-      if (f(mid) < 0)
-    	return bisection(mid, stop, iterations-1);
-      else if (f(mid) > 0)
-    	return bisection(start, mid, iterations-1);
-      else if (f(mid) == 0)
-    	return mid;
-}
 	
 
-int wrap58()
-{
-  printf("root is close to %f\n", bisection(-1,1,20));
 
-  return 0;
-}
-//include <iostream>
-//include <math.h>
- 
-
-/****************************************************************
-| Name: stringToInt
-|    
-| Precodition: <iostream>, <stdlib> ,<math.h> used
-| Postcondition: gives back a positive integer that the user typed
-|
-| Parameters:
-|       
-|   IN:  char* string
-|   Out: none
-|   
-| Returns: an int from the user
-\****************************************************************/
-int stringToInt(char* input) 
-//char* assumed to come from main argv which has a lot of space on it
-{
-    /* for flag if number is too big for current architexture */
-    const int arrayMax = int(log10(pow(2, sizeof(int)*8))+1); 
-
-    int Rows = 0;
-
-    /* get size of input array, minus null terminator */
-    int arraySize = 0;
-    while (input[arraySize++] != '\0'); 
-    arraySize--;
-    
-    if (arraySize > arrayMax)
-    {
-        cout << "\nSmaller number please\n";
-        exit(1);
-    }
-
-    /* transfer to int */
-    /* if negative */
-    if (input[0] == '-')
-    {
-        for (int i = 1 ; input[i] != '\0' ; i++)
-        {
-            if (input[i] <= '9' && input[i] >= '0')
-            {
-                Rows += int(input[i] - '0');
-                Rows *= 10; 
-            }
-            else 
-            {
-                cout << "\nError: non-number\n";
-                exit(1);
-            }
-        }
-        Rows /= 10;
-        Rows *= -1;
-        return Rows;
-    }
-    /* if positive */
-    for (int i = 0 ; input[i] != '\0' ; i++)
-    {
-        if (input[i] <= '9' && input[i] >= '0')
-        {
-            Rows += int(input[i] - '0');
-            Rows *= 10; 
-        }
-        else 
-        {
-            cout << "\nError: non-number\n";
-            exit(1);
-        }
-    }
-    return Rows /= 10;
-}
-
-/****************************************************************
-| Name: breakIntoPrimes
-|    
-| Precodition: <iostream>, <stdlib.h>, an int array, and a number
-|              to test
-| Postcondition: an array of primes from the tested number
-|
-| Parameters:
-|       
-|   IN: int CompositeNumber, int max
-|   Out: int array
-|   
-| Returns: nothing
-\****************************************************************/
-void breakIntoPrimes(int CompositeNumber, int A[], int MAX)
-{
-    for (int i = 0 ; i < MAX ; i++) //clean the array
-        A[i] = 0;
-    
-    int j = 0;
-    for (int i = 2 ; i <= CompositeNumber ; i++)
-    {
-        if (CompositeNumber % i == 0)
-        { 
-            A[j++] = i;
-            CompositeNumber /= i;
-            i--; // reset for multiple primes
-        }
-        if (j == MAX)
-        {
-            cout << "Error: too many primes\n";
-            exit(1);
-        }
-    }
-}
-
-int wrap68(int argc, char** argv)
+int wrap689(int argc, char** argv)
 {
 
     if (argc != 2)
@@ -8914,10 +8775,6 @@ int wrap68(int argc, char** argv)
 //Enter sentence that you would like to encrypt into the 
 //command line after the function call.
 
-//include <iostream>
- 
-
-char caesarCipher(char letter, int displacement);
 
 int wrap59(int argc, char* argv[])
 {
@@ -8943,16 +8800,6 @@ int wrap59(int argc, char* argv[])
     return 0;
 
 }
-
-char caesarCipher(char letter, int displacement)
-{
-    if (letter >= 'a' && letter <= 'z')
-        return (letter - 'a' + displacement) % 26 + 'a';
-    if (letter >= 'A' && letter <= 'Z')
-        return (letter - 'A' + displacement) % 26 + 'A';
-    else return letter;
-}
-
 
 int wrap60(int argc, char* argv[]) 
 {
@@ -9078,265 +8925,8 @@ int wrap62(int argc, char** argv)
 //include <iostream>
   
 
-//include <gmp.h>
-
-int wrap63()
-{
-    cout << "c++ version: ";
-    cout << __cplusplus << endl;
-
-    cout << "gmp version: ";
-    cout << __GNU_MP_VERSION << endl;
-
-    return 0;
-}
-
-int wrap66(int argc, char* argv[])
-{
-    if (argc != 3)
-	{
-	  cout << "error: wrong number of arguments\n";
-	  return 1;
-	}
-    int a = stringToInt(argv[1]);
-    int b = stringToInt(argv[2]);
-
-    cout << choose(a, b) << endl;
-
-    return 0;
-}
-//include <iostream>
-//include <string>
-//include <fstream>
-//include <stdlib.h>
- 
-
-int getIntData(string FileName, int a[], int size);
-
-int compareArrays(int a[], int b[], int size);
-
-int wrap68()
-{
-    const int MAX_SIZE = 10000;
-    int List1[MAX_SIZE] = {0};
-    int List2[MAX_SIZE] = {0};
-
-    fstream InData;
-    InData.open("primeList");
-
-    int FileSize1 = 0;
-    while (InData >> List1[FileSize1++]);
-    
-    InData.close();
-
-    InData.open("primeList2");
-
-    int FileSize2 = 0;
-    while (InData >> List2[FileSize2++]);
-    
-    InData.close();
 
 
-    cout << "Size of list 1: " << FileSize1 << endl
-         << "Size of list 2: " << FileSize2 << endl;
-
-    cout << "not equal at: "
-         << compareArrays(List1, List2, 
-            (FileSize1>FileSize2)?FileSize1:FileSize2);
-    
-    return 0;
-}
-/*
-int getIntData(string FileName, int a[], int size)
-{
-    fstream InData;
-    InData.open(FileName);
-
-    int FileSize = 0;
-    while (InData >> a[FileSize]);
-    
-    InData.close();
-
-    return FileSize;
-}
-*/
-int compareArrays(int a[], int b[], int size)
-{
-    for (int i = 0 ; i < size ; i++)
-        if (a[i] != b[i])
-            return i;
-    
-    return -1;
-}
-//include <stdlib.h>
-//include <iostream>
- 
-
-/*================================================================
-|| 
-|| Object: com 
-|| 
-|| Purpose: a data type to approximate complex numbers
-||      
-|| Atributes: 
-||      Real
-||      Imaginary
-|| Functions:
-||      + - * operators (not members)
-||
-\*==============================================================*/
-class com
-{
-public:
-    com(double RealValue, double ImaginaryValue);
-    com(const double &RealValue);
-    com();
-    
-    double Real;
-    double Imaginary;
-
-};
-
-const com operator +(const com &a, const com &b);
-const com operator -(const com &a, const com &b);
-const com operator *(const com &a, const com &b);
-const com operator /(const com &a, const com &b);
-
-com::com(double RealValue, double ImaginaryValue)
-{
-    Real = RealValue;
-    Imaginary = ImaginaryValue;
-}
-
-com::com(const double & RealValue)
-{
-    Real = RealValue;
-    Imaginary = 0;
-}
-
-com::com()
-{
-    Real = 0;
-    Imaginary = 0;
-}
-
-const com operator +(const com &a, const com &b)
-{
-    double finalReal = a.Real + b.Real;
-    double finalImaginary = a.Imaginary + b.Imaginary;
-
-    return com(finalReal, finalImaginary);
-}
-
-const com operator -(const com &a, const com &b)
-{
-    double finalReal = a.Real - b.Real;
-    double finalImaginary = a.Imaginary - b.Imaginary;
-
-    return com(finalReal, finalImaginary);
-}
-
-const com operator *(const com &a, const com &b)
-{
-    double finalReal = 
-            a.Real * b.Real - a.Imaginary * b.Imaginary;
-    double finalImaginary = a.Real * b.Imaginary 
-            + a.Imaginary * b.Real;
-
-    return com(finalReal, finalImaginary); 
-}
-
-const com operator /(const com &a, const com &b)
-{
-    // if b is 0
-    if (b.Real == 0 && b.Imaginary)
-    {
-        cout << "divided by 0\n";
-        exit(1);
-    }
-
-    // b inverse
-    //com c(a/(a*a+b*b), b/(a*a+b*b));
-    com c(b.Real/(b.Real*b.Real+b.Imaginary*b.Imaginary), -b.Imaginary/(b.Real*b.Real+b.Imaginary*b.Imaginary));
-    return  a * c;
-}
-//code is notes not a program
-
-//include <iostream>
- 
-
-int wrap69() 
-{
-   
-    cout.setf(ios::fixed);      // This is a super useful block of code
-    cout.setf(ios::showpoint);  // It will be covered more in chapter 12
-    cout.precision(2);          //
-    
-	double c;
-    c = 1/3.0;
-    cout << c;
-    return 0;
-}
-//include <iostream>
- 
-
-int wrap70()
-{
-    cout << __cplusplus << endl;
-
-    return 0;
-}
-
-    
-
-//made by: Jordan Winkler
-//License: GNU Public Licence
-
-/****************************************************************
-| Name: expMod
-|    
-| Precodition: nothing
-| Postcondition: nothing
-|
-| Parameters:
-|       
-|   IN: integer for base, exponent, and mod
-|   Out: nothing
-|   
-| Returns: integer d for a^n ≡ d (mod m)
-\****************************************************************/
-unsigned long int expMod(unsigned long int a, unsigned long int n, unsigned long int m) 
-{
-    ll x = a;
-    ll y = (((n >> 0) & 1) == 1)?a:1;
-    ll k = 4096; //for now
-    for (int i = 1 ; i <= k ; i++)
-    {
-        x = (x*x) % m;
-        if (((n >> i) & 1) == 1)
-            y = (y == 1)?x:((x*y)%m);
-    }
-    return y;
-}
-// really pointless without mpc library
-
-
-int wrap68(int argc, char* argv[])
-{
-    if (argc != 2)
-	{
-	  cout << "error: wrong number of arguments\n";
-	  return 1;
-	}
-    int a = stringToInt(argv[1]);
-
-    cout << factorial(a) << endl;
-
-    return 0;
-}
-//include <iostream>
-//include <fstream>
-//include <string>
 
  
 
@@ -9355,7 +8945,7 @@ int wrap69()
     fout << "lolcat lolcat\n";
 
     fout.close();
-//////////////////////////////////////////////////////////////////
+
 
     cout << "reading file\n";
     ifstream fin(input);
@@ -9372,40 +8962,6 @@ int wrap69()
     
     return 0;
 }
-// useless
-
-//include <iostream>
-//include <fstream>
-//include <string>
-//include <math.h>
- 
-
-
-int wrap70() 
-{
-    fstream data;
-    int width, height;
-    width = 6;
-    const int ARRAY_SIZE = 100;
-    
-    double bucket = 0;
-    double x[ARRAY_SIZE] = {0};
-    int i = 0;
-    data.open("data.txt");
-    while (data >> bucket)
-    {
-        x[i++] = bucket;
-    }
-    cout << "Data has " << i << " objects. \n";
-    for (int j=0; j != i; j++)
-    {
-        cout << x[j] << " ";
-    }
-    data.close();
-    return 0;
-}
-//include <iostream>
-//include <fstream>
 
  
 
@@ -9461,9 +9017,7 @@ int wrap72()
 }
 //a small text based game to test classes in c++
 
-//include <iostream>
- 
-
+#ifndef broken
 class creature
 {
 public:
@@ -9553,7 +9107,7 @@ void Part1()
 		cin.ignore();
 	}
 }
-// seems bugged 
+#endif
 
 
 
@@ -9665,7 +9219,7 @@ int wrap2222()
 //include <stdlib.h>
  
 
-void swap(int* array, int a, int b, int maxSize);
+
 
 
 int lololol()
@@ -9700,12 +9254,7 @@ int lololol()
     return 0;
 }
 
-void swap(int* array, int a, int b, int maxSize)
-{
-    int temp = array[a];
-    array[a] = array[b];
-    array[b] = temp;
-}
+#ifndef broken
 // name:     Jordan Winkler
 // date:     2/10/2017
 // homework: 2
@@ -9929,180 +9478,8 @@ void AssignNames(id names[], int Max, string File)
     InData.close();
 }
 
-/*****************************************************************
-| Name: QuickSort
-|    
-| Precodition: an id array, and information on the begining and 
-|              end of the array
-| Postcondition: a sorted array
-|
-| Parameters:
-|       
-|   IN: location of id array, int for start and end
-|   Out: nothing
-|   
-| Returns: nothing
-\*****************************************************************/
-void QuickSort(id names[], int left, int right) {
-      int i = left, j = right;
-      id tmp;
-      int pivot = names[(left + right) / 2].IDnumber;
- 
-      /* partition */
-      while (i <= j) {
-            while (names[i].IDnumber < pivot)
-                  i++;
-            while (names[j].IDnumber > pivot)
-                  j--;
-            if (i <= j) {
-                  tmp = names[i];
-                  names[i] = names[j];
-                  names[j] = tmp;
-                  i++;
-                  j--;
-            }
-      };
- 
-      /* recursion */
-      if (left < j)
-            QuickSort(names, left, j);
-      if (i < right)
-            QuickSort(names, i, right);
-}
+#endif
 
-/*****************************************************************
-| Name: binarySearch
-|    
-| Precodition: An id array that has been sorted and
-|              something to look for
-| Postcondition: The location of that thing in an array
-|
-| Parameters:
-|       
-|   IN: integers of the size and thing to find, id array
-|   Out: the same array
-|   
-| Returns: int location of requested thing
-\*****************************************************************/
-int binarySearch(int target, id names[], int Size)
-{
-    int lo = 0, hi = Size, i;
-    
-    while (lo <= hi)
-    {
-        i = (lo + hi)/2;
-        if (names[i].IDnumber == target) return i;
-        if (names[i].IDnumber < target)
-        /* change return if looking for multiple items */
-            lo = i + 1;
-        else
-            hi = i - 1;
-    }
-    return Size;
-}
-
-/*****************************************************************
-| Name: getInt
-|    
-| Precodition: <iostream>, <stdlib> used
-| Postcondition: gives back a positive integer that the user typed
-|
-| Parameters:
-|       
-|   IN:  none
-|   Out: none
-|   
-| Returns: an int from the user
-\*****************************************************************/
-int getInt()
-{
-	const int ARRAY_SIZE = 10; /* not adjusted to the machine */
-	char UserInput[ARRAY_SIZE] = {0};
-	int ArraySpot = 0;
-	int Rows = 0;
-
-	do 
-	{   
-		UserInput[ArraySpot] = cin.get(); 
-		if (ArraySpot > ARRAY_SIZE)
-		{
-			cout << "Smaller number please";
-			exit(1);
-		}
-	} while ( UserInput[ArraySpot++] != '\n');
-	for (int i = 0 ; i < ArraySpot - 1 ; i++)
-	{
-		if (UserInput[i] <= '9' && UserInput[i] >= '0')
-		{
-			Rows += int(UserInput[i] - '0');
-			Rows *= 10; 
-		}
-		else 
-		{
-			cout << "Error: non-number\n";
-			exit(1);
-		}
-	}
-	return Rows /= 10; 
-}
-
-/*****************************************************************
-| Name: PrintNames
-|    
-| Precodition: an array of type id and its array size
-| Postcondition: the contents of the id array are cout
-|
-| Parameters:
-|       
-|   IN: location of id array and its int size
-|   Out: Nothing
-|   
-| Returns: Nothing
-\*****************************************************************/
-void PrintNames(id names[], int Max)
-{
-    for (int i = 0 ; i < Max ; i++)
-    {
-        cout << names[i].IDnumber << ' '
-             << names[i].FirstName << ' '
-             << names[i].LastName << '\n';
-    }
-}
-
-/*****************************************************************
-| Name: SaveToFile
-|    
-| Precodition: an array of id struct and a max size
-| Postcondition: the array of id struct is saved to a file
-|
-| Parameters:
-|       
-|   IN: location of id struct, int size
-|   Out: Nothing
-|   
-| Returns: Nothing
-\*****************************************************************/
-void SaveToFile(id names[], int Max)
-{
-    ofstream OutData;
-    cout << "Enter name of save file: "; 
-                                        
-    string UserInput;
-    getline(cin, UserInput);
-    OutData.open(UserInput.c_str());
-
-    for (int i = 0 ; i < Max ; i++)
-    {
-        OutData << names[i].IDnumber << ' '
-                << names[i].FirstName << ' '
-                << names[i].LastName << '\n';
-    }
-
-    OutData.close();
-}
-// lambda-ish ability in c++
-
-//include <iostream>
 
 int lambda_test() 
 {
@@ -10112,6 +9489,7 @@ int lambda_test()
     std::cout << "f() = " << f(2) << std::endl;
 
     return 0;
+}
 
 
 int lcm_drive(int argc, char* argv[])
@@ -10180,7 +9558,7 @@ int wrap333(int argc, char** argv)
 //include <math.h>
 //include <stdlib.h>
  
-
+#ifndef broken
 struct img
 {
     int id;
@@ -16280,34 +15658,8 @@ int wrap ()
 
  
 
+#endif
 
-
-int wrap1()
-{
-    int width = pow(2, 5);
-    int height = pow(2, 5);
-    int maxgrey = pow(2, 5);
-    //P2 is a magic number to id as pgm
-    cout << "P2 "
-         << width << ' '
-         << height << ' '
-         << maxgrey << ' '; //magic number to id as pgm
-
-
-
-
-    for (int j = 0 ; j < height ; j++)
-        for (int i = 0; i < width ; i++) 
-        {
-            cout << (
-            /* place function in here */
-
-            (((i%2))?maxgrey:0)
-
-            )%maxgrey << ' ';
-        } cout << endl;
-    return 0;
-}
 
 
 int main(){return 0;};
