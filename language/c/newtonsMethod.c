@@ -15,6 +15,7 @@ int main ()
     {
         X-= ((X*X*X)-125 )/(3*X*X); 
     }
-    cout << X << endl;
+    printf("%d\n", X);
+
     return 0;
 }

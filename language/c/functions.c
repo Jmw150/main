@@ -1,9 +1,11 @@
 /*  
-    A library for all of my favorite functions and classes
+    A library for all of my favorite functions 
     created by: Jordan Winkler
 
+    currently on a slow overhaul to translate to C
 */
 #define broken
+#ifndef broken
 
 #include <limits>
 #include <iostream>
@@ -15663,3 +15665,142 @@ int wrap ()
 
 
 int main(){return 0;};
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+
+/**///////////////////////////////////////////////////////////////
+/**/// function and global variables to mess with
+/**/   double startG = 1;
+/**/   double endG   = 2;
+/**/   double preG   = 0.00001;
+/**/   double function (double x)
+/**/   {
+/**/       return 5*cos(2*x)/(2*x*sin(2*x)+1);
+/**/   }
+/**///////////////////////////////////////////////////////////////
+
+double maxf (double start, double end, double precision)
+{
+    double maxNum = function(start);
+    for ( ; start < end ; start += precision)
+        if (function(start) > maxNum)
+            maxNum = function(start);
+
+    return maxNum;
+}
+
+double minf (double start, double end, double precision)
+{
+    double minNum = function(start);
+    for ( ; start < end ; start += precision)
+        if (function(start) < minNum)
+            minNum = function(start);
+
+    return minNum;
+}
+
+double maxOnX (double start, double end, double precision)
+{
+    double maxNum = start;
+    for ( ; start < end ; start += precision)
+        if (function(start) > maxNum)
+            maxNum = start;
+
+    return maxNum;
+}
+
+double minOnX (double start, double end, double precision)
+{
+    double minNum = start;
+    for ( ; start < end ; start += precision)
+        if (function(start) < minNum)
+            minNum = start;
+
+    return minNum;
+}
+
+int main ()
+{
+
+
+    cout << "min and max values\n";
+    cout << "------------------\n";
+    cout << "min: ";
+    cout << "(" << minOnX(startG, endG, preG) << ",";
+    cout << minf(startG,endG,preG) << ")" << endl;
+    cout << "max: ";
+    cout << "(" << maxOnX(startG, endG, preG) << ",";
+    cout << maxf(startG,endG,preG) << ")" << endl;
+
+    cout << endl;
+
+    startG = .5; endG = 1; preG = 0.000001;
+    cout << "min: ";
+    cout << "(" << minOnX(startG, endG, preG) << ",";
+    cout << minf(startG,endG,preG) << ")" << endl;
+    cout << "max: ";
+    cout << "(" << maxOnX(startG, endG, preG) << ",";
+    cout << maxf(startG,endG,preG) << ")" << endl;
+
+    return 0;
+}
+
+
+
+
+    
+//prints out pascal's triangle to up to 20 rows
+
+#include "mylib.hpp"
+
+int main ()
+{
+	cout << "How many rows of pascal's triangle do you want? -> ";
+	int Rows;
+    cin >> Rows;
+    if (cin.fail() || Rows <= 0 || Rows > 20)
+    {
+        cout << "\nerror: bad num\n";
+        return 0;
+    }
+
+    const int MAX = 21; //long int currently max 20
+    int a[MAX][MAX] = {0};
+    
+    for (int i = 0 ; i < Rows ; i++)
+	    for (int j = 0 ; j < Rows ; j++)
+	        a[i][j] = choose(i,j);
+
+    for (int i = 0 ; i < Rows ; i++)
+    {
+        for (int j = 0 ; a[i][j] ; j++)
+            cout << a[i][j] << ' ';
+        cout << endl;
+    }
+    
+	return 0;
+}
+
+#include "mylib.hpp"
+
+int main ()
+{
+    cout << "row -> ";
+    int row;
+    cin >> row;
+    if (cin.fail())
+    {
+        cout << "\nerror: bad input\n";
+        return 1;
+    }
+    
+    for (int i = 0 ; i <= row ; i++)
+        cout << choose(row, i) << ' ';
+
+    cout << endl;
+
+    return 0;
+}
+#endif
