@@ -10,7 +10,7 @@ language/cpp
 
 games/not-by-me
 books  
-classes  
+classes/*/no-save
 programs  
 todolist.org  
 to-sort
