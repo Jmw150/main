@@ -3,7 +3,13 @@
 bin
 VimBackup
 tutorials  
-language/haskell/units
 
-games/dwarf-fortress
+language/scheme/eggs
+language/cpp
+
+games/not-by-me
+books  
+classes  
+programs  
+todolist.org  
 

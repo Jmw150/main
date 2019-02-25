@@ -1,9 +1,9 @@
-; A library of algebraic constructions using 
-; Abstract Algebra by Dummit and Foote
-; and other books
+; A library of logical constructions using various books
+
 
 ; If you want to use chicken scheme, uncomment this
-; (require-library numbers)
+(require-library numbers)
+(require-library r7rs)
 
 ;;; ignore these, goto set-stuff
 ; remove some of the scheme got-ya's
@@ -94,26 +94,26 @@
   (in? x (rest A)))))
         
  ; remove redundant elements
-(define (set a) 
+'(define (set a) 
     (define a0 a)
     (define (pop-equal 
-    (if (equal? (car a0) (cadr a))
+    (if (equal? (car a0) (cadr a))))))
         ; remove a
-        (
-    
         
+    
+        (display "hello\n")
   
 ; union
 
 ; intersection
-(define (intersection A B)
+'(define (intersection A B)
   (define AB '())
   (define U (append A B)) ; U for universe
   (while (< 0 (length U))
          (define x (car U)) ; pop
          (define U (cdr U))
          (if (and (in? x B) (in? x A)) ;; would like to reduce these functions to only this kind of definition
-             (set! AB (append x AB))
+             (set! AB (append x AB)))))
 ; set builder
 ; subset
 
