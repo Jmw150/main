@@ -24,6 +24,8 @@ main:                           # spim specific tag, spim forces it
 
 # $s0 = i, $s1 = x, $s2 = y
 # required: use slt
+    
+    add     $s0, 0, 0
 
     j       exit
 
