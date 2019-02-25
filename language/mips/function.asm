@@ -16,13 +16,22 @@
 
 main:                           # spim specific tag, spim forces it
 #print integer	1	$a0 = value	(none)
-    jal     sum
+
+# hw5.1
+# transalte some c code to mips
+# for (i = 0; i < x; i=i+1)
+#    y = y + i;
+
+# $s0 = i, $s1 = x, $s2 = y
+# required: use slt
+
     j       exit
 
 
 
 
-# $s0 := read_str() 
+
+# $s0 = read_str() 
 # reads a string (max 1024 bytes) 
 read_str:
 .data
@@ -41,6 +50,28 @@ string_space: .space 1024 # set aside 1024 bytes for the string.
 # end read_str
 
 
+# print_int($a0) 
+print_int: 
+    li      $v0, 1              
+    syscall
+    j       return
+# end print_int
+
+
+# print_float($f12) 
+print_float: 
+    li      $v0, 2
+    syscall
+    j       return
+# end print_float
+
+# print_double($f12) 
+print_double: 
+    li      $v0, 3
+    syscall
+    j       return
+# end print_double
+
 # print_str(string $a0) 
 # prints a string
 print_str: 
@@ -49,6 +80,49 @@ print_str:
     syscall
     j       return
 # end print_str
+
+# $v0 = read_int()
+read_int:
+    li      $v0, 5
+    syscall
+    j       return
+# end read_int
+
+# $f0 = read_float()
+read_float:
+    li      $v0, 6
+    syscall
+    j       return
+# end read_float
+
+# $f0 = read_double()
+read_double:
+    li      $v0, 7
+    syscall
+    j       return
+# end read_double
+
+# read_string(a0=buffer,a1=length)
+read_string:
+    li      $v0, 8
+    syscall
+    j       return
+# end read_string
+
+# v0 = read_char()
+read_char:
+    li      $v0, 12
+    syscall
+    j       return
+# end read_char
+
+
+# print_char(a0)
+print_char:
+    li      $v0, 11
+    syscall
+    j       return
+# end print_char
 
 # return()
 # return to main previous function call, (or $ra location)
@@ -142,29 +216,29 @@ sum_newline:.asciiz "\n"
 .text
 
 sum:
-      add  $s1, $zero, $zero  # Initialize $s1 to zero - reserved for our total sum
+    add     $s1, $zero, $zero   # Initialize $s1 to zero - reserved for our total sum
 
 sum_Loop: li   $v0, 4             # Load system call to print input string
-      la   $a0, sum_inputString   # Load input string for printing
-      syscall
+    la      $a0, sum_inputString# Load input string for printing
+    syscall
     
-      li   $v0, 5             # Load system call to read number from user
-      syscall
-
-      add  $s1, $s1,   $v0    # Add number to total sum
-      bne  $v0, $zero, sum_Loop   # Loop if last number wasn't 0
+    li      $v0, 5              # Load system call to read number from user
+    syscall
+    
+    add     $s1, $s1,   $v0     # Add number to total sum
+    bne     $v0, $zero, sum_Loop# Loop if last number wasn't 0
       
-      li   $v0, 4             # Load system call to print output string
-      la   $a0, sum_outputString  # Load output string for printing
-      syscall
+    li      $v0, 4              # Load system call to print output string
+    la      $a0, sum_outputString # Load output string for printing
+    syscall
       
-      li   $v0, 1             # Load system call to print string
-      add  $a0, $s1, $zero    # Load sum into $a0 for printing
-      syscall
+    li      $v0, 1              # Load system call to print string
+    add     $a0, $s1, $zero     # Load sum into $a0 for printing
+    syscall
 
-      li   $v0, 4             # Load system call to print output string
+    li      $v0, 4              # Load system call to print output string
     la      $a0, sum_newline    # Load output string for newline
-      syscall
+    syscall
 
     j       return
 
@@ -277,17 +351,4 @@ hanoi_Leave:
 
 
 
-#Service	System Call   Code	Arguments	Result
-#print integer	1	$a0 = value	(none)
-#print float	2	$f12 = float value	(none)
-#print double	3	$f12 = double value	(none)
-#print string	4	$a0 = address of string	(none)
-#read integer	5	(none)	$v0 = value read
-#read float	6	(none)	$f0 = value read
-#read double	7	(none)	$f0 = value read
-#read string	8	$a0 = address where string to be stored #$a1 = number of characters to read + 1	(none)
-#memory allocation	9	$a0 = number of bytes of storage desired	$v0 = address of block
-#exit (end of program)	10	(none)	(none)
-#print character	11	$a0 = integer	(none)
-#read character	12	(none)	char in $v0
 
