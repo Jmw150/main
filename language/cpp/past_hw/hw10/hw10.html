@@ -1,0 +1,80 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Dana Vrajitoru">
+   <title>DV C243 Homework 10</title>
+<link rel="stylesheet" type="text/css" href="../../mystyle.css">
+</head>
+<body text="#EEEFFF" link="#FFFFAA" vlink="#FFCCFF" alink="#FFCCCC" 
+bgcolor="#191970">
+
+<b><a href="../../">Dana Vrajitoru</a></b>
+
+<br><b><a href="./">C243 Data Structures</a></b>
+<hr> 
+
+<center>
+<h2>C243 Homework 10</h2></center>
+
+<b>Due date:</b> Monday, November 27, 2017.
+
+<p><b>Ex. 1.</b> Download the following files:
+<br><a href="./p10/graph.h">graph.h</a>
+<br><a href="./p10/graph.cc">graph.cc</a>
+<br><a href="./p10/main.cc">main.cc</a>
+<br><a href="./p10/Makefile">Makefile</a>
+<br><a href="./p10/graph1.txt">graph1.txt</a>
+<br><a href="./p10/graph2.txt">graph2.txt</a>
+<br><a href="./p10/graph3.txt">graph3.txt</a>
+<br><a href="./p10/graph4.txt">graph4.txt</a>
+<br><a href="./p10/graph5.txt">graph5.txt</a>
+
+<p>They compile with the command <tt>make</tt> and the program can be
+executed with the command <tt>graph</tt>. The text files contain
+examples of graphs that can be read by the program.
+
+<p>You will have to implement the 3 functions that have their body
+missing at the end of the <tt>graph.cc</tt> file and make some
+modifications to <tt>main.cc</tt>. A fourth one can be implemented for
+extra credit.
+
+<p><b>a. &nbsp; <tt>write</tt></b> . This function should write the
+graph to a file according to the format described in class and in the
+notes. You have to make sure that the file is compatible with the read
+function - meaning that you should be able to read the graph back from
+the file. You also have to be careful not to write each edge twice if
+the graph is undirected.
+
+<p><b>b. &nbsp; <tt>input</tt></b> . This function should ask the user
+if the graph is directed or not, and then for the number of nodes in
+the graph. After inputting this information, you will need to set
+the <tt>directed</tt> flag appropritely and then initialize the graph
+with that number of vertices, which will assign the names as uppercase
+letters in sequence. Don't ask the user for the names of the verices,
+but give them a warning about the way the names were assigned. Then it
+should input edges in the form first name second name. The input
+should end with anything that is not an uppercase letter.
+
+<p><b>c. &nbsp; <tt>printBf</tt> &nbsp; or
+&nbsp; <tt>printDf</tt></b>. Choose one of these two functions to
+implement, and let me know in a comment in the submission which one
+you've chosen. These functions should implement the breadth-first and
+depth-first traversal of the graph. The operation given in pseudo-code
+as "processing a node" consists in this case of writing out the name
+of the vertex. For the <tt>printBf</tt> you'll need a queue class. You
+can use either the class from homework 3, of the STL class queue (see
+<a href="http://www.cplusplus.com/reference/queue/queue/">http://www.cplusplus.com/reference/queue/queue/</a>
+for a reference).
+
+<p><b>Optional</b> (3 extra credit points): implement both the
+breadth-first and the depth-first traversal functions above.
+
+<p><b>d.</b> Modify the menu functions in <tt>main.cc</tt> by adding
+the options of writing the graph to a file or to input it from the
+user.
+
+<p><b>Turn in:</b> All the files that you modify.
+
+</body>
+</html>

@@ -45,12 +45,16 @@ Mon Feb 18 12:02:09 EST 2019
 
 hw6:
 Sections 9.5-9.7 Exercise 9.14, 9.15, 9.20, 9.22, 9.23. 
-Study the textbook Examples in Sections 9.5-9.7. 
+Study the textbook Examples in Sections 9.5-9.7.  \\
 
-9.14 The following measurements were recorded for the drying time, in hours, of a certain brand of latex paint:
+9.14 The following measurements were recorded for the drying time, in hours, of a certain brand of latex paint: \\
+
 3.4 2.5 4.8 2.9 3.6
+
 2.8 3.3 5.6 3.7 2.8
+
 4.4 4.0 5.2 3.0 4.8
+
 Assuming that the measurements represent a random sample from a normal population, find a 95\% prediction interval for the drying time for the next trial of the paint. \\
 
 \begin{eqnarray*}
@@ -89,7 +93,7 @@ $df = 99$
 
 $\alpha = 0.01$
 
-$t_{\alpha/2, 99) = 2.626$
+$t_{\alpha/2, 99} = 2.626$
 
 \begin{eqnarray*}
 \bar{x} \pm t_{\alpha/2,99} s (1 + 1/n)^{1/2} 
@@ -128,7 +132,32 @@ $(0.9187,1.0924)$ \\
 
 9.22  A type of thread is being studied for its tensile strength properties. Fifty pieces were tested under similar conditions, and the results showed an average tensile strength of 78.3 kilograms and a standard deviation of 5.6 kilograms. Assuming a normal distribution of tensile strengths, give a lower 95\% prediction limiton a single observed tensile strength value. In addition, give a lower 95\% tolerance limit that is exceeded by 99\% of the tensile strength values. \\
 
+$df = n - 1 = 49$ \\
+
+\begin{eqnarray*}
+low_{.95} & = & \bar{x} - t_{\alpha,df}(s) (1 + 1/n)^{1/2}  \\
+          & = & 78.3 - (1.677)(5.6)(1+1/50)^{1/2}  \\
+          & = & 68.8153 \\
+          & \ra & (68.8153, \infty)
+\end{eqnarray*}
+
+
+$\alpha = 0.05$
+
+$\gamma = 0.01$
+
+$k = 2.269$ \\
+
+\begin{eqnarray*}
+low_{.99} & =&  \bar{x} - ks \\
+          & = & 78.3 - 2.269 * 5.6 \\
+          & = & 65.5936 \\
+          & \ra & (65.5936, \infty)
+\end{eqnarray*}
 
 9.23 Refer to Exercise 9.22. Why are the quantities requested in the exercise likely to be more important to the manufacturer of the thread than, say, a confidence interval on the mean tensile strength? \\
+
+The primary information how much stress the metal threads can take. The customer could always use less force on the string. Extra info on the probability of this lower bound being correct for a particular string may also be helpful, but giving back an interval would sound silly, given that there is no upper bound.
+
 
 \end{document}

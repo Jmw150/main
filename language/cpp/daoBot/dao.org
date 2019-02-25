@@ -1,0 +1,8 @@
+win states: 20
+4 vertical
+4 horizontal
+1 all corners
+9 2 x 2
+4 suicide by other
+
+
