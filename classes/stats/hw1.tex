@@ -1,0 +1,396 @@
+\iffalse
+// c precompiler stuff
+#define cnote \
+\begin{lstlisting}[ \
+  mathescape, \
+  columns=fullflexible, \
+  basicstyle=\fontfamily{lmvtt}\selectfont, \
+] 
+
+#define endcnote \end{lstlisting}
+\fi
+
+\documentclass{article} 
+\usepackage{amsthm} % writing proofs
+\usepackage{amsfonts} % for blackboard bold charactes like Z R
+\usepackage{amssymb} % came with intermediate value thrm
+\usepackage[fleqn]{amsmath} % for arguments vertically underneath like lim, piecwise functions, equality arrays
+\setlength{\mathindent}{0in} %neutralizes equation indentation
+\usepackage{listings} % more literal, makes hw easier
+\setlength{\parindent}{0in} %neutralizes annoying paragraph indent
+\usepackage{mathtools} % for floor and ceiling functions / macros
+\usepackage{nccmath} % for centering equations with ceqn
+\usepackage{tkz-euclide} % geometry
+\usetkzobj{all} % include all objects of tkz
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\f}{\frac}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\bb}{\mathbb}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\renewcommand{\qedsymbol}{$\dashv$}
+
+\begin{document}
+
+Jordan Winkler
+
+stats
+
+Mon Jan  7 16:16:14 EST 2019
+
+hw 1: pg 193 6.24, 6.25, 6.31, 6.33, 6.36. 
+
+pg 206, 6.40, 6.43, 6.45, 6.46, 6.55, 6.58, 6.59, 6.81. 
+
+Study the textbook Examples 6.15-6.16 in Section 6.5.
+
+Study the textbook Examples 6.17-6.21 in Sections 6.6-6.7. \\
+
+24. A coin is tossed 400 times. Use the normal curve approximation to find the probability of obtaining \\
+
+a) between 185 and 210 heads inclusive; \\
+
+$n = 400$
+
+$p = 0.5$
+
+$\mu = np = 200$
+
+$\sigma = (np(1-p))^{1/2} = 10 $
+
+$z_a = \f{185 - 200}{10} = -1.5$
+
+$z_b = \f{210 - 200}{10} = 1$ \\
+
+
+\begin{eqnarray*}
+P(z_a < Z < z_b) & = & P(-1.5 < Z < 1) \\ 
+  & =&  cdf(1) - cdf(-1.5)  \\
+& = & 0.7745375447996848 
+\end{eqnarray*}
+
+% Or $cdf(1.05) - cdf(-1.55) = 0.7925701856220451$ to be more inclusive.
+
+b) exactly 205 heads; \\
+
+Well this model gives a 0 probability for exact values, because it is a real number distribution. But the standard method is to give the probability of ``about'' 205 heads or 204.5-205.5. \\
+
+$z_a = (204.5 - 200)/10 = 0.45$
+
+$z_b = (205.5 - 200)/10 = 0.55$
+
+$P(z_a < Z < z_b) = cdf(.55) - cdf(.45) = 0.035195533499573606$ \\
+
+c) fewer than 176 or more than 227 heads. \\
+
+$z_a = (176 - 200)/10 = -2.4$
+
+$z_b = (227 - 200)/10 = 2.7$
+
+\begin{eqnarray*}
+P(Z > z_a) + P(z_b < Z) & = & cdf(-2.4) + (1 - cdf(2.7)) \\
+                        & \approx & 0.01166450972763675 
+\end{eqnarray*}
+
+25. A process for manufacturing an electronic com-
+ponent yields items of which 1\% are defective. A qual-
+ity control plan is to select 100 items from the process,
+and if none are defective, the process continues. Use
+the normal approximation to the binomial to find \\
+
+(a) the probability that the process continues given the
+sampling plan described; \\
+
+$p = 0.01$
+
+$n = 100$
+
+$\mu = np = 1$
+
+$\sigma = (npq)^{1/2} = 
+0.99498743710662
+$ \\
+
+$cc = $ continuity correction \\
+
+$z = \f{x+ cc - \mu}{\sigma} = \f{0 + .5 - 1}{
+0.99498743710662
+} \approx 
+-0.502518907629606
+$ 
+
+$P(Z < z) \approx cdf(-0.502518907629606) 
+\approx 
+0.30765127784525537
+$ \\
+
+(b) the probability that the process continues even if the process has gone bad (i.e., if the frequency of defective components has shifted to 5.0\% defective). \\
+
+\begin{eqnarray*}
+P(Z \leq \f{x + cc - np}{(npq)^{1/2}})    & \approx & 
+P(Z \leq \f{0 + .5 - 100*.05}{(100*.05*.95)^{1/2}}) \\ & \approx & 
+P(Z \leq -2.0647416048350555) \\ & \approx &
+cdf(-2.0647416048350555) \\ & \approx & 0.019473727871012713
+\end{eqnarray*}
+
+31. One-sixth of the male freshmen entering a large
+state school are out-of-state students. If the students
+are assigned at random to dormitories, 180 to a build-
+ing, what is the probability that in a given dormitory
+at least one-fifth of the students are from out of state? \\
+
+$X := Binomial(180,1/6)$ \\
+
+$\mu = np = 180(1/6) = 30$
+
+$\sigma = (npq)^{1/2} = (180 * 1/6 * 5/6)^{1/2} = 5$
+
+\begin{eqnarray*}
+P(X \geq 180 * 1/5) & = & P(X \geq 36)  \\
+                    & \approx & P(X \geq 36 - 0.5) \\
+ & \approx & P(\f{X - \mu}{\sigma} \geq \f{35.5 - 30}{5}) \\
+& = & P(Z \geq 1.1) \\
+& = & 1- cdf(1.10) \\
+& \approx & 0.13566606094638267
+\end{eqnarray*}
+
+33. Statistics released by the National Highway
+Traffic Safety Administration and the National Safety
+Council show that on an average weekend night, 1 out
+of every 10 drivers on the road is drunk. If 400 drivers
+are randomly checked next Saturday night, what is the
+probability that the number of drunk drivers will be \\
+
+(a) less than 32? \\
+
+$p = 0.1$
+
+$n = 400$
+
+$\mu = np = 400 * .1 = 40$
+
+$\sigma = (npq)^{1/2} = 6$
+
+\begin{eqnarray*}
+P(X \leq 32) & = & P(\f{X - 0.5 - \mu}{\sigma} \leq \f{32 - .5 -40 }{6}) \\
+& \approx & P(Z < -1.4166666666666667) \\
+& \approx & cdf(-1.42) \\
+& \approx & 0.07780384052654638
+\end{eqnarray*}
+
+(b) more than 49? \\
+
+\begin{eqnarray*}
+P(X > 49) & = & P(\f{(X + 0.5)-\mu}{\sigma} > \f{49+.5-40}{6}) \\
+  & \approx & P(Z > 1.583333333333333) \\
+  & = & 1 - cdf(1.583333333333333) \\
+& \approx & 0.056672754609762954 \\
+\end{eqnarray*}
+
+(c) at least 35 but less than 47? \\
+
+\begin{eqnarray*}
+P(35 \leq X < 47) & \approx & P(\f{34.5 - 40}{6} < \f{X - \mu}{\sigma} < \f{46.5 - 40}{6}) \\
+& \approx & P(-0.92 < Z < 1.08) \\
+& = & cdf(1.08) - cdf(-0.92) \\
+& \approx & 0.6811425302968593
+\end{eqnarray*}
+
+36. A common practice of airline companies is to sell more tickets for a particular flight than there are seats on the plane, because customers who buy tickets do not always show up for the flight. Suppose that the percentage of no-shows at flight time is 2\%. For a particular flight with 197 seats, a total of 200 tick-ets were sold. What is the probability that the airline
+overbooked this flight? \\
+
+$n = 200$
+
+$p = 0.98$
+
+$\mu = np = 200 * .98 = 196$
+
+$\sigma = (npq)^{1/2} = (200 * .98 * .02)^{1/2} = 1.9798989873223332$
+
+\begin{eqnarray*}
+P(X > 197) & \approx &  P(Z > \f{197.5 - 196}{1.98}) \\
+& \approx & 1 - cdf(0.7575757575757576) \\
+& \approx & 0.22435249875681773
+\end{eqnarray*}
+
+
+40. In a certain city, the daily consumption of water
+(in millions of liters) follows approximately a gamma distribution with $\alpha = 2$ and $\beta = 3$. If the daily capacity of that city is 9 million liters of water, what is the probability that on any given day the water supply is inadequate? \\
+
+$gammapdf(x,\alpha, \beta) = \f{1}{\beta^2 \Gamma(\alpha)} x^{\alpha - 1} e^{-x/\beta} , x > 0, $ else $ 0$
+
+\begin{eqnarray*}
+P(X > 9) & = & 1 -  P(X \leq 9) \\
+& = & 1- \int^9_0 gammapdf(x,2,3) dx \\
+& = & 1- \int^9_0 1/9 * x e^{-x/3} dx \\
+& = & 1- \f{1}{9} (-3xe^{-x/3} - 9e^{-x/3})|^9_0 \\
+& = & 1- (1 - 4e^{-3}) \\
+& = & 4e^{-3}  \\
+& \approx & 0.19914827347145578
+\end{eqnarray*}
+
+
+43. (a) Find the mean and variance of the daily wa-
+ter consumption in Exercise 6.40. \\
+
+$E(X) = \mu = \alpha \beta = 2 * 3 = 6$
+
+$V(X) = \sigma^2 = \alpha \beta^2 = 2 * 3^ 2 = 18$ \\
+
+(b) According to Chebyshev’s theorem, there is a prob-
+ability of at least 3/4 that the water consumption
+on any given day will fall within what interval? \\
+
+$x_a = \mu - 2\sigma = 6 - 2(18)^{1/2} = -2.4852813742385695 $
+
+$x_b = \mu + 2\sigma = 6 + 2(18)^{1/2} = 14.48528137423857 $ \\
+
+Negative water consumption sounds ridiculous so lets say the interval is $[0,14.48528137423857 ]$. \\
+
+45. The length of time for one individual to be
+served at a cafeteria is a random variable having an ex-
+ponential distribution with a mean of 4 minutes. What
+is the probability that a person is served in less than 3
+minutes on at least 4 of the next 6 days? \\
+
+$exppdf(x,4) = \f{1}{4} e^{-x/4}$ if $x \geq 0$, else $0$.
+
+\begin{eqnarray*}
+P(X < 3) & = & \int_0^3 \f{1}{4} e^{-x/4} dx \\
+  & = & -e^{-x/4} |^3_0 \\
+  & = & -(e^{-3/4} - 1) \\
+  & = & 1 - e^{-3/4} \\
+  & = & 0.5276334472589853
+\end{eqnarray*}
+
+\begin{eqnarray*}
+P(X \geq 4) & = & \sum^6_{x=4} {6 \choose x}  p^x q^{6-x} \\
+& = & P(X = 4) + P(X = 5) + P(X = 6) \\
+& \approx & 0.3968846998826859 
+\end{eqnarray*}
+
+46. The life, in years, of a certain type of electrical
+switch has an exponential distribution with an average
+life $\beta$ = 2. If 100 of these switches are installed in dif-
+ferent systems, what is the probability that at most 30
+fail during the first year? \\
+
+$X := Exp(\beta = 2)$  \\
+
+$p = $$P(X \geq 1) = 1 - e^{-1/2} \approx 0.3934693402873666$ \\
+
+$n = 100$
+
+
+\begin{eqnarray*}
+P(X \leq 30) & \approx & P(X \leq 30.5) \\
+             & = & P(Z \leq \f{30.5 - np}{(npq)^{1/2}}) \\
+             & = & P(Z \leq \f{30.5 - 100* 0.393469}{(100 * 0.3934693 * (1- 0.393469340))^{1/2}}) \\
+& \approx & P(Z \leq -1.8109687685853402) \\
+& = & cdf(-1.81) \\
+& \approx & 0.03514789358403879
+\end{eqnarray*}
+
+%(/ (+ 30.5 (* -0.3934693402873666 100)) (expt (* 100 0.3934693402873666 (- 1 0.3934693402873666)) .5))
+
+55. Computer response time is an important application of the gamma and exponential distributions. Suppose that a study of a certain computer system reveals that the response time, in seconds, has an exponential distribution with a mean of 3 seconds. \\
+
+(a) What is the probability that response time exceeds 5 seconds? \\
+
+\begin{eqnarray*}
+P(X > 5) & = & 1 - P(X \leq 5) \\
+  & = & 1 - \f{1}{3} \int^5_0 e^{-x/3} dx \\
+  & = & 1 - (1 - e^{-5/3}) \\
+  & = & e^{-5/3} \\
+  & \approx & 0.18887560283756183 
+\end{eqnarray*}
+
+(b) What is the probability that response time exceeds 10 seconds? \\
+
+\begin{eqnarray*}
+P(x > 10) & = & 1 - \f{1}{3} \int^{10}_0 e^{-x/3} dx \\
+  & = & e^{-10/3} \\
+  & \approx & 0.035673993347252395
+\end{eqnarray*}
+
+58. The number of automobiles that arrive at a certain intersection per minute has a Poisson distribution with a mean of 5. Interest centers around the time that elapses before 10 automobiles appear at the intersection. \\
+
+a) What is the probability that more than 10 automobiles appear at the intersection during any given minute of time? \\
+
+$X := Poisson(\gamma = 5)$
+
+\begin{eqnarray*}
+P(X > 10) & = &  1 - P(X \leq 10) \\
+& = & 1 - \sum_x^{10} e^{-5}5^x/x! \\
+& \approx & 1 -  0.9863047314016171 \\
+& = & 0.013695268598382881
+\end{eqnarray*}
+
+(b) What is the probability that more than 2 minutes
+elapse before 10 cars arrive? \\
+
+$gammapdf(x,\alpha,\beta) = \f{y^{\alpha-1}e^{-y/\beta}}{\Gamma(\alpha) \beta^\alpha}$
+
+$\alpha = 10$
+
+$\beta = 2/10 = 1/5$
+
+\begin{eqnarray*}
+P(X > 2) & = & P(Y > 10)  \\
+            & = & 1- \int^{10}_0 y^9e^{-y}/\Gamma(10) dy \\
+            & = & 1- \f{1}{9!}\int^{10}_0 y^9e^{-y} dy \\
+            & = & 1 -(-\f{3660215680}{e^{10}} + 362880) \\
+            & \approx & 1- 0.5421 \\
+            & = & 0.4579
+\end{eqnarray*}
+
+59. Consider the information in Exercise 6.58. \\
+
+(a) What is the probability that more than 1 minute
+elapses between arrivals? \\
+
+\begin{eqnarray*}
+P(X > 1) & = & 1 - P(X \leq 1) \\
+         & = & 1 - \int^1_0 5e^{-5x} dx \\
+         & = & 1 - 10(e^{-5x}/(-5)) |^1_0 \\
+         & = & e^{-5} \\
+         & \approx & 0.006737946999085467
+\end{eqnarray*}
+
+(b) What is the mean number of minutes that elapse
+between arrivals? \\
+
+$\beta = 1/\gamma = 1/5$ \\
+
+81. The length of time between breakdowns of an es-
+sential piece of equipment is important in the decision
+of the use of auxiliary equipment. An engineer thinks
+that the best model for time between breakdowns of a
+generator is the exponential distribution with a mean
+of 15 days. \\
+
+(a) If the generator has just broken down, what is the
+probability that it will break down in the next 21
+days? \\
+
+\begin{eqnarray*}
+P(X \leq 21) &=& \f{1}{15} \int^\infty _0  e^{-x/15} dx \\
+& = & 1 - e^{-21/15}  \\
+& \approx & 0.7534030360583935
+\end{eqnarray*}
+
+(b) What is the probability that the generator will op-
+erate for 30 days without a breakdown? \\
+
+\begin{eqnarray*}
+P(X > 30) &=& 1 - \f{1}{15} \int^{30} _0  e^{-x/15} dx \\
+& = & e^{-30/15}  \\
+& \approx & 0.1353352832366127
+\end{eqnarray*}
+
+\end{document}

@@ -1,0 +1,130 @@
+\iffalse
+// c precompiler stuff
+#define cnote \
+\begin{lstlisting}[ \
+  mathescape, \
+  columns=fullflexible, \
+  basicstyle=\fontfamily{lmvtt}\selectfont, \
+] 
+
+#define endcnote \end{lstlisting}
+\fi
+
+\documentclass{article} 
+\usepackage{amsthm} % writing proofs
+\usepackage{amsfonts} % for blackboard bold charactes like Z R
+\usepackage{amssymb} % came with intermediate value thrm
+\usepackage[fleqn]{amsmath} % for arguments vertically underneath like lim, piecwise functions, equality arrays
+\setlength{\mathindent}{0in} %neutralizes equation indentation
+\usepackage{listings} % more literal, makes hw easier
+\setlength{\parindent}{0in} %neutralizes annoying paragraph indent
+\usepackage{mathtools} % for floor and ceiling functions / macros
+\usepackage{nccmath} % for centering equations with ceqn
+\usepackage{tkz-euclide} % geometry
+\usetkzobj{all} % include all objects of tkz
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\f}{\frac}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\bb}{\mathbb}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\renewcommand{\qedsymbol}{$\dashv$}
+
+\begin{document}
+
+Jordan Winkler
+
+computer architecture
+
+Wed Jan  9 10:06:02 EST 2019 
+
+hw1 \\
+
+
+1. Convert the following binary number to decimal using expanded notation. \\
+
+\begin{eqnarray*}
+1 0 0 1 1 0 1 1_2 & = & 
+1 \cdot 2^7 +
+0 \cdot 2^6 +
+0 \cdot 2^5 +
+1 \cdot 2^4 +
+1 \cdot 2^3 +
+0 \cdot 2^2 +
+1 \cdot 2^1 +
+1 \cdot 2^0 \\
+& = & 1 + 2 + 8 + 16 + 128 \\
+& = & 155 \\
+\end{eqnarray*}
+
+2. Convert the following octal number to decimal using expanded notation. \\
+
+$5 2 4 7_8$ $=$ $5 \cdot 8^3 + 2 \cdot 8^2 + 4 \cdot 8^1 + 7 \cdot 8^0 $ $=$ $ 2560 + 128 + 32 + 7$ $=$ $2727$ \\
+
+3. Convert the following decimal number: 1984 \\
+
+a) Convert this into binary. \\
+
+1984 / 2 = 992 R 0 
+
+992 / 2 = 496 R 0 
+
+496 / 2 = 248 R 0
+
+248 / 2 = 124 R 0
+
+124 / 2 = 62 R 0
+
+62 / 2 = 31 R 0
+
+31 / 2 = 15 R 1
+
+15 / 2 = 7 R 1
+
+7 / 2 =  3 R 1
+
+3 / 2 = 1 R 1
+
+1 / 2 = 0 R 1 \\
+
+Which gives $11111000000_2$ \\
+
+b) Using the answer from part a. convert that binary number into octal. \\
+
+$(11111000000)_2 =  (011_2, 111_2, 000_2, 000_2)_8$ $= 3700_8$ \\
+
+c) Using the answer from part a, convert that binary number into hexadecimal. \\
+
+$(11111000000)_2 = (0111_2,1100_2,0000_2)_{16} = 
+(7,12,0)_{16}$$= $7C0$_{16}$ \\
+
+
+4. Do Exercise 1.3 in page 55 of the textbook. \\
+
+Describe the steps that transform a program written in a high-level language such as C into a representation that is directly executed by a computer processor. \\
+
+It is a weird question. There are a couple answers to this:
+
+The book, and class answer, goes into a two step process. First the highlevel code is compiled to assembly of the given machine. Then another program assembles the assembly language into machine language instructions. \\
+
+Also without getting into too much detail, the new model for iso C18 has 8 steps for compilation into binary. 4 are dedicated to what the precompiler does. The next 3 are compilation steps into binary code. And the last step is linking information from the compiled files together. \\
+
+5. Do Exercise 1.4 on page 55 of the textbook. \\
+
+Assume a color display using 8 bits for each of the primary colors (red, green, blue) per pixel and a frame size of $1280 \times  1024$. \\
+
+a) What is the minimum size in bytes of the frame buffer to store a frame? \\
+
+$1280 * 1024 * 8/8 = 1310720$ bytes \\
+
+b) How long would it take, at a minimum, for the frame to be sent over a 100 Mbit/s network? \\
+
+$1280 * 1024 * 8 / (100 * 1000000) = 0.1048576$ seconds
+
+
+\end{document}

@@ -1,0 +1,73 @@
+\iffalse
+// c precompiler stuff
+#define cnote \
+\begin{lstlisting}[ \
+  mathescape, \
+  columns=fullflexible, \
+  basicstyle=\fontfamily{lmvtt}\selectfont, \
+] 
+
+#define endcnote \end{lstlisting}
+\fi
+
+\documentclass{article} 
+\usepackage{amsthm} % writing proofs
+\usepackage{amsfonts} % for blackboard bold charactes like Z R
+\usepackage{amssymb} % came with intermediate value thrm
+\usepackage[fleqn]{amsmath} % for arguments vertically underneath like lim, piecwise functions, equality arrays
+\setlength{\mathindent}{0in} %neutralizes equation indentation
+\usepackage{listings} % more literal, makes hw easier
+\setlength{\parindent}{0in} %neutralizes annoying paragraph indent
+\usepackage{mathtools} % for floor and ceiling functions / macros
+\usepackage{nccmath} % for centering equations with ceqn
+\usepackage{tkz-euclide} % geometry
+\usetkzobj{all} % include all objects of tkz
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\f}{\frac}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\bb}{\mathbb}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\renewcommand{\qedsymbol}{$\dashv$}
+
+\begin{document}
+
+Jordan Winkler
+
+lab 1
+
+physics 101
+
+Mon Jan 14 19:29:08 EST 2019 \\
+
+
+Data: \\
+
+
+[63.2, 43.1, 34.89, 30.34, 26.93]
+[0.97, 1.16, 1.43, 1.65, 1.86]
+
+
+[0.0632, 0.0431, 0.03489, 0.03034, 0.02693]
+
+0.790
+0.97
+1.065
+1.1866666666666665
+1.3024999999999998
+% 1.414
+
+
+63.2
+106.30000000000001
+141.19
+171.53
+198.46
+
+
+\end{document}
