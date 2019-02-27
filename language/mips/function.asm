@@ -1,37 +1,60 @@
 #!/usr/bin/spim -file
 
-# this file is for common functions
+# this file is a test bed and storage place for mips functions
+
+main: #($a0 = argc, $a1 = argv), 4*n($a1) = nth command 
+#    lw      $a0, 4($a1)         # get first command line argv
+
+    addi    $s1, $0, 5 
+    addi    $s2, $0, 5
+
+# 4. Find the shortest sequence of MIPS instructions that extracts the 18-bit field in locations 5 through 22 (bit position 31 is the MSB) from register \$t3 and places it in register \$t0. Hint: Use shift instructions. \\
+    # extract 5-22 bit postion from t3
+    sll     $t0, $t3, 10 # take off top,    32 = 22+10
+    srl     $t0, $t0, 15 # take off bottom, -5 = 10-15
+
+# hw5.6
+# if ((a < b) && (c == 0))
+#   d = 1;
+# a,  b,  c,  d,  i,  x
+# t1, t2, t3, t4, s0, s1
+#
+if: #if ((a < b) && (c == 0)) d = 1;
+    slt     $t0, $t1, $t2       # a <  b
+    seq     $t8, $t1, $0        # c == 0
+    and     $t0, $t0, $t8       # (a <  b) && (c == 0)
+    beq     $t0, $0, skip       # if ((a < b) && (c == 0)) 
+    addi    $t4, $0, 1          #   d = 1;
+skip:
+
+
+# hw5.1
+# translate some c code to mips
+# for (i = 0; i < x; i=i+1) 
+#    y = y + i;
+# $s0 = i, $s1 = x, $s2 = y
+# required: use slt
+for:                            # for (i = 0; i < x; i=i+1) y = y + i;
+    add     $s0, $0, $0         # i=0
+for_loop:
+    slt     $t0, $s0, $s1       # (i < x) ? 1 : 0
+    beq     $t0, $0, endfor     # exit if (i < x)
+    add     $s2, $s2, $s0       # y = y + i
+    addi    $s0, $s0, 1         # i = i + 1
+    j       for_loop
+endfor:
+    add     $a0, $0, $s2
+    j       print_int
+    j       exit
+
+# 3. Translate the following MIPS code to C. Assume that the variables f, g, h, i, and j are assigned to registers \$s0, \$s1, \$s2, \$s3, and \$s4, respectively. Assume that the base address of the arrays A and B are in registers \$s6 and \$s7, respectively. \\
+
 
 # functions made:
 # exit, return, read str, print str, prompt for str, say hello, main(argc,args), strlen
 
 # functions still to implement
 # tag_exists, open file, read from file, print to file, close file, read char file, read char
-
-# executing code from the command line uses these conventions
-# $a0 = argc, $a1 = argv
-# 4*n($a1) is the nth command 
-# example
-#    lw      $a0, 4($a1)         # get first command line argv
-
-main:                           # spim specific tag, spim forces it
-#print integer	1	$a0 = value	(none)
-
-# hw5.1
-# transalte some c code to mips
-# for (i = 0; i < x; i=i+1)
-#    y = y + i;
-
-# $s0 = i, $s1 = x, $s2 = y
-# required: use slt
-    
-    add     $s0, 0, 0
-
-    j       exit
-
-
-
-
 
 # $s0 = read_str() 
 # reads a string (max 1024 bytes) 
