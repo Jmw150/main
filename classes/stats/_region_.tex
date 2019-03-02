@@ -1,0 +1,153 @@
+\message{ !name(hw5.tex)}\iffalse
+// c precompiler stuff
+#define cnote \
+\begin{lstlisting}[ \
+  mathescape, \
+  columns=fullflexible, \
+  basicstyle=\fontfamily{lmvtt}\selectfont, \
+] 
+
+#define endcnote \end{lstlisting}
+\fi
+
+\documentclass{article} 
+\usepackage{amsthm} % writing proofs
+\usepackage{amsfonts} % for blackboard bold charactes like Z R
+\usepackage{amssymb} % came with intermediate value thrm
+\usepackage[fleqn]{amsmath} % for arguments vertically underneath like lim, piecwise functions, equality arrays
+\setlength{\mathindent}{0in} %neutralizes equation indentation
+\usepackage{listings} % more literal, makes hw easier
+\setlength{\parindent}{0in} %neutralizes annoying paragraph indent
+\usepackage{mathtools} % for floor and ceiling functions / macros
+\usepackage{nccmath} % for centering equations with ceqn
+\usepackage{tkz-euclide} % geometry
+\usetkzobj{all} % include all objects of tkz
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\f}{\frac}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\bb}{\mathbb}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\renewcommand{\qedsymbol}{$\dashv$}
+
+\begin{document}
+
+\message{ !name(hw5.tex) !offset(-3) }
+
+
+Jordan Winkler
+
+stats
+
+Mon Feb 18 09:14:29 EST 2019
+
+hw5:
+Sections 9.3-9.4 Exercise 9.2, 9.5, 9.6, 9.8, 9.11. Study the textbook Examples in Sections 9.1-9.4. \\
+
+9.2  An electrical firm manufactures light bulbs that
+have a length of life that is approximately normally
+distributed with a standard deviation of 40 hours. If
+a sample of 30 bulbs has an average life of 780 hours,
+find a 96\% confidence interval for the population mean
+of all bulbs produced by this firm. \\
+
+$n = 30$ 
+
+$\bar{x} = 780$
+
+$\sigma = 40$ 
+
+$P = 0.96$ \\
+
+
+
+\begin{eqnarray*}
+\bar{x} \pm z_{0.02} (\sigma/n^{1/2}) 
+& = & 780 \pm 2.0537(40/30^{1/2}) \\
+& = & 780 \pm 14.9981 \\
+& \ra & (765.0019, 794.9981)
+\end{eqnarray*}
+
+
+9.5 A random sample of 100 automobile owners in the state of Virginia shows that an automobile is driven on average 23,500 kilometers per year with a standard deviation of 3900 kilometers. Assume the distribution of measurements to be approximately normal. \\
+
+(a) Construct a 99\% confidence interval for the average number of kilometers an automobile is driven
+annually in Virginia. \\
+
+$n = 100$ 
+
+$\bar{x} = 23500$
+
+$s = 3900$ \\
+
+
+\begin{eqnarray*}
+\bar{x} \pm z_{0.005} \cdot \f{s}{n^{1/2}} 
+& = & 23500 \pm 2.5758 (3900/10) \\
+& \ra & (22495.438 , 24504.562)
+\end{eqnarray*}
+
+(b) What can we assert with 99\% confidence about the possible size of our error if we estimate the average number of kilometers driven by car owners in Virginia to be 23,500 kilometers per year? \\
+
+\begin{eqnarray*}
+error &\leq& z_{\alpha/2} \cdot \f{s}{n^{1/2}} \\
+& = & 2.5758 (390) \\
+& = & 1004.562
+\end{eqnarray*}
+
+It is at most 1004.562. \\
+
+9.6 How large a sample is needed in Exercise 9.2 if we
+wish to be 96\% confident that our sample mean will be
+within 10 hours of the true mean? \\
+
+$n = 30$ 
+
+$\bar{x} = 780$
+
+$\sigma = 40$ 
+
+$err = 10$
+
+$P = .96$ \\
+
+needed $n = \ceil{ (\f{z_{\alpha/2} \sigma}{err})^2 }$$= \ceil{(\f{2.055 \cdot 40}{10})^2} = 68$ \\
+
+
+9.8 An efficiency expert wishes to determine the average time that it takes to drill three holes in a certain metal clamp. How large a sample will she need to be 95\% confident that her sample mean will be within 15 seconds of the true mean? Assume that it is known from previous studies that $\sigma = 40$ seconds. \\
+
+
+$\sigma = 40$
+
+$err = 15$
+
+$P = .95$ \\
+
+
+needed $n = \ceil{ (\f{z_{\alpha/2} \sigma}{err})^2 }$$= \ceil{(1.9599 \cdot 40/15)^2} = 28$ \\
+
+
+9.11 A machine produces metal pieces that are cylindrical in shape. A sample of pieces is taken, and the diameters are found to be 1.01, 0.97, 1.03, 1.04, 0.99, 0.98, 0.99, 1.01, and 1.03 centimeters. Find a 99\% confidence interval for the mean diameter of pieces from this machine, assuming an approximately normal distribution. \\
+
+$\bar{x} = \sum x_i /n \approx 1.0055 $ \\
+
+% (/ (+ 1.01 0.97 1.03 1.04 0.99 0.98 0.99 1.01 1.03) 9)
+
+$s = (\f{\sum_{i=1}^n(x_i - \bar{x})^2}{n-1})^{1/2} = 0.0246$ \\
+
+\begin{eqnarray*}
+ci & =& \bar{x} \pm t_{\alpha/2, n-1} \cdot s/n^{1/2}  \\
+& = & 1.0056 \pm 0.0275  \\
+& = & (0.9781, 1.0331) 
+\end{eqnarray*}
+
+
+
+\message{ !name(hw5.tex) !offset(-5) }
+
+\end{document}

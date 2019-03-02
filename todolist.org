@@ -1,0 +1,667 @@
+To Do list 
+
+Sun Feb 24 18:31:54 EST 2019
+-------------------------------------------------------------------
+* hardware
+http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
+** hw
+*** hw 3 (feb 5)  ||done||
+Re-Read/Review Chapter 2 of the course textbook.
+1) Do Exercise 2.2 on page 164 of the textbook.
+2) Write MIPS code to implement the following C/C++ command:
+Spring 2019
+j = i * 2;
+3) Do Exercise 2.3 on page 165 of the textbook.
+4) Do Exercise 2.4 on page 165 of the textbook.
+5) Assume that register $t0 holds the base address in memory of array ‘A' and register $t1
+holds the base address in memory of array ‘B'. Write MIPS code to swap the contents of
+A[0] with B[0] and A[1] with B[1].
+
+*** hw 4 (feb 5)  ||done||
+1) Convert the hexadecimal number C 7 B 4 9 D to binary.
+2) Convert the decimal number 315 directly into octal – do NOT convert to binary, hex, etc.
+as an intermediate step.
+3) Using expanded notation, convert the hexadecimal number E 6 F 3 into decimal.
+4) Convert the decimal number -85 to the 2's complement 8-bit form.
+5) If I have 198 unique items to represent, how many bits do I need to do this?
+6) Consider the number: 1 0 1 1 0 0 1 1
+a) What is this, in decimal, if it is an unsigned binary number?
+b) What is this, in decimal, if it is a ones complement number?
+c) What is this, in decimal, if it is a twos complement number?
+7) Convert the binary number 0 1 1 0 0 1 1 0 1 0 1 0 1 into octal.
+8) Consider the number: 0 1 0 1 1 0 0 1
+a) What is this, in decimal, if it is an unsigned binary number?
+b) What is this, in decimal, if it is a ones complement number?
+c) What is this, in decimal, if it is a twos complement number?
+d) What is this, in decimal, if it is a sign-magnitude number?
+*** hw 5 (feb 26) 
+*** read ch 1,2,3
+** optional
+*** read
+**** main book 
+**** computer-organization-and-architecture
+**** structured-computer-organization
+* stats
+http://pages.iu.edu/~zguan/m261/m261.htm
+** hw
+*** Homework 2 (1/23) ||done||
+Pages 230-232. Exercises. 8.1, 8.8, 8.13, 8.15.
+Using the data in Exercise 1.25 on Page 32 
+(a) to find sample mean, sample median, and the 10% trimmed sample mean; 
+(b) to construct a relative frequency histogram using class boundaries 0, 20, 40, 60, 80, 100;
+(c) to find Q1, Q2, Q3, and IQR;
+(d) to construct a box-and-whisker plot;
+Study the textbook Examples in Sections 8.1-8.2.
+*** Homework 3 (1/30) ||done||
+Sections 8.3-8.4. Exercises 8.18, 8.19, 8.21, 8.26, 8.32, 8.34
+Study the textbook Examples in Sections 8.3-8.4. 
+
+*** Homework 4 (2/4)  ||done||
+Sections 8.5-8.8: Exercises 8.38, 8.40, 8.41, 8.44, 8.45, 8.46, 8.51, 8.55
+Study the textbook Examples in Sections 8.5-8.8. See Example Excel file q-q-plots.xlsx. 
+*** EXAM prep  (2/13) ||done||
+
+Test 1 (2/13), Sections 6.1-6.7, 8.1--8.4 (Review Exercises)
+Additional Review Exercises for Test 1
+Exercises: 8.7, 8.13, construct histogram and box-and-whisker plot by hands for a small data set.
+Exercises: 8.27, 8.31, 8.33 
+Exercises: 8.48, 8.49, 8.68
+
+Solutions
+
+8.7: (a) 53.75. (b) 75, 100 
+8.13: s = 0.585 
+8.27: P(X >0.23)=0.017 , Hence the probability of having such observations, given the mean μ = 0.20, is small.
+
+Therefore, the mean amount to be 0.20 is not likely to be true.
+
+8.31: 
+(a) If the two population mean drying times are truly equal, the probability that the 
+difference of the two sample means is 1.0 is 0.0013, which is very small. This means 
+that the assumption of the equality of the population means are not reasonable. 
+(b) If the experiment was run 10,000 times, there would be (10000)(0.0013) = 13 
+experiments where XA − XB would be at least 1.0. 
+8.33: 
+
+(a) When the population equals the limit, the probability of a sample mean exceeding
+
+the limit would be 1/2 due the symmetry of the approximated normal distribution.
+
+(b) P( X ≥ 7960 | μ = 7950) = P(Z ≥ (7960 − 7950)/(100/√25)) = P(Z ≥ 0.5) =
+
+0.3085. No, this is not very strong evidence that the population mean of the
+
+process exceeds the government limit.
+
+8.48: From Table A.4 we find t0.025 = 2.131 for v = 15 degrees of freedom. Since the value 
+
+t =(27.5 − 30)/(5/4)= −2.00
+
+falls between −2.131 and 2. 131, the claim is valid.
+
+8.49: t = (24 − 20)/(4.1/3) = 2.927, t0.01 = 2.896 with 8 degrees of freedom. Conclusion: no, μ > 20.
+
+8.68: x = 54,100 and s = 5801.34. Hence
+
+t =(54100 − 53000)/(5801.34/√10)= 0.60.
+
+So, P( X ≥ 54, 100) = P(T ≥ 0.60) is a value between 0.20 and 0.30, which is not a rare event.
+
+*** Homework 5 (2/20) ||done||
+Sections 9.3-9.4 Exercise 9.2, 9.5, 9.6, 9.8, 9.11. Study the textbook Examples in Sections 9.1-9.4. 
+*** Homework 6 (2/25) ||done||
+Sections 9.5-9.7 Exercise 9.14, 9.15, 9.20, 9.22, 9.23. 
+Study the textbook Examples in Sections 9.5-9.7. 
+
+*** quiz 3     (2/27)
+    Sections 8.5-8.8, 9.3-9.5
+** optional
+*** read
+**** stats book ch6-11
+**** math stats book
+**** graduate probability book, measure theory, etc..
+*** code
+**** automate selected problems
+* physics
+** lab
+*** lab 6      (2/25)
+**** prepare script to do it
+** optional
+*** read
+**** university physics
+**** structure and interpretation of mechanics
+**** thermal/statistical mechanics
+*** code
+**** statistical mechanics with scheme
+* algebra 
+** read algegra ch 0
+ch1-4
+** hw
+online listed problems
+*** optional
+all problems
+* Other:
+** research focus
+logic
+** money stuff
+** liberal art
+*** first principles
+**** theory of computation (formal languages and automata)
+	 The most important of this is formal languages and automata for it actually generalizes pretty well to everything else)
+	 formal language (or more abstractly, the idea of information, in the form of characters, hilbert spaces, etc..)
+	 automatons (a thing that is effected by information, the space of all intelligence including people, cats, doors, etc..)
+*** layer 1
+**** math logic 
+***** computability 
+****** what is possible to express in a given language
+******* Thinking about functions that work on information, how many are needed to be able to 'compute' a given universe.
+******* At the lowest (that I know) there is the pure functional finite state machine (everything does this)
+******* Then adding natural number infinity improves computability up to turing machines (a 'natural' limit on computation)
+******* Then adding different levels of infinity (in the form of super tasks, etc..) (going beyond this limit)
+******* good for understadning what causes paradoxes and what is constructable in a given universe using a given language
+***** sets
+****** making stuff in a language
+******* define collections/objects using language (as general as definitions can get, so very popular)
+	  includes feats like defining objects that compute to be relations between objects, 
+	  natural numbers as a whole object, larger infinites
+***** proofs
+****** making a language into an actual object so it can be studied
+	  study of the language:theory structure, weaknesses, expliots, etc..
+***** models
+****** making languages and universes out of other languages and universes
+
+*** layer 2
+**** math
+***** algebra 
+	  external relationship of members of a set
+****** 
+	  language: (A, A x ... x A -> A)
+	  idea: structure of sets
+	  history: proving things in general aout elementary algebra
+	  Can be thought of as 'structure' a set in total has, or properties of functions mapping elements of X back to elements of X
+***** topology 
+	  internal relationship of members of a set
+****** 
+	  language: (X,t) and then later (X,t) -> (Y,k)
+	  idea: relationships between set elements of a given set
+	  history: understanding how objects relate to each other, spacially or by connectedness
+	  Can be thought of the spacial relationship of stuff, or how 'close' one thing is to another
+	  the internal relationship is not just 'topology' though it can also be about a metric, or uniformity
+***** analysis 
+	  functions
+****** 
+	  language: X -> X
+	  idea: functions of sets
+	  history: closing plot holes in calculus
+	  The typical starting point is using a set with a defined algebra and topology (real numbers) 
+	  fun stuff to do is to find areas sectioned by functions, smoothness of functions, rate of change of functions, 
+	  connectedness of functions, measures of area functions, convergence rates of functions.
+**** physics
+***** mechanics
+
+** work
+*** stuff I would like to do
+professor in algebra and logic
+automation engineer
+ai writer
+robot maker
+language designer
+** class schedule
+*** spring 
+CSCI-C 335 Computer structures
+MATH-M 261 Statistical Inferences
+PHYS-P 221 Physics 1
+**** optional
+MATH-M 344 Partial Differential Equations
+MATH-M 448 Operations Research 2
+*** summer
+**** optional
+PHYS-P 222 Physics 2 (does not look available)
+*** fall
+33449 applied deep learning CSCI-C  490 (first choice)
+33458 applied data mining CSCI-C  490 (sounds trivial but lucrative)
+16624 internship (need to kiss department ass to get in. (3cr))
+17952 internship (1cr)
+
+**** optional
+*** spring
+CSCI-C 311 Programming Language Theory
+CSCI-C 421 Digital Design
+CSCI-C 435 Operating Systems
+INFO-I 202 CS gen ed
+**** optional
+PHYS-P 323 Physics 3 
+PHYS-P 331 Electromagnetism 
+PHYS-P 321 Techniques of Theoretical Physics
+**** extra optional
+PHYS-P 324 Physics 4
+PHYS-P 453 Quantum Mechanics
+PHYS-P 473 String Theory
+
+** note
+first source bank software internship, 
+presenter is from first source bank
+1976 had access to a computer
+got at IT degree
+
+IT is the highest paying 4 year degree? Not at all...
+
+visualization tools
+power bi
+
+ash
+aws classes
+graduated 2017
+took 2 months to get interviews
+
+website of first source has intership application
+Ramman also has their info
+
+sql 
+they want people with database classes
+
+** note
+*** mathematicians I like
+David Hilbert
+Von Neumann
+Church
+Turing
+Gottlob Frege
+Bertrand Russell 
+*** kind of dislike
+Newton
+Einstein
+Erdos
+Feyman
+
+*** what a lisp must have
+**** lambda calc
+**** define, to abstract away complexity
+***** define name lambda
+
+Noticed that senior level physics classes do a lot more symbol pushing than math or computer science classes of the same level. 
+
+I guess it is fair because that is what they do in other applied math classes, or at least those that are not closely connected with computation. But the culture is somewhat removed. So when they do stuff like type checking via metric units, there is a vibe that they are being original. Even the lower level of rigor is not totally novel. Just about everybody is too lazy to give every single detail all the time. 
+
+A lot of people are splitting hairs saying there is some sort of brain magic that physicists do that mathematicians, in total, don't. I am not sure what to make of that.
+** reading queue
+primitive stuff
+combination rules
+abstraction to take combinations of stuff and make them look like primitive stuff
+** Needed:
+*** book keeping
+**** scan all notes to computer
+**** copy notes into latex files
+*** workout (rest when needed, and stretch)
+- walk/run 10km
+- 100 bench presses/pushups
+- 100 situps 
+- 100 squats
+-- 20 curls
+-- 10 overhead press
+-- 10 upright row
+*** meals
+**** breakfast
+| oatmeal, coffee       |
+| egg, coffee           |
+| health cereal, coffee |
+| coffee                |
+| nothing               | 
+**** lunch
+| protien shake |
+| protien bar   |
+| nothing       |
+**** dinner
+| What dad makes |
+| protien shake  |
+| protien bar    |
+
+doctor appointment jun 11th 8 am 
+get fall books onto computer ||done||
+print insurance for car
+get crimson card (6/30)
+change steam account to new credit card
+*** get better
+**** math
+***** cs
+****** languages
+******* scheme
+        structure and inerpretation of computer programs
+******* C
+        C the programming language
+******* python 
+        Introduction-to-Computation-and-Programming-Using-Python-With-Application-to-Understanding-Data.pdf
+****** ai
+******* machine learning
+******** deep learning
+******** data analysis
+****** foundation
+***** physics
+****** classical/modern base
+****** quantum
+****** electrodynamics
+****** relativity
+****** statistical physics
+***** math logic 
+homotopy type theory
+****** main branches
+******* proof theory
+******* model theory
+******* set theory
+******* recursion theory 
+****** (knight recommended)
+      model theory: an introduction - dave marker
+      recursive functions and effective computability - hartley rogers
+      turing computability - bob soare
+      computability theory - barry cooper
+      model-theoretic work on the surreal numbers, by: 
+        Berarducci, Mantova, Aschenbrenner, van den Dries, 
+        van der Hoeven
+      bulletin of symbolic logic
+
+** Recommended:
+*** advice on making graph theory graphs in pdf form
+    I created my trees with Inkscape and saved then either as pngs or
+    as eps files. Then you can incorporate them in latex with \epsfig
+*** find a grad school
+***** ask shaffii or savvo. and song about schools 
+      I am not sure if Shafii or Savvo. still like me, but Song has always 
+      been supportive. When I asked Connor he literally googled it in front 
+      of me...
+      I am looking for schools that match my interest and ability. 
+      My primary goal is research, although I feel that my options may
+      be very poor. 
+      Pretty much from the start I had to deal with this crap. So whatever.
+
+***** schools that seem interesting 
+****** university of notre dame 
+       top math logic school
+****** university of chicago 
+       top math logic school
+****** university of illinois - chicago 
+       top math logic school
+****** university of michigan - kalamazoo
+       graph theory and good connection to the cs department
+*** to re-motivate
+**** watch:
+     one punch man
+     attack on titan
+     Tengen_Toppa_Gurren_Lagann
+**** play video games
+*** express all programs you made in python 
+    because hylang is a thing and python is super popular and readable
+*** make math proofs be computatble in scheme
+    without loss of math proof format, of course
+*** make hy evaluatable in a text doc, like elisp is currently
+*** organize everything
+*** programming:
+**** these are my favorites
+***** C (optimal use of algorithms/data_struct stuff)
+      most of the time it does not matter, but I have a whole 
+      year of c++ and raw data structures/assembly lingo. 
+      So for some projects this is a fun language.
+***** python (optimal use of my time for most tasks)
+      was not dissapointed by this language in numerical analysis
+      It is a great specification language, plus libraries large 
+      and easy to use.
+***** scheme (or hy{python}, guile{C}, for research code)
+      best code for experiments because it gives so much freedom
+      Very decentralized hacker base due to this freedom.
+      This language glues itself to large libraries and languages to survive 
+      hy{python}, guile{C}, clojure{java}
+*** education
+**** foundation
+***** proof theory
+****** theory of computation
+***** model theory
+***** set theory
+****** Axoimatic set theory Suppes 6/253
+**** core
+***** analysis 
+****** foundations
+******* foundationals of mathematical analysis by rudin 1/?
+****** real, complex
+******* Real and Complex analysis Rudin 1/396
+****** functional
+******* Functional Analysis Rudin 1/390
+***** algebra 
+****** Coding The matrix 1/512 (basic linear)
+***** geometry/topology 
+****** Topology Munkres 1/500
+**** mixing:
+****** algebraic geometry
+****** differential geometry
+****** algebraic topology
+**** marketable skills
+***** programming
+****** core language
+******* C
+******** C Dennis Ritchie 1/250
+******* python
+******* lisp
+******** Land of Lisp 1/460
+******** scheme (guile) (interacts directly with C)
+******** clojure (has infinite size data structures)
+****** flavor:
+******* bash (common linux language)
+******** Wicked Cool Shell Scripts 10/350 
+******* perl (quick implementation/string manipulator)
+******* R (Good for statistics/data-mining)
+***** math related
+****** human languages helpful in math research
+******* german (I find the most useful)
+******* french (probably what is actually most common)
+******* russian
+******* japanese
+******* chinese
+**** research topics
+***** Artifitial intelligence Russel 1/1060
+*** transfer code from other languages to python/hy
+*** create a lisp language using C
+    scheme like but with a little extra (partial eval of lambda)
+*** work problems in math books 
+    this builds deep understanding of the math and ability to think
+*** books to read:
+**** math
+***** graph theory
+***** Number Theory Rosen 1/600
+***** Discrete math book Rosen 185/850
+***** Coding The matrix 1/512
+***** tao analysis book 8/305
+***** tao analysis second book 1/211
+***** counterexamples in analysis 1/180
+***** how to think about analysis 1/222
+***** the numerical analysis book from class
+**** CS
+***** Linux 2nd ed Sobell 218/890 (book from a spring class)
+***** Linux 3rd ed Sobell 1/1000 (read much of 2nd ed)
+**** assembly (1 to 1 to computer instructions)
+***** use ARM assembly videos to build a set of notes
+***** x86-64 gas assembly
+***** ARM assembly book 26/161
+***** Lisp book 114/587 ?
+***** data structures book 13/688
+**** other
+***** how buildings learn
+***** mere christianity by cs lewis
+
+
+functools.partial(<function lambdaSumv.<locals>.ftotal at 0x7f5de2ba2e18>, [functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 1), functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 2), functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 3)])
+** become a master of lisp and logic
+*** Build your own lisp
+**** what should lisp have?
+***** small language, large library
+***** symmetry between functions and macros as first order objects
+***** has both a compiler and an interpreter
+****** compiles to C
+****** interpreter does not have outer ( ) parens for top level functions
+***** accepts large amounts of unicode for names
+***** ability to do assembly kind of instructions: use pointers, allocate memory, jump to tag
+*** lisp
+exploring the world of programming using only one language
+**** tackle SICP, SIclassical_mechanics, SIdiff_geometry
+***** SICP
+1-8a ||done||
+8b (skipped for now)
+9a-10b
+**** clojure : Java, javascript, (eventually: python, perl, C)
+clojure for the brave and true
+**** optionally common lisp 
+land of lisp
+*** logic
+**** introduction to the foundations of mathematics by Wilder
+**** All of Dr. Knights recommendations
+**** principa mathematica
+**** zfc book
+**** category theory
+**** type theories
+** relativity
+** optional
+*** read
+**** functional differential geo book
+**** general relativity book
+*** code
+**** general relativity concepts
+***** mess with opengl graphics engine
+nxm * mxp = nxp
+
+In the beginning, I had no idea what was going on. We had always briefly recapped set theory and its overlaps with other subjects in courses, but this was something else. Rings, fields, groups, morphisms, all kinds of stuff. The proofs were often throwing around so many terms that I had to look them up, then look up the terms used in those terms. The proofs could be so compressed. It was hard, it was interesting, and I just felt like there was something there.
+
+In analysis, it seems very clear what's going on. Building up sequences, series, defining things like limits, to be able to learn the theory and then also practically use tools in analysis to differentiate, integrate, solve differential equations and so on. It felt more like a tool kit for practical mathematics and physics. Even higher analysis of multiple variables, manifolds, or complex analysis seemed like that (although I do make an exception for Riemann geometry, I really loved that).
+
+After university, I went on living my life as people do. Often working in fields that didn't really require most of what I learned.
+
+But one day, I came across something that required some good mathematical structures. I pulled out my group theory stuff, got into algebraic lattices, all kinds of stuff, and ended up somehow getting lost in category theory. That was about 4 years ago. Honestly, I work on this stuff regularly since then. There is something so rewarding about the study of these structures.
+
+It makes me feel like I'm learning how to think better, learning how to identify and think in structures, abstraction, and logic so much better. I try to approach problems less like someone who does analysis and wants to calculate an answer, and more as someone who is looking to classify the most abstract structure that groups together what I'm looking at with other things and then apply the most basic logical conclusions to figure something out for much more than what I originally saw in front of me.
+
+It even got me deeper into philosophy through logics and constructivism.
+
+This is just my opinion, and I'm sure if one of my favorite professors from uni who was specialized in analysis would read this, he would greatly disagree, but it just makes me feel happy to do this. I don't need to do it to solve a problem set, pass an exam, or even as a job, I just do it out of curiosity. I don't think many topics in analysis could hold my attention like that.
+
+So give it a try. See what you think. I hope you can also find the beauty in abstract structures.
+I don't believe what I'm doing is especially active or popular (so hopefully someone else will respond with a better answer), but seeing as no one has answered yet, I'll just mention one of the things algebraists do: invent new algebras.
+
+The process is very easy to describe. It may or may not result in something useful. Take a set A and define a set F of operations on A (maps from An into A, for various non-negative integer values of n). The set A plus the operations F is what we call an algebra, usually denoted A=⟨A,F⟩. The algebras you already know (e.g., groups, rings, modules) are examples.
+
+In my work, I think about different ways to construct such algebras. Usually I work with finite algebras, often using computer software like GAP or the Universal Algebra Calculator to construct examples and study them. I look at the important features of the algebras and try to understand them better and make general statements about them.
+
+To address your last question, there is the following open problem that I worked on as a graduate student: Given a finite lattice L, does there exist a finite algebra A (as described above) such that L is the congruence lattice of A. This question is at least 50 years old and quite important for our understanding of finite algebras. In 1980 it was discovered (by Palfy and Pudlak) to be equivalent to the following open problem about finite groups: given a finite lattice L, can we always find a finite group that has L as an interval in its subgroup lattice? Imho, these are fun problems to work on.
+
+---
+
+A pure ring theorist will often have thought quite a bit about Kothe's conjecture. They will have thought about stuff that has the morpheme "nil" in it. Is the polynomial ring of a nil ring nil? Nilpotent maybe? When you hear these theorems and problems for the first time in a single talk, you might have trouble distinguishing between open questions and solved or even trivial problems soon after that. They all sound rather similar. In general, there are loads of simple-sounding problems like Kothe's conjecture in ring theory that are difficult. Many of them have probably never been asked.
+
+Some of ring theorists, I believe these are mainly from Iran, will have considered some kind of graph defined by ring-theoretic stuff. Take a ring and call the zero divisors vertices. Throw in an edge between x and y whenever xy=0. You get a graph that you can do all kinds of things with. You can ask which rings induce a graph with this or that property.
+
+Often a noncommutative ring theorist will be looking for some kinds of left-right symmetries. If you define a left Xical ring-theoretic thing and a right Xical ring-theoretic thing, are they the same ring-theoretic thing? The Jacobson radical may have been the inspiration for this.
+
+Another thing is that, as in a lot of mathematics, algebraists will be trying to classify their objets. Rings in general don't seem reasonably classifiable, which leaves room for attempts at partial classification. In ring/algebra theory these will often aim at generalizing Wedderburn's theorem.
+
+This is a very narrow part of what algebraists do. Algebra comes in so many flavors. The commutative-noncommutative boundary is especially strong I think. Also, some algebraists will think a lot about universal algebra, varieties and pseudo-varieties, some won't. Some will be deeply in love in categories, some will say meh.
+
+** classes to sign up for
+** advice on C 
+
+I don't know what you understand with “master C” mean, but if you want
+to get better at it, just do it. Make programs, have some ideas that
+fit your non-programming skills and produce a shitload of code to
+support things you think are fun. 
+
+I'm doing C now since at least ‘88, that's almost 30 years, I think I
+was able to code C in '86 already, but I have no source files left,
+that are this old, after two times in my life a MS Windows destroyed
+60% and 30% of all files I ever created. That was at times where we
+had no backup space. So I'm not sure about that anymore. It's a lot of
+time. And I still learn a new thing or ten every day. Before that it
+was Assembly, Database languages, a lot of Basic that I mixed with
+Assembly. Basic was a bastard language of all script languages back in
+those days. It was our Lua and your SQL and our Python and our Bash
+and just everything. It was the not so loved step-mother that you
+could not avoid, but that you tricked and cheated so much that it was
+quite cool in the end. Gambas Almost Means Basic if you want to see
+yourself what it was like. Basic is like a drug. Fast, easy and gives
+you quick success, illusions of being invincible and if you never
+leave that you will crash hard. Great project, Gambas.
+
+But you do not need 30 years
+to master anything. If you work hard, you should be a master after ten
+years of doing something, some say after six years it's possible. But
+you really have to work hard for that. So, my way is this: I code a
+program every day. At least one little routine and because you have to
+do that for a long time, there is no sense in burning yourself
+out. You have to be a steady worker, not a hayfire. I know oh so many
+hayfire guys that stopped programming all together after six years or
+so. Because they burned theirself or let other people burn them. We
+lose at least a thousand Einsteins a day with our modern software
+industry. They burn them. So, don't let them touch you. Use them, do
+not get used by them. You master C in understanding where you stand
+with C and see the world around you. You need to know and understand,
+able to read and even to write Assembly language. It will expand your
+knowledge of your machine. You need also to know about your
+environment, most likely Linux. If you are still on Windows, that's
+the first bridge to burn, leave that. Everything you'll learn there is
+wasted time of your life. That platform is dead already. Linux isn't
+perfect and there's something new every day here, but Linux has
+future, it is growing, it is a kind of living organism, that you can
+be part of. Windows is just a carcass for the worms. That horse in the
+middle of the street isn't going to win the race. So, know your
+platform, know Linux system calls, know the libraries, know what
+additional, non-standard libraries are there, test them. And if they
+are performant and well written, use them. Ncurses, SDL, Gaul, libsfm,
+Qt5, dig yourself in. Fortify your position, because people will come
+and try to get you with the one or other shitty HLL, that will take
+you away with promises, like Java did with me. I should never left C
+and I left it, because I didn't fortify my position. You need to have
+at least a good library base at your hand to kill off all those stupid
+user-level and API-level scripts with that. Only then you will stay
+where you are, which is your battleground against the “easy way” that
+is promised everywhere. But that way leads nowhere. But learn to leave
+your fortress by using scripts of yourself. Learn to include Lua into
+your projects and with that learn to bastardize that language and make
+it your willing servant. Together you can beat the crap out of
+everything out there. Lua is the perfect companion for all
+configuration and data flow management outside of your project. Just
+think of a spreadsheet application in C that files can include Lua
+routines, using the functions you are providing. There you have that
+general idea. And if you know Assembly level, which not only means
+your processor but also over OpenCL your GPU level, the hardware
+level, you have the perfect tool. Because C does cooperate well with
+everything. If you start doing something in C++ for example, you are
+bound to the shitty STL more or less and you are bound to the memory
+concept of C++. Which is incompatible with all others. You'll lose the
+freedom. And that's dire warning of mine about using something
+different from C on your implementation level. Higher languages are
+always API level languages. Like Lua. They just cover this under
+sheets and sheets of ideology. Like Lisp is just an API level over a
+list-manipulation library. Prolog an API language over a logic solver
+and so on. Lua is clear and true about its nature. It doesn't play
+ideology games with you. It just wants to serve and it serves
+well. You need to face the world of programming outside of languages,
+means you have to learn algorithms and mathematics. Without that all
+your knowledge all your deep insight into the world of programming
+will be worth nothing. You can learn that by the book. I always
+prefered to learn it by doing. So take your time to select a small
+project. Not a big one, think small. Take that project and do it. And
+learn the algorithms on the way. Graph theories is, by the way, one of
+the fields that are almost universally applicable. Every time you got
+some data structure, every time you have some sort of finite state
+machine inside your implementation, the graph theory does apply. It is
+one of the most useful parts of “algorithms” that I ever learned to
+use. Doesn't sound very practical or if you didn't touch it yet, you
+might not see how far that reaches. But in principle everything you do
+in a program is a graph. So know the laws of that. Really. Do not
+theorize that too much, practice that instead. Go through the
+algorithms of R. Sedgewick (for example here) It would be like riding
+the waves of the wide ocean without a compass without that. C is the
+core of everything. But it is not the only thing you need to know. It
+is the fortress from where you can fight your battle, it is the point
+of Archimedes where you can lever the world out of its fundament. You
+can change everything from this strongpoint, but you have to be able
+to move around. C is not like the other languages. It is not a
+prison. It is freedom. Think “pirate!”, okay?
+
+
+Any attitude along the lines of "actually understanding or being
+precise is pointless". It is so blatantly anti-intellectual and
+anti-scientific that I do not know what to say to it.

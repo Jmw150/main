@@ -1,0 +1,239 @@
+\iffalse
+// c precompiler stuff
+#define cnote \
+\begin{lstlisting}[ \
+  mathescape, \
+  columns=fullflexible, \
+  basicstyle=\fontfamily{lmvtt}\selectfont, \
+] 
+
+#define endcnote \end{lstlisting}
+\fi
+
+\documentclass{article} 
+\usepackage{amsthm} % writing proofs
+\usepackage{amsfonts} % for blackboard bold charactes like Z R
+\usepackage{amssymb} % came with intermediate value thrm
+\usepackage[fleqn]{amsmath} % for arguments vertically underneath like lim, piecwise functions, equality arrays
+\setlength{\mathindent}{0in} %neutralizes equation indentation
+\usepackage{listings} % more literal, makes hw easier
+\setlength{\parindent}{0in} %neutralizes annoying paragraph indent
+\usepackage{mathtools} % for floor and ceiling functions / macros
+\usepackage{nccmath} % for centering equations with ceqn
+\usepackage{tkz-euclide} % geometry
+\usetkzobj{all} % include all objects of tkz
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\f}{\frac}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\bb}{\mathbb}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\renewcommand{\qedsymbol}{$\dashv$}
+
+\begin{document}
+
+Jordan Winkler
+
+stats
+
+Wed Jan 30 13:22:23 EST 2019
+
+hw3: 
+
+Sections 8.3-8.4. Exercises 8.18, 8.19, 8.21, 8.26, 8.32, 8.34
+Study the textbook Examples in Sections 8.3-8.4.  \\
+
+8.18 If the standard deviation of the mean for the
+sampling distribution of random samples of size 36
+from a large or infinite population is 2, how large must
+the sample size become if the standard deviation is to
+be reduced to 1.2? \\
+
+$n = 36$
+
+$\sigma_{\bar{x}} = 2$
+
+$\sigma_x = n^{1/2}\sigma_{\bar{x}} = 6 \cdot 2 = 12$  \\
+
+note: $ \sigma_{\bar{x}} = \f{\sigma_x}{n^{1/2}}$ so 
+
+$n_{\sigma = 1.2} = (\f{12}{1.2})^2 = 100$ \\
+
+
+8.19 A certain type of thread is manufactured with a
+mean tensile strength of 78.3 kilograms and a standard
+deviation of 5.6 kilograms. How is the variance of the
+sample mean changed when the sample size is
+
+(a) increased from 64 to 196? \\
+
+$\sigma_{n=64}^2 = \sigma^2/n = 5.6^2/64 \approx 0.4899$ \\
+
+$\sigma_{n=196}^2 = \sigma^2/n = 5.6^2/196 \approx 0.1599$ \\
+
+So a sample variance reduction of $\sigma^2_{n=64} - \sigma^2_{n=196} = 0.33$
+
+(b) decreased from 784 to 49? \\
+
+
+$\sigma_{n=784}^2 = \sigma^2/n = 5.6^2/784 \approx 
+0.0399
+$ \\
+
+$\sigma_{n=49}^2 = \sigma^2/n = 5.6^2/49 \approx 
+0.6399
+$ \\
+
+$\sigma^2_{n=64} - \sigma^2_{n=784} = 0.6399 - 0.0399 = 0.6$ \\
+
+
+8.21 A soft-drink machine is regulated so that the
+amount of drink dispensed averages 240 milliliters with
+a standard deviation of 15 milliliters. Periodically, the
+machine is checked by taking a sample of 40 drinks
+and computing the average content. If the mean of the
+40 drinks is a value within the interval $\mu_{\bar{X}} \pm 2\simga_{\bar{X}}$, the
+machine is thought to be operating satisfactorily; otherwise, adjustments are made. In Section 8.3, the company official found the mean of 40 drinks to be $\bar{x} = 236$
+milliliters and concluded that the machine needed no
+adjustment. Was this a reasonable decision? \\
+
+$n = 40$
+
+$\bar{x} = 240$
+
+$\sigma_x = 15$ 
+
+$\sigma_{\bar{x}} = \sigma_x/n^{1/2} = 15/40^{1/2} \approx 2.3717$ \\
+
+$(\bar{x} - 2\sigma_{\bar{x}} , \bar{x} + 2\sigma_{\bar{x}}) = (
+235.2566, 244.7434)$ \\
+
+8.26 The amount of time that a drive-through bank
+teller spends on a customer is a random variable with
+a mean μ = 3.2 minutes and a standard deviation
+σ = 1.6 minutes. If a random sample of 64 customers
+is observed, find the probability that their mean time
+at the teller’s window is \\
+
+$\mu = 3.2$
+
+$\sigma = 1.6$
+
+$n = 64$
+
+$\sigma_{\bar{x}} = \sigma/n^{1/2} = 1.6/8 = 0.2$ \\
+
+(a) at most 2.7 minutes; \\
+
+$P(\bar{x} < 2.7) = P(Z < \f{2.7-3.2}{0.2}) = P(Z < -2.5) \approx 0.0062$ \\
+
+(b) more than 3.5 minutes; \\
+
+$P(\bar{x} > 3.5) = P(Z > \f{3.5 - 3.2}{0.2}) = P(Z > 1.5) \approx 0.0668$ \\
+
+(c) at least 3.2 minutes but less than 3.4 minutes. \\
+
+\begin{eqnarray*}
+P(3.2 \leq \bar{x} \leq 3.4) & = & P(\f{3.2 - 3.2}{0.2} \leq Z \leq \f{3.4 - 3.2}{0.2})  \\
+& = &  P(0 < Z < 1) \\
+& = &  P(1 > Z) - P(Z < 0) \\
+& \approx & 0.3413
+\end{eqnarray*}
+
+
+8.32 Two different box-filling machines are used to fill
+cereal boxes on an assembly line. The critical measure-
+ment influenced by these machines is the weight of the
+product in the boxes. Engineers are quite certain that
+the variance of the weight of product is σ 2 = 1 ounce.
+Experiments are conducted using both machines with
+sample sizes of 36 each. The sample averages for ma-
+chines $A$ and $B$ are $\bar{x}_A = 4.5$ ounces and $\bar{x}_B = 4.7$ ounces. Engineers are surprised that the two sample
+averages for the filling machines are so different. \\
+
+$n_A = n_B = 36$
+
+$\sigma^2_A = \sigma^2_B = 1$
+
+$\sigma^2_{\bar{x}_A - \bar{x}_B} = 
+\f{\sigma^2_A}{n_A} 
++ \f{\sigma^2_B}{n_B}  
+= 2/36 = 1/18$ \\
+
+$\sigma_{\bar{x}_A - \bar{x}_B} = (1/18)^{1/2} \approx 0.2357$ \\
+
+(a) Use the Central Limit Theorem to determine $P(\bar{X}_B - \bar{X}_A \geq 0.2)$
+under the condition that $\mu_A = \mu_B$. \\
+
+\begin{eqnarray*}
+P(\bar{X}_B - \bar{X}_A \geq 0.2) 
+& = & P(\f{\bar{x}_A - \bar{x}_B) - (\mu_A - \mu_B)}{(
+\f{\sigma^2_A}{n_A} + \f{\sigma^2_B}{n_B}  )^{1/2}} \geq \f{0.2}{.2357}) \\
+& \approx & P(Z \leq 0.8485) \\
+& = & 1- P(Z \geq 0.8485) \\
+& \approx & 0.1977
+\end{eqnarray*}
+
+
+(b) Do the aforementioned experiments seem to, in any
+way, strongly support a conjecture that the popu-
+lation means for the two machines are different?
+Explain using your answer in (a). \\
+
+The probability of that much difference or more is about 20 percent. So there is an 80 percent chance that this could happen. That seems pretty unreliable compared to the usual 95 percent confidence. So I am going to say the conjecture was false. \\ 
+
+8.34 Two alloys A and B are being used to manufacture a certain steel product. An experiment needs to
+be designed to compare the two in terms of maximum
+load capacity in tons (the maximum weight that can
+be tolerated without breaking). It is known that the
+two standard deviations in load capacity are equal at
+5 tons each. An experiment is conducted in which 30
+specimens of each alloy (A and B) are tested and the
+results recorded as follows: \\
+
+$\bar{x}_A = 49.5$
+
+$\bar{x}_B = 45.5$
+
+$\bar{x}_A - \bar{x}_B = 4$ \\
+
+The manufacturers of alloy A are convinced that this
+evidence shows conclusively that $\mu_A > \mu_B$ and strongly
+supports the claim that their alloy is superior. Man-
+ufacturers of alloy B claim that the experiment could
+easily have given $\bar{x}_A - \bar{x}_B = 4$ even if the two population means are equal. In other words, “the results are
+inconclusive!” \\
+
+
+(a) Make an argument that manufacturers of alloy B
+are wrong. Do it by computing $P(\bar{X}_A - \bar{X}_B > 4 | \mu_A = \mu_B)$ \\
+
+$n_A = n_B = 30$
+
+$\sigma_A = \sigma_B = 5$ 
+
+$\bar{x}_A = 49.5$
+
+$\bar{x}_B = 45.5$ \\
+
+$\sigma^2_{\bar{x}_A - \bar{x}_B} = 2 \cdot \f{25}{30} = 1.6667$
+
+
+$\sigma_{\bar{x}_A - \bar{x}_B} = 1.2910$ \\
+\begin{eqnarray*}
+P(\bar{X}_A - \bar{X}_B > 4 | \mu_A = \mu_B) & = & 
+P(Z \leq \f{4-0}{1.2910}) \\
+& \approx & P(Z \leq 3.0984) \\
+& \approx & 0.0010 \\
+\end{eqnarray*}
+
+(b) Do you think these data strongly supports alloy A? \\
+
+Yes. $P(\bar{X}_A - \bar{X}_B > 4 | \mu_A = \mu_B)$ is a nice low number. So the probability that our conjecture is correct is pretty high. 
+
+\end{document}
