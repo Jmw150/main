@@ -172,8 +172,8 @@ prompt_str: .asciiz "enter a str -> "
     syscall                     
     jr      $ra                 
 
-# say_hello(), say "Hello, World!\n"
-say_hello:    
+# say_hello_world(), say "Hello, World!\n"
+say_hello_world:    
 .data
 hello_world:.asciiz "Hello, World!\n"     ## how to store strings in a file
 .text

@@ -222,6 +222,7 @@
 
 ; default to mips assembly language
 (add-to-list 'auto-mode-alist '("\\.s\\'" . mips-mode)) ; mips assembler is most common atm
+(add-to-list 'auto-mode-alist '("\\.asm\\'" . mips-mode)) ; mips assembler is most common atm
 
 ;; Open .v files with Proof General's Coq mode
 ;; now considered obsolete (uses version 24.3)
