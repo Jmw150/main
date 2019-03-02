@@ -1,40 +1,46 @@
-; on the terminal there is a bell, this makes it a flash instead
-(setq visible-bell 1)
 
 ; common repository called MELPA 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
 
+
+;; annoying things emacs does
+; on the terminal there is a bell, this makes it a flash instead
+(setq visible-bell 1)
+; adding number to line on emacs
+; will slow down loading large 10k line pages
+(global-linum-mode t)
+; set tab to 4 spaces, tab still auto alines 
+(setq default-tab-width 4)
+; remove indent guessing in c programs
+(require 'cc-mode)
+    (add-to-list 'c-mode-common-hook
+      (lambda () (setq c-syntactic-indentation nil)))
+; turn off auto indent
+(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
+
 ; evil mode for emacs, which is vim in emacs
 (require 'evil)
 (evil-mode 1)
 
-; adding number to line on emacs
-; will slow down loading large 10k line pages
-(global-linum-mode t)
-
 ; org mode for .org files (great for organizing)
 (require 'org)
 
-; set C-q <tab> to 4 spaces
-(setq default-tab-width 4)
 
-; turn off auto indent
-(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
 ;; The following are emacs evil macros, to make:
 ;; M-x name-last-kbd-macro, M-x insert-kbd-macro
 ;; rename (evil-set-register key macro)
 
-; python block comment mapped to b in emacs evil
-(evil-set-register ?b
-   [?0 ?i ?# escape ?j ?0])
+; bash comment mapped to b in emacs evil
+(evil-set-register ?p [?0 ?i ?# escape ?j ?0])
 
 ; remove the first column of a line of text in emacs evil
 ; helpful for removing python block comment
 (evil-set-register ?n
    "0xj0")
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -43,7 +49,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (exwm haskell-mode kotlin-mode ein markdown-mode tuareg merlin caml dumb-jump proof-general hy-mode evil auctex))))
+    (x86-lookup nasm-mode rust-mode d-mode mips-mode exwm haskell-mode kotlin-mode ein markdown-mode tuareg merlin caml dumb-jump proof-general hy-mode evil auctex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -213,6 +219,9 @@
 
 ; loading the new hy language for python
 (add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode))
+
+; default to mips assembly language
+(add-to-list 'auto-mode-alist '("\\.s\\'" . mips-mode)) ; mips assembler is most common atm
 
 ;; Open .v files with Proof General's Coq mode
 ;; now considered obsolete (uses version 24.3)
