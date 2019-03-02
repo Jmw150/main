@@ -1,3 +1,4 @@
+
 /*  
     A library for all of my favorite functions 
     created by: Jordan Winkler

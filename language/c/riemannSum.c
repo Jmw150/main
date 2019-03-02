@@ -1,17 +1,16 @@
-#include <iostream>
+#include <stdio.h>
 #include <math.h>
-using namespace std;
 
-/**///////////////////////////////////////////////////////////////
+/**//////////////////////////////////////////////////////////////
 /**/// function and global variables to mess with
-/**/   double lowerbound = 0;
-/**/   double upperbound = 4;
-/**/   int    intervals  = 4;
+/**/   double lowerbound = -1;
+/**/   double upperbound = 1;
+/**/   int    intervals  = 20;
 /**/   double function (double x)
 /**/   {
-/**/       return x*x;
+/**/       return x*sin(x*x)*log(x*x+1)/(exp(fabs(x))*cos(x));
 /**/   }
-/**///////////////////////////////////////////////////////////////
+/**//////////////////////////////////////////////////////////////
 
 
 double leftSideSum(double start, double end, int intervals);
@@ -20,11 +19,11 @@ double midSum(double start, double end, int intervals);
 
 int main ()
 {
-	cout << "reimann Sum\n";
-	cout << "-----------\n";
-	cout << leftSideSum(lowerbound,upperbound,intervals) << endl;
-	cout << rightSideSum(lowerbound,upperbound,intervals) << endl;
-	cout << midSum(lowerbound,upperbound,intervals) << endl;
+	printf("reimann Sum\n");
+	printf("-----------\n");
+	printf("%f\n",leftSideSum(lowerbound,upperbound,intervals));
+	printf("%f\n",rightSideSum(lowerbound,upperbound,intervals));
+	printf("%f\n",midSum(lowerbound,upperbound,intervals));
 
 	return 0;
 }
