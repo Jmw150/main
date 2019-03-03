@@ -2,13 +2,47 @@
 
 # a tool I made to translate mips code into its binary format
 
+"""
+- The object file header describes the size and position of the other pieces of
+the file.
+- The text segment contains the machine language code for routines in the
+source file. These routines may be unexecutable because of unresolved
+references.
+- The data segment contains a binary representation of the data in the source
+file. The data also may be incomplete because of unresolved references to
+labels in other files.
+- The relocation information identifies instructions and data words that
+depend on absolute addresses. Th ese references must change if portions of
+the program are moved in memory.
+- The symbol table associates addresses with external labels in the source file
+and lists unresolved references.
+- The debugging information contains a concise description of the way the
+program was compiled, so a debugger can find which instruction addresses
+correspond to lines in a source file and print the data structures in readable
+form.
+"""
+
+# proper specification of an assembler
+# step 0: follow assembler directives; put .data and .text segments in proper spots
+# step 1: store location lables in a table(somehow make globals availible to linker), main is global by default? (according to book), required to do this first because assemblers are defined to have forward referencing (unlike c)
+# step 2: translate machine instructions into binary
+
+# does not do backpacking or any sort of optimizations, save such things for implementation in C or something
+
 import sys
 import re
 
+
+
+# compiler instructions
+assembler_directives_map = {
+    '.globl' : '',
+    '.data' : '',
+    '.text' : ''
+}
+
+
 # parses instruction into opt-code
-# r,i,j types
-# but also s/l,lui, etc
-# type, op-space, function-space
 instruction_map = {
     'lw'    : ('s/l', '0x23', '0'), 
     'sw'    : ('s/l', '0x2b', '0'), 
@@ -129,19 +163,38 @@ def main():
     input_file = open(sys.argv[1], 'r')
     output_file= open(sys.argv[2], 'w')
 
-    # initialize starting data
-    currLineNum = 0
-    lookupLabel = {}
+    # name truth value
+    false = -1
 
-    # attempt to clean file data
-    # has no idea how to handle .dat, or tags
+    # initialize starting data
+    line_num = 0
+    symbol_table = {}
+
+    # first pass, taking care of addresses, producing lexemes for each line?
+    # this is how a pass in spim is done
+    # the book says to count lexemes for line count, which is odd
     data = ''
     for eachline in input_file:
-        line = eachline.strip(' \n\r') # remove newlines
-        if len(line) == 0:             # ignore blank lines
-            continue
-        if line.find('#') != -1:       # strip comments
+        # remove whitespace, newlines, carriage returns
+        line = eachline.strip(' \n\r') 
+
+        # strip comments
+        if line.find('#') != false:       
             line = line[0 : line.find('#')]
+
+        # if there is a non-redudant symbol, record it into the symbol table, remove symbol
+        if (line.find(':') != false) :
+            # error
+            if (line[0:line.find(':')]) in lookup_label) : 
+                print('error, redundant lable: ' line[0:line.find(':')] ' at' + str(line_num))
+                return 
+            lookup_label.update({line[0:line.find(':')] : line_num})
+            line = line[line.find(':')+1:]
+
+        # increment address
+        line_num += 1
+        
+    line_num = 0
 
 """
     # I hate this guy ...
