@@ -1,12 +1,22 @@
-#!/usr/bin/spim -file
+#!/home/jordan/Backup/scripts/Mars4_5.jar nc
 
 # this file is a test bed and storage place for mips functions
 
+#.macro  print_integer $arg
+    # print_int($a0) 
+    addi    $a0, $0, 5
+    li      $v0, 1              
+    syscall
+#    .end_macro
+
 main: #($a0 = argc, $a1 = argv), 4*n($a1) = nth command 
 #    lw      $a0, 4($a1)         # get first command line argv
-
-
+#.include "test.asm" #mov $0, $0
+    addi    $t0, $0, 5 
+#    print_integer $t0
     j       exit
+
+    
 
 # functions made:
 # exit, return, read str, print str, prompt for str, say hello, main(argc,args), strlen
@@ -23,7 +33,7 @@ string_space: .space 1024 # set aside 1024 bytes for the string.
 .text                       ## Assembly language instructions go in text segment
     la      $a0, string_space   # pointer of string
     li      $a1, 1024           # space allocated on str pointer
-    
+ #   string  = 8                 # apparently this is legal (but only in spim)
     li      $v0, 8              # 'read a string' code
     syscall
     

@@ -665,3 +665,5 @@ prison. It is freedom. Think “pirate!”, okay?
 Any attitude along the lines of "actually understanding or being
 precise is pointless". It is so blatantly anti-intellectual and
 anti-scientific that I do not know what to say to it.
+make decompiler up to C from mips, and x86
+interpreter of modern mips 6

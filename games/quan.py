@@ -197,9 +197,9 @@ def range (n=3) :
         return (ki(),ki(),ki(),ki())[0:n]
 
 
-def interact():
-    import code
-    code.InteractiveConsole(locals=globals()).interact()
+#def interact():
+#    import code
+#    code.InteractiveConsole(locals=globals()).interact()
     
 #interact()
 
