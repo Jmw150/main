@@ -1,22 +1,152 @@
-#!/home/jordan/Backup/scripts/Mars4_5.jar nc
-
+#!/home/jordan/backup/scripts/Mars4_5.jar nc
 # this file is a test bed and storage place for mips functions
+# go to the main
+    j       main # thanks mars...
 
-#.macro  print_integer $arg
-    # print_int($a0) 
-    addi    $a0, $0, 5
+# print_str(string $a0) 
+# prints a string when given a register of it
+.macro print_str_ptr %a0
+    move    $a0, %a0
+    li      $v0, 4              # print str
+    syscall
+.end_macro
+# end print_str
+
+# $v0 = read_int()
+.macro read_int %v0
+    li      $v0, 5
+    syscall
+    move %v0, $v0
+.end_macro
+# end read_int
+
+# $f0 = read_float()
+.macro read_float
+    li      $v0, 6
+    syscall
+.end_macro
+# end read_float
+
+# $f0 = read_double()
+.macro read_double
+    li      $v0, 7
+    syscall
+.end_macro
+# end read_double
+
+# read_string(a0=buffer,a1=length)
+.macro read_string
+    li      $v0, 8
+    syscall
+.end_macro
+# end read_string
+
+# v0 = read_char()
+.macro read_char
+    li      $v0, 12
+    syscall
+.end_macro
+# end read_char
+
+# print_char(a0)
+.macro print_char %a0
+    add     $a0, $0, %a0
+    li      $v0, 11
+    syscall
+.end_macro
+# end print_char
+
+# return()
+# return to previous function call, (or $ra location)
+.macro return
+    jr      $ra                 # jump back to previous function
+.end_macro
+# end return
+return:
+    jr      $ra                 # jump back to previous function
+
+# exit program
+.macro exit
+    li      $v0,10              # v0 is the syscall pointer
+    syscall                     # syscall 10 == exit program
+.end_macro
+# end exit
+exit:
+    li      $v0,10              # v0 is the syscall pointer
+    syscall                     # syscall 10 == exit program
+
+
+# print_int($a0) 
+#.macro  print_int(%a0)
+#    move    $a0, %a0
+.macro print_int %a0
+    move    $a0, %a0
     li      $v0, 1              
     syscall
-#    .end_macro
+    .end_macro
+# end print_int
+
+.macro print_str (%str)
+	.data
+myLabel: .asciiz %str
+	.text
+	li $v0, 4
+	la $a0, myLabel
+	syscall
+	.end_macro
+
+.macro print (%str)
+	.data
+myLabel: .asciiz %str
+	.text
+	li $v0, 4
+	la $a0, myLabel
+	syscall
+	.end_macro
+	
+#	print_str ("test1")	#"test1" will be labeled with name "myLabel_M0"
+#	print_str ("test2")	#"test2" will be labeled with name "myLabel_M1"
+
+# generic looping mechanism
+	.macro for (%regIterator, %from, %to, %bodyMacroName)
+	add %regIterator, $zero, %from
+	Loop:
+	%bodyMacroName ()
+	add %regIterator, %regIterator, 1
+	ble %regIterator, %to, Loop
+	.end_macro
+	
+	#print an integer
+	.macro print_int_endl()
+	print_int $t0
+	print_str "\n"
+	.end_macro
+	
+	#printing 1 to 10:
+	for ($t0, 1, 10, print_int_endl)
+
+
 
 main: #($a0 = argc, $a1 = argv), 4*n($a1) = nth command 
 #    lw      $a0, 4($a1)         # get first command line argv
 #.include "test.asm" #mov $0, $0
-    addi    $t0, $0, 5 
-#    print_integer $t0
-    j       exit
+    #addi    $t0, $0, 5 
+    #print_int($t0)
 
-    
+    #move    $a0, $t0
+    #li      $v0, 1              
+    #syscall
+
+	for ($t0, 1, 10, print_int_endl)
+
+    print("hello World\n")
+    print("hello World\n")
+
+    exit
+
+
+
+
 
 # functions made:
 # exit, return, read str, print str, prompt for str, say hello, main(argc,args), strlen
@@ -43,91 +173,6 @@ string_space: .space 1024 # set aside 1024 bytes for the string.
 # end read_str
 
 
-# print_int($a0) 
-print_int: 
-    li      $v0, 1              
-    syscall
-    j       return
-# end print_int
-
-
-# print_float($f12) 
-print_float: 
-    li      $v0, 2
-    syscall
-    j       return
-# end print_float
-
-# print_double($f12) 
-print_double: 
-    li      $v0, 3
-    syscall
-    j       return
-# end print_double
-
-# print_str(string $a0) 
-# prints a string
-print_str: 
-    # a0 should already have str that syscall(4) wants
-    li      $v0, 4              # print str
-    syscall
-    j       return
-# end print_str
-
-# $v0 = read_int()
-read_int:
-    li      $v0, 5
-    syscall
-    j       return
-# end read_int
-
-# $f0 = read_float()
-read_float:
-    li      $v0, 6
-    syscall
-    j       return
-# end read_float
-
-# $f0 = read_double()
-read_double:
-    li      $v0, 7
-    syscall
-    j       return
-# end read_double
-
-# read_string(a0=buffer,a1=length)
-read_string:
-    li      $v0, 8
-    syscall
-    j       return
-# end read_string
-
-# v0 = read_char()
-read_char:
-    li      $v0, 12
-    syscall
-    j       return
-# end read_char
-
-
-# print_char(a0)
-print_char:
-    li      $v0, 11
-    syscall
-    j       return
-# end print_char
-
-# return()
-# return to main previous function call, (or $ra location)
- return:
-    jr      $ra                 # jump back to previous function
-# end return
-
-# exit program
-exit:
-    li      $v0,10              # v0 is the syscall pointer
-    syscall                     # syscall 10 == exit program
-# end exit
 
 
 # prompt_for_str(), prompt user to input message
@@ -384,8 +429,23 @@ for_loop:
     j       for_loop
 endfor:
     add     $a0, $0, $s2
-    j       print_int
+    print_int $a0
     j       exit
 
 # 3. Translate the following MIPS code to C. Assume that the variables f, g, h, i, and j are assigned to registers \$s0, \$s1, \$s2, \$s3, and \$s4, respectively. Assume that the base address of the arrays A and B are in registers \$s6 and \$s7, respectively. \\
 
+### I have no idea how floating point works yet
+# print_float($f12) 
+#.macro print_float %f12
+#    move    $f12, %f12 # su
+#    li      $v0, 2
+#    syscall
+#.end_macro
+# end print_float
+## print_double($f12) 
+#.macro print_double
+#    li      $v0, 3
+#    syscall
+#.end_macro
+# end print_double
+###
