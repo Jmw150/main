@@ -113,6 +113,14 @@ Sections 9.3-9.4 Exercise 9.2, 9.5, 9.6, 9.8, 9.11. Study the textbook Examples 
 Sections 9.5-9.7 Exercise 9.14, 9.15, 9.20, 9.22, 9.23. 
 Study the textbook Examples in Sections 9.5-9.7. 
 
+*** Homework 7 (3/6)
+Sections 9.8-9.9 Exercise 9.40, 9.42, 9.43, 9.44. 
+Study the textbook Examples in Sections 9.8-9.9.
+Sections 9.10-9.11 Exercise 9.52, 9.53, 9.55, 9.60, 9.64, 9.66. 
+Study the textbook Examples in Sections 9.10-9.11.
+*** Homework 8 (3/18)
+Sections 9.12-9.13 Exercise 9.72, 9.74, 9.78, 9.80. 
+Study the textbook Examples in Sections 9.12-9.13.
 *** quiz 3     (2/27)
     Sections 8.5-8.8, 9.3-9.5
 ** optional
