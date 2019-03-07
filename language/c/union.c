@@ -41,12 +41,14 @@ dat print (dat i)
 }
 #define def(a, b) dat a = init(b);
     
+#define ok(a) #a
 
 int main ()
 {
 
     def(a, 1); // alter state
     print(a);
+    printf(ok(a lol)"\n");
 
     a = init(22); // pretend to not
     print(a);
