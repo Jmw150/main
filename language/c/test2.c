@@ -8,3 +8,6 @@ f = 0;
 
 #define NOP_N(N) REPEAT_##N(asm("nop");)
 
+
+opam install batteries
+opam install ounit # only needed for tests
