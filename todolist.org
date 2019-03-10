@@ -34,13 +34,17 @@ a) What is this, in decimal, if it is an unsigned binary number?
 b) What is this, in decimal, if it is a ones complement number?
 c) What is this, in decimal, if it is a twos complement number?
 d) What is this, in decimal, if it is a sign-magnitude number?
-*** hw 5 (feb 26) 
-*** read ch 1,2,3
-** optional
-*** read
+*** hw 5 (feb 26) ||done||
+*** hw 6 (mar 21) 
+*** code macros into spim
+*** read 
 **** main book 
+***** ch 1 ||done||
+***** ch 2,3,rest
 **** computer-organization-and-architecture
 **** structured-computer-organization
+** optional
+*** read
 * stats
 http://pages.iu.edu/~zguan/m261/m261.htm
 ** hw
@@ -113,7 +117,7 @@ Sections 9.3-9.4 Exercise 9.2, 9.5, 9.6, 9.8, 9.11. Study the textbook Examples 
 Sections 9.5-9.7 Exercise 9.14, 9.15, 9.20, 9.22, 9.23. 
 Study the textbook Examples in Sections 9.5-9.7. 
 
-*** Homework 7 (3/6)
+*** Homework 7 (3/6)  ||done||
 Sections 9.8-9.9 Exercise 9.40, 9.42, 9.43, 9.44. 
 Study the textbook Examples in Sections 9.8-9.9.
 Sections 9.10-9.11 Exercise 9.52, 9.53, 9.55, 9.60, 9.64, 9.66. 
@@ -121,19 +125,15 @@ Study the textbook Examples in Sections 9.10-9.11.
 *** Homework 8 (3/18)
 Sections 9.12-9.13 Exercise 9.72, 9.74, 9.78, 9.80. 
 Study the textbook Examples in Sections 9.12-9.13.
-*** quiz 3     (2/27)
-    Sections 8.5-8.8, 9.3-9.5
-** optional
 *** read
 **** stats book ch6-11
+** optional
 **** math stats book
 **** graduate probability book, measure theory, etc..
 *** code
 **** automate selected problems
 * physics
 ** lab
-*** lab 6      (2/25)
-**** prepare script to do it
 ** optional
 *** read
 **** university physics
