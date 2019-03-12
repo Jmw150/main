@@ -37,6 +37,8 @@ d) What is this, in decimal, if it is a sign-magnitude number?
 *** hw 5 (feb 26) ||done||
 *** hw 6 (mar 21) 
 *** code macros into spim
+it turns out that spim is an interpreter...
+so macro expansion would mean doing something that was not part of the book' specification
 *** read 
 **** main book 
 ***** ch 1 ||done||
@@ -150,7 +152,7 @@ online listed problems
 all problems
 * Other:
 ** research focus
-logic
+logic : model theory
 ** money stuff
 ** liberal art
 *** first principles
