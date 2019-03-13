@@ -197,6 +197,9 @@ def main():
         
     line_num = 0
 
+"""
+    # I hate this guy ...
+    # may just dump this section and start over
     currLineNum = 0
     for line in data.split('\n')[:-1]:
         if line.find(':') != -1:
@@ -267,6 +270,7 @@ def main():
             machineCode += twoComlCodeGen(lookupLabel[parsed[1]], 26)
         output_file.write('{:08x}'.format((int)(machineCode, 2)) + '\n')
         currLineNum += 1
+"""
 
     input_file.close()
     output_file.close()

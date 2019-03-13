@@ -36,9 +36,14 @@ c) What is this, in decimal, if it is a twos complement number?
 d) What is this, in decimal, if it is a sign-magnitude number?
 *** hw 5 (feb 26) ||done||
 *** hw 6 (mar 21) 
-*** code macros into spim
-it turns out that spim is an interpreter...
+*** mips emulator
+it turns out that spim is an interpreter, and a poorly made one at that
 so macro expansion would mean doing something that was not part of the book' specification
+and rewritting much of spim
+**** macro
+**** assembler
+**** loader
+**** virtual machine
 *** read 
 **** main book 
 ***** ch 1 ||done||
@@ -573,7 +578,7 @@ This is a very narrow part of what algebraists do. Algebra comes in so many flav
 ** classes to sign up for
 ** advice on C 
 
-I don't know what you understand with “master C” mean, but if you want
+I don't know what you mean by “master C”, but if you want
 to get better at it, just do it. Make programs, have some ideas that
 fit your non-programming skills and produce a shitload of code to
 support things you think are fun. 
@@ -615,18 +620,24 @@ wasted time of your life. That platform is dead already. Linux isn't
 perfect and there's something new every day here, but Linux has
 future, it is growing, it is a kind of living organism, that you can
 be part of. Windows is just a carcass for the worms. That horse in the
-middle of the street isn't going to win the race. So, know your
+middle of the street isn't going to win the race. 
+
+So, know your
 platform, know Linux system calls, know the libraries, know what
 additional, non-standard libraries are there, test them. And if they
 are performant and well written, use them. Ncurses, SDL, Gaul, libsfm,
-Qt5, dig yourself in. Fortify your position, because people will come
+Qt5, dig yourself in. 
+
+Fortify your position, because people will come
 and try to get you with the one or other shitty HLL, that will take
 you away with promises, like Java did with me. I should never left C
 and I left it, because I didn't fortify my position. You need to have
 at least a good library base at your hand to kill off all those stupid
 user-level and API-level scripts with that. Only then you will stay
 where you are, which is your battleground against the “easy way” that
-is promised everywhere. But that way leads nowhere. But learn to leave
+is promised everywhere. But that way leads nowhere. 
+
+But learn to leave
 your fortress by using scripts of yourself. Learn to include Lua into
 your projects and with that learn to bastardize that language and make
 it your willing servant. Together you can beat the crap out of
@@ -641,7 +652,9 @@ everything. If you start doing something in C++ for example, you are
 bound to the shitty STL more or less and you are bound to the memory
 concept of C++. Which is incompatible with all others. You'll lose the
 freedom. And that's dire warning of mine about using something
-different from C on your implementation level. Higher languages are
+different from C on your implementation level. 
+
+Higher languages are
 always API level languages. Like Lua. They just cover this under
 sheets and sheets of ideology. Like Lisp is just an API level over a
 list-manipulation library. Prolog an API language over a logic solver
@@ -653,7 +666,9 @@ your knowledge all your deep insight into the world of programming
 will be worth nothing. You can learn that by the book. I always
 prefered to learn it by doing. So take your time to select a small
 project. Not a big one, think small. Take that project and do it. And
-learn the algorithms on the way. Graph theories is, by the way, one of
+learn the algorithms on the way. 
+
+Graph theory is, by the way, one of
 the fields that are almost universally applicable. Every time you got
 some data structure, every time you have some sort of finite state
 machine inside your implementation, the graph theory does apply. It is

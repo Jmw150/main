@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# a tool I made to translate mips code into its binary format
-
 """
 - The object file header describes the size and position of the other pieces of
 the file.
@@ -29,8 +27,8 @@ form.
 
 # does not do backpacking or any sort of optimizations, save such things for implementation in C or something
 
-import sys
-import re
+import sys # system control
+import re #regular expressions
 
 
 
@@ -38,7 +36,10 @@ import re
 assembler_directives_map = {
     '.globl' : '',
     '.data' : '',
-    '.text' : ''
+    '.text' : '',
+    '.macro' : '',
+    '.end_macro' : '',
+    '.include' : ''
 }
 
 
@@ -196,9 +197,6 @@ def main():
         
     line_num = 0
 
-"""
-    # I hate this guy ...
-    # may just dump this section and start over
     currLineNum = 0
     for line in data.split('\n')[:-1]:
         if line.find(':') != -1:
@@ -269,7 +267,6 @@ def main():
             machineCode += twoComlCodeGen(lookupLabel[parsed[1]], 26)
         output_file.write('{:08x}'.format((int)(machineCode, 2)) + '\n')
         currLineNum += 1
-"""
 
     input_file.close()
     output_file.close()
