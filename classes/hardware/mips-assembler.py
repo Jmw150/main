@@ -169,7 +169,7 @@ def main():
 
     # initialize starting data
     line_num = 0
-    symbol_table = {}
+    lookup_label = symbol_table = {}
 
     # first pass, taking care of addresses, producing lexemes for each line?
     # this is how a pass in spim is done
@@ -186,8 +186,8 @@ def main():
         # if there is a non-redudant symbol, record it into the symbol table, remove symbol
         if (line.find(':') != false) :
             # error
-            if (line[0:line.find(':')]) in lookup_label) : 
-                print('error, redundant lable: ' line[0:line.find(':')] ' at' + str(line_num))
+            if (line[0:line.find(':')] in symbol_table) : 
+                print('error, redundant lable: ' + str(line[0:line.find(':')]) + ' at' + str(line_num))
                 return 
             lookup_label.update({line[0:line.find(':')] : line_num})
             line = line[line.find(':')+1:]

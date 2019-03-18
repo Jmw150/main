@@ -49,8 +49,16 @@ Sections 9.8-9.9 Exercise 9.40, 9.42, 9.43, 9.44.
 Sections 9.10-9.11 Exercise 9.52, 9.53, 9.55, 9.60, 9.64, 9.66.  \\
 
 
-9.40 In a study conducted at Virginia Tech on the development of ectomycorrhizal, a symbiotic relationship between the roots of trees and a fungus, in which minerals are transferred from the fungus to the trees and sugars from the trees to the fungus, 20 northern red oak seedlings exposed to the fungus Pisolithus tinctorus were grown in a greenhouse. All seedlings were planted in the same type of soil and received the same amount of sunshine and water. Half received no nitrogen at planting time, to serve as a control, and the other half received 368 ppm of nitrogen in the form $NaNO_3$. The stem weights, in grams, at the end of 140
-days were recorded as follows: \\
+9.40 In a study conducted at Virginia Tech on the development of
+ectomycorrhizal, a symbiotic relationship between the roots of trees
+and a fungus, in which minerals are transferred from the fungus to the
+trees and sugars from the trees to the fungus, 20 northern red oak
+seedlings exposed to the fungus Pisolithus tinctorus were grown in a
+greenhouse. All seedlings were planted in the same type of soil and
+received the same amount of sunshine and water. Half received no
+nitrogen at planting time, to serve as a control, and the other half
+received 368 ppm of nitrogen in the form $NaNO_3$. The stem weights,
+in grams, at the end of 140 days were recorded as follows: \\
 
 No Nitrogen
 0.32
@@ -109,14 +117,12 @@ $s_2 = 0.8$ \\
 $S = (\f{(n_1 - 1)s^2_{1} + (n_2 - 1)s^2_{2}}{n_1 + n_2 - 2})^{1/2}$$= 0.9154$ \\
 
 $\alpha = 0.1$
+
 $v = 20$
 
 $t_{0.05,20} = 1.725$
 
-$
- (\bar{x}_1 - \bar{x}_2) - t_{\alpha/2, v} * S * (1/n_1 + 1/n_2)^{1/2} < 
-\mu_1 - \mu_2 <
-(\bar{x}_1 - \bar{x}_2) + t_{\alpha/2, v} * S * (1/n_1 + 1/n_2)^{1/2}$
+$ (\bar{x}_1 - \bar{x}_2) - t_{\alpha/2, v} * S * (1/n_1 + 1/n_2)^{1/2} < \mu_1 - \mu_2 < (\bar{x}_1 - \bar{x}_2) + t_{\alpha/2, v} * S * (1/n_1 + 1/n_2)^{1/2}$
 
 $4.324 < \mu_1 - \mu_2 < 5.676$ \\
 
@@ -182,13 +188,13 @@ Assume that the differences of the distances are approximately normally distribu
 
 $\bar{x}_1 = \sum x_1 /n$$ = 37250$
 
-$s^2_1 = (\sum(x_i - \bar{x}_1)^2/(n_1-1)) = 6546.750$ \\
+$s_1^2 = \sum(x_i - \bar{x}_1)^2/(n_1-1) = 42859935.5625$ \\
 
 $\bar{x}_2 = \sum x_2 /n$$ = 38362.5$
 
-$s^2_2 = (\sum(x_i - \bar{x}_2)^2/(n_2-1)) = 6181.060$ \\
+$s_2^2 = \sum(x_i - \bar{x}_2)^2/(n_2-1) = 38205502.7236$ \\
 
-$df = \ceil{(s^2_1/n_1 + s^2_2/n_2)^2/((s^2_1/n_1)^2/(n_1-1) + (s_2^2/n_2)^2/(n_2 - 1))}$$ = \ceil{13.9539} = 13$ \\
+$df = \ceil{(s^2_1/n_1 + s^2_2/n_2)^2/((s^2_1/n_1)^2/(n_1-1) + (s_2^2/n_2)^2/(n_2 - 1))}$$ = \ceil{12.9342} = 13$ \\
 
 $t_{\alpha/2} \approx 3.0123$ \\
 
@@ -211,27 +217,19 @@ $\hat{p} = \bar{x}/n = 0.08$
 
 $\hat{q} = 1 - \hat{p} = 0.92$
 
-$Z_{\alpha/2} = Z_{0.025} = 1.96$  \\
+$z_{\alpha/2} = z_{0.025} = 1.96$  \\
 
-
-$\hat{p} - Z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2}
-< p < 
-\hat{p} + Z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2} $ \\
-
+$\hat{p} - z_{\alpha/2} (\f{ \hat{p} \hat{q} }{n})^{1/2} < p < \hat{p} + z_{\alpha/2} (\f{ \hat{p} \hat{q} }{n})^{1/2} $ \\
 
 $0.0268 < p < 0.1332$ with $95$ percent confidence. \\
 
-using the bloated formula
+using a big book formula
 
-$\f{\hat{p} + \f{z^2_{\alpha/2}}{2n}
-   {1  $$+ \f{z^2_{\alpha/2}}{n}}
-   - \f{z_{\alpha/2} }{1+ \f{z_{\alpha/2}^2} $
-$(\f{\hat{p}\hat{q}}{n} + \f{z^2_{\alpha/2}}{4n^2}) <$$
-p < 
-\f{\hat{p} + \f{z^2_{\alpha/2}}{2n}
-   {1  $$+ \f{z^2_{\alpha/2}}{n}}
-   + \f{z_{\alpha/2} }{1+ \f{z_{\alpha/2}^2} $
-$(\f{\hat{p}\hat{q}}{n} + \f{z^2_{\alpha/2}}{4n^2}) $
+$\f{\hat{p} + \f{z^2_{\alpha/2}}{2n}}{1  + \f{z^2_{\alpha/2}}{n}} - \f{z_{\alpha/2} }{1+ \f{z_{\alpha/2}^2}{n}}
+(\f{\hat{p}\hat{q}}{n} + \f{z^2_{\alpha/2}}{4n^2}) <
+p < $
+$\f{\hat{p} + \f{z^2_{\alpha/2}}{2n}}{1  + \f{z^2_{\alpha/2}}{n}} + \f{z_{\alpha/2} }{1+ \f{z_{\alpha/2}^2}{n}}
+(\f{\hat{p}\hat{q}}{n} + \f{z^2_{\alpha/2}}{4n^2})$
 
 Giving the inverval $(0.0411 < p < 0.1500)$ which is wider than the other method. \\
 
@@ -252,9 +250,9 @@ $\hat{q} = 1 - \hat{p} = 0.43$ \\
 
 $z_{\alpha/2} = 2.055$ \\
 
-$\hat{p} - Z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2}
+$\hat{p} - z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2}
 < p < 
-\hat{p} + Z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2} $ \\
+\hat{p} + z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2} $ \\
 
 $0.4981 < p < 0.6419$ \\
 
@@ -280,9 +278,9 @@ $\hat{q} = 0.15$
 
 $z_{\alpha/2} = 1.96$ \\
 
-$\hat{p} - Z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2}
+$\hat{p} - z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2}
 < p < 
-\hat{p} + Z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2} $ \\
+\hat{p} + z_{\alpha/2} (\f{\hat{p}\hat{q}}{n})^{1/2} $ \\
 
 $0.7393 < p < 0.9607$ \\
 
@@ -303,7 +301,7 @@ $\hat{q} = 0.772$ \\
 
 $z_{\alpha/2} = 2.575$ \\
 
-$n = \ceil{z_{\alpha/2}^2 * \f{\hat{p}(1-\hat{p})/err^2} = \ceil{465.02} = 466$ \\
+$n = \ceil{z_{\alpha/2}^2 * \f{\hat{p}(1-\hat{p})}{err^2}} = \ceil{465.02} = 466$ \\
 
 9.64 A study is to be made to estimate the proportion of residents of a certain city and its suburbs who favor the construction of a nuclear power plant near the city. How large a sample is needed if one wishes to be at least 95\% confident that the estimate is within 0.04 of the true proportion of residents who favor the construction of the nuclear power plant? \\
 
@@ -335,7 +333,7 @@ $\hat{q}_2 = 0.7714$ \\
 
 $\alpha = 0.1$
 
-$Z_{\alpha/2} = 1.645$
+$z_{\alpha/2} = 1.645$
 
 $(\hat{p}_1 - \hat{p}_2 \pm z_{\alpha/2} (\f{\hat{p}_1 \hat{q}_1}{n_1} + \f{\hat{p} \hat{q}}{n_2})^{1/2}$
 

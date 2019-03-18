@@ -25,10 +25,12 @@ form.
 # step 1: store location lables in a table(somehow make globals availible to linker), main is global by default? (according to book), required to do this first because assemblers are defined to have forward referencing (unlike c)
 # step 2: translate machine instructions into binary
 
-# Does not do backpacking or any sort of optimizations. Save such things for implementation in C or something.
+# does not do backpacking or any sort of optimizations, save such things for implementation in C or something
 
 import sys # system control
 import re #regular expressions
+
+
 
 # compiler instructions
 assembler_directives_map = {
@@ -39,6 +41,7 @@ assembler_directives_map = {
     '.end_macro' : '',
     '.include' : ''
 }
+
 
 def twoComlCodeGen(value, bits):
     """
@@ -64,108 +67,24 @@ def main():
 
     # initialize starting data
     line_num = 0
-    symbol_table = {}
+    macro_table = {}
 
-    # first pass, taking care of addresses, producing lexemes for each line?
-    # this is how a pass in spim is done
-    # the book says to count lexemes for line count, which is odd
+    # first pass, store and expand macros
+    # if there is a non-redudant macro, record it into the macro table, blank .macro and .end_macro
     data = ''
     for eachline in input_file:
-        # remove whitespace, newlines, carriage returns
-        line = eachline.strip(' \n\r') 
-
-        # strip comments
-        if line.find('#') != false:       
-            line = line[0 : line.find('#')]
-
-        # if there is a non-redudant symbol, record it into the symbol table, remove symbol
-        if (line.find(':') != false) :
-            # error
-            if (line[0:line.find(':')]) in lookup_label) : 
-                print('error, redundant lable: ' line[0:line.find(':')] ' at' + str(line_num))
+        if (line.find('.macro') != false) :
+            # check if this macro was recorded already
+            if (line[0:line.find(':')]) in macro_table) :  # does not work
+                print('error, redundant lable: ', line[0:line.find(':')], ' at' + str(line_num))
                 return 
             lookup_label.update({line[0:line.find(':')] : line_num})
-            line = line[line.find(':')+1:]
+            #line = line[line.find(':')+1:]
 
         # increment address
         line_num += 1
         
-    line_num = 0
 
-"""
-    # I hate this guy ...
-    # may just dump this section and start over
-    currLineNum = 0
-    for line in data.split('\n')[:-1]:
-        if line.find(':') != -1:
-            line = line[line.find(':') + 1 : ]
-        parsed = re.split(r'[,\s]\s*', line)
-        instFile = instMap[parsed[0]] # broken, not sure why
-        machineCode = ''
-        if instFile[0] == 'r':
-            if instFile[1].find('0x') != -1:
-                machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            else:
-                machineCode += '{:06b}'.format((int)(instFile[1], 10))
-            machineCode += '{:05b}'.format(regNameMap[parsed[2]])
-            machineCode += '{:05b}'.format(regNameMap[parsed[3]])
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            machineCode += '{:05b}'.format(0)
-            machineCode += '{:06b}'.format((int)(instFile[2], 16))
-        elif instFile[0] == 'sft':
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += '{:05b}'.format(0)
-            machineCode += '{:05b}'.format(regNameMap[parsed[2]])
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            if parsed[3].find('0x') != -1:
-                machineCode += '{:05b}'.format((int)(parsed[3], 16))
-            else:
-                machineCode += '{:05b}'.format((int)(parsed[3], 10))
-            machineCode += '{:06b}'.format((int)(instFile[2], 16))
-        elif instFile[0] == 'i':
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += '{:05b}'.format(regNameMap[parsed[2]])
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            if parsed[3].find('0x') != -1:
-                machineCode += twoComlCodeGen((int)(parsed[3], 16), 16)
-            else:
-                machineCode += twoComlCodeGen((int)(parsed[3], 10), 16)
-        elif instFile[0] == 'lui':
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += '{:05b}'.format(0)
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            if parsed[2].find('0x') != -1:
-                machineCode += twoComlCodeGen((int)(parsed[2], 16), 16)
-            else:
-                machineCode += twoComlCodeGen((int)(parsed[2], 10), 16)
-        elif instFile[0] == 's/l':
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += '{:05b}'.format(regNameMap[re.findall(r'\(.*\)', parsed[2])[0][1:-1]])
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            machineCode += twoComlCodeGen((int)(parsed[2][0 : parsed[2].find('(')], 10), 16)
-        elif instFile[0] == 'jr':
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            machineCode += '{:015b}'.format(0)
-            machineCode += '{:06b}'.format((int)(instFile[2], 16))
-        elif instFile[0] == 'jalr':
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += '{:05b}'.format(regNameMap[parsed[2]])
-            machineCode += '{:05b}'.format(0)
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            machineCode += '{:05b}'.format(0)
-            machineCode += '{:06b}'.format((int)(instFile[2], 16))
-        elif instFile[0] == 'b':
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += '{:05b}'.format(regNameMap[parsed[1]])
-            machineCode += '{:05b}'.format(regNameMap[parsed[2]])
-            machineCode += twoComlCodeGen(lookupLabel[parsed[3]] - (currLineNum + 1), 16)
-        else:
-            machineCode += '{:06b}'.format((int)(instFile[1], 16))
-            machineCode += twoComlCodeGen(lookupLabel[parsed[1]], 26)
-        output_file.write('{:08x}'.format((int)(machineCode, 2)) + '\n')
-        currLineNum += 1
-"""
 
     input_file.close()
     output_file.close()
