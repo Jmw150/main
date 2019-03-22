@@ -1,6 +1,6 @@
 To Do list 
 
-Sun Feb 24 18:31:54 EST 2019
+Mon Mar 18 16:29:38 EDT 2019
 -------------------------------------------------------------------
 * hardware
 http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
@@ -35,7 +35,10 @@ b) What is this, in decimal, if it is a ones complement number?
 c) What is this, in decimal, if it is a twos complement number?
 d) What is this, in decimal, if it is a sign-magnitude number?
 *** hw 5 (feb 26) ||done||
-*** hw 6 (mar 21) 
+*** hw 6 (mar 21) ||done||
+exercise A.6, A.7
+(also documentation details)
+*** quiz (mar 26)
 *** mips emulator
 it turns out that spim is an interpreter, and a poorly made one at that
 so macro expansion would mean doing something that was not part of the book' specification
@@ -55,7 +58,7 @@ and rewritting much of spim
 * stats
 http://pages.iu.edu/~zguan/m261/m261.htm
 ** hw
-*** Homework 2 (1/23) ||done||
+*** Homework 2  (1/23) ||done||
 Pages 230-232. Exercises. 8.1, 8.8, 8.13, 8.15.
 Using the data in Exercise 1.25 on Page 32 
 (a) to find sample mean, sample median, and the 10% trimmed sample mean; 
@@ -63,14 +66,14 @@ Using the data in Exercise 1.25 on Page 32
 (c) to find Q1, Q2, Q3, and IQR;
 (d) to construct a box-and-whisker plot;
 Study the textbook Examples in Sections 8.1-8.2.
-*** Homework 3 (1/30) ||done||
+*** Homework 3  (1/30) ||done||
 Sections 8.3-8.4. Exercises 8.18, 8.19, 8.21, 8.26, 8.32, 8.34
 Study the textbook Examples in Sections 8.3-8.4. 
 
-*** Homework 4 (2/4)  ||done||
+*** Homework 4  (2/4)  ||done||
 Sections 8.5-8.8: Exercises 8.38, 8.40, 8.41, 8.44, 8.45, 8.46, 8.51, 8.55
 Study the textbook Examples in Sections 8.5-8.8. See Example Excel file q-q-plots.xlsx. 
-*** EXAM prep  (2/13) ||done||
+*** EXAM prep   (2/13) ||done||
 
 Test 1 (2/13), Sections 6.1-6.7, 8.1--8.4 (Review Exercises)
 Additional Review Exercises for Test 1
@@ -118,20 +121,27 @@ t =(54100 − 53000)/(5801.34/√10)= 0.60.
 
 So, P( X ≥ 54, 100) = P(T ≥ 0.60) is a value between 0.20 and 0.30, which is not a rare event.
 
-*** Homework 5 (2/20) ||done||
+*** Homework 5  (2/20) ||done||
 Sections 9.3-9.4 Exercise 9.2, 9.5, 9.6, 9.8, 9.11. Study the textbook Examples in Sections 9.1-9.4. 
-*** Homework 6 (2/25) ||done||
+*** Homework 6  (2/25) ||done||
 Sections 9.5-9.7 Exercise 9.14, 9.15, 9.20, 9.22, 9.23. 
 Study the textbook Examples in Sections 9.5-9.7. 
 
-*** Homework 7 (3/6)  ||done||
+*** Homework 7  (3/6)  ||done||
 Sections 9.8-9.9 Exercise 9.40, 9.42, 9.43, 9.44. 
 Study the textbook Examples in Sections 9.8-9.9.
 Sections 9.10-9.11 Exercise 9.52, 9.53, 9.55, 9.60, 9.64, 9.66. 
 Study the textbook Examples in Sections 9.10-9.11.
-*** Homework 8 (3/18)
+*** Homework 8  (3/18) ||done||
 Sections 9.12-9.13 Exercise 9.72, 9.74, 9.78, 9.80. 
 Study the textbook Examples in Sections 9.12-9.13.
+*** Homework 9  (3/25)
+Sections 10.1-10.3 Exercise 10.1, 10.2, 10.4, 10.5, 10.6, 10.14. 
+Study the textbook Examples in Sections 10.1-10.3.
+*** Homework 10 (4/3)
+Section 10.4 Exercise 10.19, 10.21, 10.22. 
+Study the textbook Examples in Section 10.4.
+*** TEST        (4/3)
 *** read
 **** stats book ch6-11
 ** optional
@@ -148,19 +158,12 @@ Study the textbook Examples in Sections 9.12-9.13.
 **** thermal/statistical mechanics
 *** code
 **** statistical mechanics with scheme
-* algebra 
-** read algegra ch 0
-ch1-4
-** hw
-online listed problems
-*** optional
-all problems
 * Other:
 ** research focus
 logic : model theory
 ** money stuff
 ** liberal art
-*** first principles
+*** model
 **** theory of computation (formal languages and automata)
 	 The most important of this is formal languages and automata for it actually generalizes pretty well to everything else)
 	 formal language (or more abstractly, the idea of information, in the form of characters, hilbert spaces, etc..)
@@ -692,3 +695,16 @@ precise is pointless". It is so blatantly anti-intellectual and
 anti-scientific that I do not know what to say to it.
 make decompiler up to C from mips, and x86
 interpreter of modern mips 6
+** algebra 
+** read algegra ch 0
+ch1-4
+** hw
+online listed problems
+*** optional
+all problems
+There are places I address math. That is the strategy behind Eigenvalues the best I can tell. While it may have some utility in many contexts, in terms of stretching for comprehension there is obviously something inadequate about this approach. There are other domains where axiomatizing may have a more sustainable interface, less scaffold-like. Math is something metaphysical with the potential to point to or pursue quantum and probably morphic realms as well.
+
+33449 deep learning
+33452 game programming
+33458 data mining
+

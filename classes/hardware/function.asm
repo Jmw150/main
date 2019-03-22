@@ -137,16 +137,166 @@ main:                           #($a0 = argc, $a1 = argv), 4*n($a1) = nth comman
     #li      $v0, 1
     #syscall
 
-    for     ($t0, 1, 10, print_int_endl)
+    ### A.6 
+    # Using SPIM, write and test an adding machine program that repeatedly reads in integers and adds them into a running sum. Th e program should stop when it gets an input that is 0, printing out the sum at that point. Use the SPIM system calls described on pages A-43 and A-45.
+################# Data segment #####################
+    .data
 
-    print   ("hello World\n")
-    print   ("hello World\n")
+sum_prompt: .asciiz "Input int -> "
+sum_prefix_ans: .asciiz "Sum of ints -> "
+sum_newline:.asciiz "\n"
+################# Code segment #####################
+    .text
+
+sum:                            
+    move    $t0, $0             # total = 0, to be printed later
+sum_loop: 
+    la      $a0, sum_prompt     # print prompt
+    li      $v0, 4              # |
+    syscall                     # |
+    li      $v0, 5              # get integer from terminal
+    syscall                     # |
+    
+    beq     $v0, $0, sum_print  # go to print if given 0
+    add     $t0, $t0, $v0       # else, total += input
+    j       sum_loop
+    
+sum_print:
+    la      $a0, sum_prefix_ans # describe what will be printed
+    li      $v0, 4              # |
+    syscall                     # |
+
+    move    $a0, $t0            # print total
+    li      $v0, 1              # |
+    syscall                     # |
+
+    la      $a0, sum_newline    # print "\n"
+    li      $v0, 4              # |
+    syscall                     # |
+
+    li      $v0, 10             # exit
+    syscall                     # |
+    
+    ### A.7
+    # Using SPIM, write and test a program that reads in three integers and prints out the sum of the largest two of the three. Use the SPIM system calls described on pages A-43 and A-45. You can break ties arbitrarily. 
+
+################# Data segment #####################
+    .data
+
+sum_top2_prompt: .asciiz "input int -> "
+sum_top2_pre_ans: .asciiz "sum of top 2 ints -> "
+sum_top2_newline:.asciiz "\n"
+################# Code segment #####################
+    .text
+
+
+
+    jal     get_int            # read in 3 integers
+    move    $t0, $v0            
+    jal     get_int
+    move    $t1, $v0
+    jal     get_int
+    move    $t2, $v0
+
+    slt     $t3, $t0, $t1       # three checks, in order
+    slt     $t4, $t1, $t2       # a < b, b < c, a < c
+    slt     $t5, $t0, $t2
+
+    # 8 branches, organized into 3 jumps
+    # ties don't need consideration, because answer is by value not register
+    # 000 -> 0 |- (a > b > c, a > c) -> 110
+    # 001 -> 1 |- (a > b > c, a < c) -> not possible
+    # 010 -> 2 |- (a > b, c > b, a < c) -> (c > a > b) -> 101
+    # 011 -> 3 |- (a > b, b < c, a < c) -> (c > a > b) -> 101
+    # 100 -> 4 |- (a < b, b > c, a > c) -> (b > a > c) -> 110
+    # 101 -> 5 |- (a < b, b > c, a < c) -> (b > c > a) -> 011
+    # 110 -> 6 |- (a < b < c, a > c) -> not possible
+    # 111 -> 7 |- (a < b < c, a < c) -> 011
+    #
+    # three valid output types 
+    # 110 : 000, 100 or 0, 4
+    # 101 : 010, 011 or 2, 3
+    # 011 : 101, 111 or 5, 7
+
+    sll     $t4, $t4, 1         # pack logic into single register
+    sll     $t5, $t5, 2
+    add     $t4, $t4, $t5
+    add     $t3, $t3, $t4
+
+    beq     $t3, $0, ab_win     # dispatch, or switch statement
+    li      $t4, 4
+    beq     $t3, $t4, ab_win
+    li      $t4, 2
+    beq     $t3, $t4, ac_win
+    li      $t4, 3
+    beq     $t3, $t4, ac_win
+    li      $t4, 5
+    beq     $t3, $t4, bc_win
+    li      $t4, 7
+    beq     $t3, $t4, bc_win
+
+ab_win:
+    add     $t0, $t0, $t1
+    j       print
+
+ac_win:
+    add     $t0, $t0, $t2
+    j       print
+
+bc_win:
+    add     $t1, $t1, $t2
+    j       print
+    
+print:
+    la      $a0, sum_top2_pre_ans # describe what will be printed
+    li      $v0, 4              # |
+    syscall                     # |
+
+    move    $a0, $t0            # print total
+    li      $v0, 1              # |
+    syscall                     # |
+
+    la      $a0, newline        # print "\n"
+    li      $v0, 4              # |
+    syscall                     # |
+
+    li      $v0, 10             # exit
+    syscall                     # |
+
+get_int:
+    la      $a0, sum_top2_prompt# describe what will be printed
+    li      $v0, 4              # |
+    syscall                     # |
+
+    li      $v0, 5              # read_int
+    syscall                     # |
+    jr      $ra                 # jump back to previous function
+
+####
+
+max:
+    lw      $t0, 0($a0)         # load the first array value into t0
+    li      $t1, 1              # initialize the counter to one
+max_loop:
+    beq     $t1, $a1, return    # exit if we reach the end of the array
+    addi    $a0, $a0, 4         # increment the pointer by one word
+    addi    $t1, $t1, 1         # increment the loop counter
+    lw      $t2, 0($a0)         # store the next array value into t2
+    ble     $t2, $t0, max_end_if
+    move    $t0, $t2            # found a new maximum, store it in t0
+max_end_if:
+    j       max_loop            # repeat the loop
+
+    j       return
+
+
+
+    #for ($t0, 1, 10, print_int_endl)
+
+    #print("hello World\n")
+    #print("hello World\n")
 
     exit
-
-
-
-
 
 # functions made:
 # exit, return, read str, print str, prompt for str, say hello, main(argc,args), strlen
@@ -224,20 +374,6 @@ strlen_loop:
     j       return
 
 
-max:
-    lw      $t0, 0($a0)         # load the first array value into t0
-    li      $t1, 1              # initialize the counter to one
-max_loop:
-    beq     $t1, $a1, return    # exit if we reach the end of the array
-    addi    $a0, $a0, 4         # increment the pointer by one word
-    addi    $t1, $t1, 1         # increment the loop counter
-    lw      $t2, 0($a0)         # store the next array value into t2
-    ble     $t2, $t0, max_end_if
-    move    $t0, $t2            # found a new maximum, store it in t0
-max_end_if:
-    j       max_loop            # repeat the loop
-
-    j       return
 
 
 
@@ -256,7 +392,8 @@ sum_newline:.asciiz "\n"
 sum:
     add     $s1, $zero, $zero   # Initialize $s1 to zero - reserved for our total sum
 
-sum_Loop: li$v0, 4              # Load system call to print input string
+sum_Loop: 
+    li      $v0, 4              # Load system call to print input string
     la      $a0, sum_inputString# Load input string for printing
     syscall
 

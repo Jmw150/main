@@ -14,6 +14,10 @@ technique: micro pass compiler
 import sys # system control
 import re #regular expressions
 
+# name truth values
+false = -1 # return of ''.find() on failure
+true = 1   # arbitrary
+
 
 # start by checking if correct args were used
 def check_args() :
@@ -29,20 +33,17 @@ def check_args() :
 input_file = open('function.asm', 'r')
 output_file= open('lol', 'w')
 
-# name truth values
-false = -1 # return of ''.find() on failure
-true = 1   # arbitrary
-
+data = []
+data_num = 0
 # initialize table
-macro_table = {}
-copy_phase = false
-expand_phase = false
 for line in input_file:
-    oldline = line # oldline to be written to file
-    # ignore commented code
     if (line.find('#') != false) :
-        line = line[0:line.find('#')]
-        print(line) # debug
+        data.append(line[0:line.find('#')])
+    data.append(line)
+    data_num += 1
+
+
+for line in data:
     # get names and arguments
     if (line.find('.macro ') != false) :
         # make new names an error (in spec?)
@@ -51,7 +52,6 @@ for line in input_file:
         #          line[0:line.find(':')], 
         #          ' at' + str(line_num))
         #    exit()
-        copy_phase = true
         macro_table.update({line[line.find('.macro '):] : ''})
         # later stages do not have .macro, so keep them out
         oldline = '#' + line 
