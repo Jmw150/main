@@ -1,4 +1,5 @@
-; assume a and b are either binary or lists of binary values
+; restriction:
+; assume all variables are: functions, binary, binary lists
 
 '(define (truth-table function inputs)
 
@@ -39,7 +40,8 @@
    (1-bit-alu! (cadddr a) (cadddr b) carry-in alu-op carry-out)))
 
 
-(define (subtract! a b carry-in carry-out
+(define (4-bit-subtract! a b carry-in carry-out)
+  (mux2 
 
 
 
