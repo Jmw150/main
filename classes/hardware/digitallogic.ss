@@ -2,7 +2,7 @@
 ; assume all variables are: functions, binary, binary lists
 
 '(define (truth-table function inputs)
- ;o
+ ;o,
    )
  
 (define (xor a b) 
