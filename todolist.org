@@ -5,136 +5,29 @@ Mon Mar 18 16:29:38 EDT 2019
 * hardware
 http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
 ** hw
-*** hw 3 (feb 5)  ||done||
-Re-Read/Review Chapter 2 of the course textbook.
-1) Do Exercise 2.2 on page 164 of the textbook.
-2) Write MIPS code to implement the following C/C++ command:
-Spring 2019
-j = i * 2;
-3) Do Exercise 2.3 on page 165 of the textbook.
-4) Do Exercise 2.4 on page 165 of the textbook.
-5) Assume that register $t0 holds the base address in memory of array ‘A' and register $t1
-holds the base address in memory of array ‘B'. Write MIPS code to swap the contents of
-A[0] with B[0] and A[1] with B[1].
-
-*** hw 4 (feb 5)  ||done||
-1) Convert the hexadecimal number C 7 B 4 9 D to binary.
-2) Convert the decimal number 315 directly into octal – do NOT convert to binary, hex, etc.
-as an intermediate step.
-3) Using expanded notation, convert the hexadecimal number E 6 F 3 into decimal.
-4) Convert the decimal number -85 to the 2's complement 8-bit form.
-5) If I have 198 unique items to represent, how many bits do I need to do this?
-6) Consider the number: 1 0 1 1 0 0 1 1
-a) What is this, in decimal, if it is an unsigned binary number?
-b) What is this, in decimal, if it is a ones complement number?
-c) What is this, in decimal, if it is a twos complement number?
-7) Convert the binary number 0 1 1 0 0 1 1 0 1 0 1 0 1 into octal.
-8) Consider the number: 0 1 0 1 1 0 0 1
-a) What is this, in decimal, if it is an unsigned binary number?
-b) What is this, in decimal, if it is a ones complement number?
-c) What is this, in decimal, if it is a twos complement number?
-d) What is this, in decimal, if it is a sign-magnitude number?
-*** hw 5 (feb 26) ||done||
-*** hw 6 (mar 21) ||done||
-exercise A.6, A.7
-(also documentation details)
 *** quiz (mar 26)
+watch 3 videos posted
+read alu 2 up to version 3
+memorize version 2
+** optional
+*** read
 *** mips emulator
 it turns out that spim is an interpreter, and a poorly made one at that
 so macro expansion would mean doing something that was not part of the book' specification
 and rewritting much of spim
-**** macro
-**** assembler
-**** loader
-**** virtual machine
 *** read 
 **** main book 
 ***** ch 1 ||done||
 ***** ch 2,3,rest
 **** computer-organization-and-architecture
 **** structured-computer-organization
-** optional
-*** read
+**** macro
+**** assembler
+**** loader
+**** virtual machine
 * stats
 http://pages.iu.edu/~zguan/m261/m261.htm
 ** hw
-*** Homework 2  (1/23) ||done||
-Pages 230-232. Exercises. 8.1, 8.8, 8.13, 8.15.
-Using the data in Exercise 1.25 on Page 32 
-(a) to find sample mean, sample median, and the 10% trimmed sample mean; 
-(b) to construct a relative frequency histogram using class boundaries 0, 20, 40, 60, 80, 100;
-(c) to find Q1, Q2, Q3, and IQR;
-(d) to construct a box-and-whisker plot;
-Study the textbook Examples in Sections 8.1-8.2.
-*** Homework 3  (1/30) ||done||
-Sections 8.3-8.4. Exercises 8.18, 8.19, 8.21, 8.26, 8.32, 8.34
-Study the textbook Examples in Sections 8.3-8.4. 
-
-*** Homework 4  (2/4)  ||done||
-Sections 8.5-8.8: Exercises 8.38, 8.40, 8.41, 8.44, 8.45, 8.46, 8.51, 8.55
-Study the textbook Examples in Sections 8.5-8.8. See Example Excel file q-q-plots.xlsx. 
-*** EXAM prep   (2/13) ||done||
-
-Test 1 (2/13), Sections 6.1-6.7, 8.1--8.4 (Review Exercises)
-Additional Review Exercises for Test 1
-Exercises: 8.7, 8.13, construct histogram and box-and-whisker plot by hands for a small data set.
-Exercises: 8.27, 8.31, 8.33 
-Exercises: 8.48, 8.49, 8.68
-
-Solutions
-
-8.7: (a) 53.75. (b) 75, 100 
-8.13: s = 0.585 
-8.27: P(X >0.23)=0.017 , Hence the probability of having such observations, given the mean μ = 0.20, is small.
-
-Therefore, the mean amount to be 0.20 is not likely to be true.
-
-8.31: 
-(a) If the two population mean drying times are truly equal, the probability that the 
-difference of the two sample means is 1.0 is 0.0013, which is very small. This means 
-that the assumption of the equality of the population means are not reasonable. 
-(b) If the experiment was run 10,000 times, there would be (10000)(0.0013) = 13 
-experiments where XA − XB would be at least 1.0. 
-8.33: 
-
-(a) When the population equals the limit, the probability of a sample mean exceeding
-
-the limit would be 1/2 due the symmetry of the approximated normal distribution.
-
-(b) P( X ≥ 7960 | μ = 7950) = P(Z ≥ (7960 − 7950)/(100/√25)) = P(Z ≥ 0.5) =
-
-0.3085. No, this is not very strong evidence that the population mean of the
-
-process exceeds the government limit.
-
-8.48: From Table A.4 we find t0.025 = 2.131 for v = 15 degrees of freedom. Since the value 
-
-t =(27.5 − 30)/(5/4)= −2.00
-
-falls between −2.131 and 2. 131, the claim is valid.
-
-8.49: t = (24 − 20)/(4.1/3) = 2.927, t0.01 = 2.896 with 8 degrees of freedom. Conclusion: no, μ > 20.
-
-8.68: x = 54,100 and s = 5801.34. Hence
-
-t =(54100 − 53000)/(5801.34/√10)= 0.60.
-
-So, P( X ≥ 54, 100) = P(T ≥ 0.60) is a value between 0.20 and 0.30, which is not a rare event.
-
-*** Homework 5  (2/20) ||done||
-Sections 9.3-9.4 Exercise 9.2, 9.5, 9.6, 9.8, 9.11. Study the textbook Examples in Sections 9.1-9.4. 
-*** Homework 6  (2/25) ||done||
-Sections 9.5-9.7 Exercise 9.14, 9.15, 9.20, 9.22, 9.23. 
-Study the textbook Examples in Sections 9.5-9.7. 
-
-*** Homework 7  (3/6)  ||done||
-Sections 9.8-9.9 Exercise 9.40, 9.42, 9.43, 9.44. 
-Study the textbook Examples in Sections 9.8-9.9.
-Sections 9.10-9.11 Exercise 9.52, 9.53, 9.55, 9.60, 9.64, 9.66. 
-Study the textbook Examples in Sections 9.10-9.11.
-*** Homework 8  (3/18) ||done||
-Sections 9.12-9.13 Exercise 9.72, 9.74, 9.78, 9.80. 
-Study the textbook Examples in Sections 9.12-9.13.
 *** Homework 9  (3/25)
 Sections 10.1-10.3 Exercise 10.1, 10.2, 10.4, 10.5, 10.6, 10.14. 
 Study the textbook Examples in Sections 10.1-10.3.

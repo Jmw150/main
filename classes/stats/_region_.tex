@@ -1,4 +1,4 @@
-\iffalse
+\message{ !name(hw9.tex)}\iffalse
 // c precompiler stuff
 #define cnote \
 \begin{lstlisting}[ \
@@ -37,6 +37,9 @@
 
 \begin{document}
 
+\message{ !name(hw9.tex) !offset(-3) }
+
+
 Jordan Winkler
 
 stats
@@ -74,15 +77,19 @@ a) What hypothesis is she testing if she commits a
 type I error by erroneously concluding that the
 training course is ineffective? \\
 
-She is looking for evidence to accapt the hypothesis that the training course was effective, if she is at risk of a type 2 error. \\
+She is looking for evidence to accapt the hypothesis that the training course was effective, if she is at risk of a type 2 error.
 
 b) What hypothesis is she testing if she commits a
 type II error by erroneously concluding that the
 training course is effective? \\
 
-She is looking for evidence to reject the effectiveness of the training course, if she is at risk of a type 2 error. \\
+She is looking for evidence to reject the effectiveness of the training course, if she is at risk of a type 2 error.
 
-10.4 A fabric manufacturer believes that the proportion of orders for raw material arriving late is p = 0.6. If a random sample of 10 orders shows that 3 or fewer arrived late, the hypothesis that p = 0.6 should be rejected in favor of the alternative p < 0.6. Use the binomial distribution. \\
+10.4 A fabric manufacturer believes that the proportion of orders for
+raw material arriving late is p = 0.6. If a random sample of 10 orders
+shows that 3 or fewer arrived late, the hypothesis that p = 0.6 should
+be rejected in favor of the alternative p < 0.6. Use the binomial
+distribution. \\
 
 a) Find the probability of committing a type I error if the true proportion is p = 0.6. \\
 
@@ -110,9 +117,7 @@ $\mu = np = 30$
 
 $\sigma = (npq)^{1/2} = 3.4641$
 
-$P($type 1 error$)$
-$= P(\f{x- 30}{3.4641} < (24+.5-30)/3.4641)$
-$=P(z < 1.59) = 0.0559$ \\
+$P($type 1 error$)= P(\f{x- 30}{3.4641} < (24+.5-30)/3.4641)$$=P(z < 1.59) = 0.0559$ \\
 
 b)
 
@@ -120,8 +125,7 @@ $\mu = 50 * .3 = 15$
 
 $\sigma = 3.2403$
 
-$P($type 2 error$) = P((x-15)/3.2403 > (24+.5-15)/3.24) $
-$= P(z > 2.93) = 0.0071$ \\
+$P($type 2 error$) = P((x-15)/3.2403 > (24+.5-15)/3.24) = P(z > 2.93) = 0.0071$ \\
 
 $\mu = 50 * .4 = 20$
 
@@ -129,11 +133,11 @@ $\sigma = (npq)^{1/2} = 3.4641$
 
 $P((x-20)/3.4641 > (24 + .5 - 20)/3.4641) = P(z > 1.30) = 0.0968$ \\
 
-$\mu = 50 * 0.5 = 25$
+$\mu = 50 * .5 = 25$
 
-$\sigma = (npq)^{1/2} = 3.5355$
+$\simga = (npq)^{1/2} = 3.5355$
 
-$P((x-25)/3.5355 > (24 + .5 - 25)/3.5355)$$ = P(z > -0.14) = 0.5557$ \\
+$P((x-25)/3.5355 > (24 + .5 - 25)/3.5355)$$ = P(z > -0.14) = 0.5557$
 
 10.6 The proportion of adults living in a small town who are college graduates is estimated to be p = 0.6. To test this hypothesis, a random sample of 15 adults is selected. If the number of college graduates in the sample is anywhere from 6 to 12, we shall not reject the null hypothesis that p = 0.6; otherwise, we shall conclude that $p \neq 0.6$. \\
 
@@ -146,15 +150,15 @@ b) Evaluate $\beta$ for the alternatives p = 0.5 and p = 0.7. \\
 
 $p = 0.5$ 
 
-$\beta = P($type 2 error$) = \sum^{12}_{x=6} bin(x,15,0.5) = 0.8454$ \\
+$\beta = P($type 2 error$) = sum^{12}_{x=6} bin(x,15,0.5) = 0.8454$ \\
 
 $p = 0.7$ 
 
-$\beta = P($type 2 error$) = \sum^{12}_{x=6} bin(x,15,0.7) = 0.8695$ \\
+$\beta = P($type 2 error$) = sum^{12}_{x=6} bin(x,15,0.7) = 0.8695$ \\
 
 c) Is this a good test procedure? \\
 
-Nope. Error probability is high. \\
+Nope. Error probability is high.
 
 10.14 A manufacturer has developed a new fishing
 line, which the company claims has a mean breaking
@@ -167,9 +171,7 @@ region is defined to be $\bar{x} < 14.9$. \\
 a) Find the probability of committing a type I error
 when $H_0$ is true.  \\
 
-$P($type 1 error$)$
-$ = P((\bar{x} - 15)/0.0707 < (14.9-15)/(0.0707) $
-$= P(z < -1.414) = 0.0793$ \\
+$P($type 1 error$) = P((\bar{x} - 15)/0.0707 < (14.9-15)/(0.0707) = P(z < -1.414) = 0.0793$
 
 b) Evaluate $\beta$ for the alternatives $\mu = 14.8$ and $\mu  = 14.9$ kilograms. \\
 
@@ -181,5 +183,7 @@ $\mu = 14.9$
 
 $P($type 2 error$) = P(\f{\bar{x} - 14.9}{0.0707} \geq \f{14.9 - 14.9}{0.0707}) $$=P(z \geq 0) = 0.5$
 
+
+\message{ !name(hw9.tex) !offset(-5) }
 
 \end{document}
