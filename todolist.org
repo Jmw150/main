@@ -1,6 +1,6 @@
 To Do list 
 
-Mon Mar 18 16:29:38 EDT 2019
+Thu Mar 28 12:30:17 EDT 2019
 -------------------------------------------------------------------
 * hardware
 http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
@@ -404,18 +404,6 @@ homotopy type theory
        top math logic school
 ****** university of michigan - kalamazoo
        graph theory and good connection to the cs department
-*** to re-motivate
-**** watch:
-     one punch man
-     attack on titan
-     Tengen_Toppa_Gurren_Lagann
-**** play video games
-*** express all programs you made in python 
-    because hylang is a thing and python is super popular and readable
-*** make math proofs be computatble in scheme
-    without loss of math proof format, of course
-*** make hy evaluatable in a text doc, like elisp is currently
-*** organize everything
 *** programming:
 **** these are my favorites
 ***** C (optimal use of algorithms/data_struct stuff)
@@ -432,12 +420,6 @@ homotopy type theory
       This language glues itself to large libraries and languages to survive 
       hy{python}, guile{C}, clojure{java}
 *** education
-**** foundation
-***** proof theory
-****** theory of computation
-***** model theory
-***** set theory
-****** Axoimatic set theory Suppes 6/253
 **** core
 ***** analysis 
 ****** foundations
@@ -478,11 +460,6 @@ homotopy type theory
 ******* chinese
 **** research topics
 ***** Artifitial intelligence Russel 1/1060
-*** transfer code from other languages to python/hy
-*** create a lisp language using C
-    scheme like but with a little extra (partial eval of lambda)
-*** work problems in math books 
-    this builds deep understanding of the math and ability to think
 *** books to read:
 **** math
 ***** graph theory
@@ -509,35 +486,13 @@ homotopy type theory
 
 
 functools.partial(<function lambdaSumv.<locals>.ftotal at 0x7f5de2ba2e18>, [functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 1), functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 2), functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 3)])
-** become a master of lisp and logic
-*** Build your own lisp
-**** what should lisp have?
-***** small language, large library
-***** symmetry between functions and macros as first order objects
-***** has both a compiler and an interpreter
-****** compiles to C
-****** interpreter does not have outer ( ) parens for top level functions
-***** accepts large amounts of unicode for names
-***** ability to do assembly kind of instructions: use pointers, allocate memory, jump to tag
-*** lisp
-exploring the world of programming using only one language
-**** tackle SICP, SIclassical_mechanics, SIdiff_geometry
-***** SICP
-1-8a ||done||
-8b (skipped for now)
-9a-10b
-**** clojure : Java, javascript, (eventually: python, perl, C)
-clojure for the brave and true
-**** optionally common lisp 
-land of lisp
-*** logic
+** logic
 **** introduction to the foundations of mathematics by Wilder
 **** All of Dr. Knights recommendations
 **** principa mathematica
 **** zfc book
 **** category theory
 **** type theories
-
 ** algebra 
 *** read algegra ch 0
 ch1-4
