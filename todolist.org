@@ -5,10 +5,9 @@ Mon Mar 18 16:29:38 EDT 2019
 * hardware
 http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
 ** hw
-*** quiz (mar 26)
-watch 3 videos posted
-read alu 2 up to version 3
-memorize version 2
+*** watch last video posted
+*** hw7 (4/2)
+*** read ch2-4.4
 ** optional
 *** read
 *** mips emulator
@@ -28,10 +27,10 @@ and rewritting much of spim
 * stats
 http://pages.iu.edu/~zguan/m261/m261.htm
 ** hw
-*** Homework 9  (3/25)
+*** Homework 9  (3/25) ||done||
 Sections 10.1-10.3 Exercise 10.1, 10.2, 10.4, 10.5, 10.6, 10.14. 
 Study the textbook Examples in Sections 10.1-10.3.
-*** Homework 10 (4/3)
+*** Homework 10 (4/8)
 Section 10.4 Exercise 10.19, 10.21, 10.22. 
 Study the textbook Examples in Section 10.4.
 *** TEST        (4/3)
@@ -43,7 +42,7 @@ Study the textbook Examples in Section 10.4.
 *** code
 **** automate selected problems
 * physics
-** lab
+** EXAM (4/3)
 ** optional
 *** read
 **** university physics
@@ -53,10 +52,25 @@ Study the textbook Examples in Section 10.4.
 **** statistical mechanics with scheme
 * Other:
 ** current plan
-finish bs math/cs
-finish masters pure math
-** research focus
-   logic : model theory
+*** finish bs math/cs
+*** finish masters pure math
+**** schools to apply to
+***** logic groups (search on AMS website)
+University of California--Berkeley
+University of California--Los Angeles
+University of Notre Dame
+University of Illinois--Chicago
+University of Illinois--Urbana-Champaign
+Carnegie Mellon University
+University of Chicago
+Cornell University
+University of Wisconsin--Madison
+***** else
+****** western michigan university 
+graph theory and good relationship with computer science people
+****** university of florida
+really big school
+
 ** jobs
 *** community college professor
     Need: to finish masters degree in math at least, 
@@ -72,8 +86,8 @@ finish masters pure math
     Pro: Actually important stuff going on, highest pay
     Con: stats is just applied measure theory
          AI is just an assortment of good math techniques
-** liberal art
-*** math
+** education
+*** general education
 **** math
 ***** algebra 
 	  external relationship of members of a set
@@ -99,28 +113,16 @@ finish masters pure math
 	  The typical starting point is using a set with a defined algebra and topology (real numbers) 
 	  fun stuff to do is to find areas sectioned by functions, smoothness of functions, rate of change of functions, 
 	  connectedness of functions, measures of area functions, convergence rates of functions.
-**** math logic 
-***** computability 
-****** what is possible to express in a given language
-******* Thinking about functions that work on information, how many are needed to be able to 'compute' a given universe.
-******* At the lowest (that I know) there is the pure functional finite state machine (everything does this)
-******* Then adding natural number infinity improves computability up to turing machines (a 'natural' limit on computation)
-******* Then adding different levels of infinity (in the form of super tasks, etc..) (going beyond this limit)
-******* good for understadning what causes paradoxes and what is constructable in a given universe using a given language
-***** sets
-****** making stuff in a language
-******* define collections/objects using language (as general as definitions can get, so very popular)
-	  includes feats like defining objects that compute to be relations between objects, 
-	  natural numbers as a whole object, larger infinites
-***** proofs
-****** making a language into an actual object so it can be studied
-	  study of the language:theory structure, weaknesses, expliots, etc..
-***** models
-****** making languages and universes out of other languages and universes
-
+*** focus
+**** model theory
+*** for fun
 **** physics
 ***** mechanics
-
+****** classical
+****** relatistic
+****** quantum
+****** statistical
+***** electrodynamics
 ** class schedule
 *** spring 
 CSCI-C 335 Computer structures
@@ -128,8 +130,11 @@ MATH-M 261 Statistical Inferences
 PHYS-P 221 Physics 1
 *** summer
 *** fall
+algebra 2 (self study)
 33449 applied deep learning CSCI-C  490 (first choice)
+**** optional
 33458 applied data mining CSCI-C  490 (sounds trivial but lucrative)
+german (online from another campus/test out)
 *** spring
 CSCI-C 311 Programming Language Theory
 CSCI-C 421 Digital Design
