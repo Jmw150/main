@@ -141,67 +141,107 @@ CSCI-C 421 Digital Design
 CSCI-C 435 Operating Systems
 INFO-I 202 CS gen ed
 
-** internship
-first source bank software internship, 
-
-ash
-aws classes
-graduated 2017
-took 2 months to get interviews
-
-website of first source has intership application
-Ramman also has their info
-
 ** notes
-*** mathematicians I like
-David Hilbert
-Von Neumann
-Church
-Turing
-Gottlob Frege
-Bertrand Russell 
-*** kind of dislike
-Newton
-Einstein
-Erdos
-Feyman
 *** math
 nxm * mxp = nxp
 
-In the beginning, I had no idea what was going on. We had always briefly recapped set theory and its overlaps with other subjects in courses, but this was something else. Rings, fields, groups, morphisms, all kinds of stuff. The proofs were often throwing around so many terms that I had to look them up, then look up the terms used in those terms. The proofs could be so compressed. It was hard, it was interesting, and I just felt like there was something there.
+In the beginning, I had no idea what was going on. We had always briefly
+recapped set theory and its overlaps with other subjects in courses, but this
+was something else. Rings, fields, groups, morphisms, all kinds of stuff. The
+proofs were often throwing around so many terms that I had to look them up,
+then look up the terms used in those terms. The proofs could be so compressed.
+It was hard, it was interesting, and I just felt like there was something
+there. In analysis, it seems very clear what's going on. Building up sequences,
+series, defining things like limits, to be able to learn the theory and then
+also practically use tools in analysis to differentiate, integrate, solve
+differential equations and so on. It felt more like a tool kit for practical
+mathematics and physics. Even higher analysis of multiple variables, manifolds,
+or complex analysis seemed like that (although I do make an exception for
+Riemann geometry, I really loved that). After university, I went on living my
+life as people do. Often working in fields that didn't really require most of
+what I learned. But one day, I came across something that required some good
+mathematical structures. I pulled out my group theory stuff, got into algebraic
+lattices, all kinds of stuff, and ended up somehow getting lost in category
+theory. That was about 4 years ago. Honestly, I work on this stuff regularly
+since then. There is something so rewarding about the study of these
+structures. 
 
-In analysis, it seems very clear what's going on. Building up sequences, series, defining things like limits, to be able to learn the theory and then also practically use tools in analysis to differentiate, integrate, solve differential equations and so on. It felt more like a tool kit for practical mathematics and physics. Even higher analysis of multiple variables, manifolds, or complex analysis seemed like that (although I do make an exception for Riemann geometry, I really loved that).
-
-After university, I went on living my life as people do. Often working in fields that didn't really require most of what I learned.
-
-But one day, I came across something that required some good mathematical structures. I pulled out my group theory stuff, got into algebraic lattices, all kinds of stuff, and ended up somehow getting lost in category theory. That was about 4 years ago. Honestly, I work on this stuff regularly since then. There is something so rewarding about the study of these structures.
-
-It makes me feel like I'm learning how to think better, learning how to identify and think in structures, abstraction, and logic so much better. I try to approach problems less like someone who does analysis and wants to calculate an answer, and more as someone who is looking to classify the most abstract structure that groups together what I'm looking at with other things and then apply the most basic logical conclusions to figure something out for much more than what I originally saw in front of me.
-
-It even got me deeper into philosophy through logics and constructivism.
-
-This is just my opinion, and I'm sure if one of my favorite professors from uni who was specialized in analysis would read this, he would greatly disagree, but it just makes me feel happy to do this. I don't need to do it to solve a problem set, pass an exam, or even as a job, I just do it out of curiosity. I don't think many topics in analysis could hold my attention like that.
-
-So give it a try. See what you think. I hope you can also find the beauty in abstract structures.
-I don't believe what I'm doing is especially active or popular (so hopefully someone else will respond with a better answer), but seeing as no one has answered yet, I'll just mention one of the things algebraists do: invent new algebras.
-
-The process is very easy to describe. It may or may not result in something useful. Take a set A and define a set F of operations on A (maps from An into A, for various non-negative integer values of n). The set A plus the operations F is what we call an algebra, usually denoted A=⟨A,F⟩. The algebras you already know (e.g., groups, rings, modules) are examples.
-
-In my work, I think about different ways to construct such algebras. Usually I work with finite algebras, often using computer software like GAP or the Universal Algebra Calculator to construct examples and study them. I look at the important features of the algebras and try to understand them better and make general statements about them.
-
-To address your last question, there is the following open problem that I worked on as a graduate student: Given a finite lattice L, does there exist a finite algebra A (as described above) such that L is the congruence lattice of A. This question is at least 50 years old and quite important for our understanding of finite algebras. In 1980 it was discovered (by Palfy and Pudlak) to be equivalent to the following open problem about finite groups: given a finite lattice L, can we always find a finite group that has L as an interval in its subgroup lattice? Imho, these are fun problems to work on.
+It makes me feel like I'm learning how to think better, learning how
+to identify and think in structures, abstraction, and logic so much
+better. I try to approach problems less like someone who does analysis
+and wants to calculate an answer, and more as someone who is looking
+to classify the most abstract structure that groups together what I'm
+looking at with other things and then apply the most basic logical
+conclusions to figure something out for much more than what I
+originally saw in front of me. It even got me deeper into philosophy
+through logics and constructivism. This is just my opinion, and I'm
+sure if one of my favorite professors from uni who was specialized in
+analysis would read this, he would greatly disagree, but it just makes
+me feel happy to do this. I don't need to do it to solve a problem
+set, pass an exam, or even as a job, I just do it out of curiosity. I
+don't think many topics in analysis could hold my attention like
+that. So give it a try. See what you think. I hope you can also find
+the beauty in abstract structures. I don't believe what I'm doing is
+especially active or popular (so hopefully someone else will respond
+with a better answer), but seeing as no one has answered yet, I'll
+just mention one of the things algebraists do: invent new
+algebras. The process is very easy to describe. It may or may not
+result in something useful. Take a set A and define a set F of
+operations on A (maps from An into A, for various non-negative integer
+values of n). The set A plus the operations F is what we call an
+algebra, usually denoted A=⟨A,F⟩. The algebras you already know (e.g.,
+groups, rings, modules) are examples. In my work, I think about
+different ways to construct such algebras. Usually I work with finite
+algebras, often using computer software like GAP or the Universal
+Algebra Calculator to construct examples and study them. I look at the
+important features of the algebras and try to understand them better
+and make general statements about them. To address your last question,
+there is the following open problem that I worked on as a graduate
+student: Given a finite lattice L, does there exist a finite algebra A
+(as described above) such that L is the congruence lattice of A. This
+question is at least 50 years old and quite important for our
+understanding of finite algebras. In 1980 it was discovered (by Palfy
+and Pudlak) to be equivalent to the following open problem about
+finite groups: given a finite lattice L, can we always find a finite
+group that has L as an interval in its subgroup lattice? Imho, these
+are fun problems to work on.
 
 ---
 
-A pure ring theorist will often have thought quite a bit about Kothe's conjecture. They will have thought about stuff that has the morpheme "nil" in it. Is the polynomial ring of a nil ring nil? Nilpotent maybe? When you hear these theorems and problems for the first time in a single talk, you might have trouble distinguishing between open questions and solved or even trivial problems soon after that. They all sound rather similar. In general, there are loads of simple-sounding problems like Kothe's conjecture in ring theory that are difficult. Many of them have probably never been asked.
+A pure ring theorist will often have thought quite a bit about Kothe's
+conjecture. They will have thought about stuff that has the morpheme
+"nil" in it. Is the polynomial ring of a nil ring nil? Nilpotent
+maybe? When you hear these theorems and problems for the first time in
+a single talk, you might have trouble distinguishing between open
+questions and solved or even trivial problems soon after that. They
+all sound rather similar. In general, there are loads of
+simple-sounding problems like Kothe's conjecture in ring theory that
+are difficult. Many of them have probably never been asked.
 
-Some of ring theorists, I believe these are mainly from Iran, will have considered some kind of graph defined by ring-theoretic stuff. Take a ring and call the zero divisors vertices. Throw in an edge between x and y whenever xy=0. You get a graph that you can do all kinds of things with. You can ask which rings induce a graph with this or that property.
+Some of ring theorists, I believe these are mainly from Iran, will
+have considered some kind of graph defined by ring-theoretic
+stuff. Take a ring and call the zero divisors vertices. Throw in an
+edge between x and y whenever xy=0. You get a graph that you can do
+all kinds of things with. You can ask which rings induce a graph with
+this or that property.
 
-Often a noncommutative ring theorist will be looking for some kinds of left-right symmetries. If you define a left Xical ring-theoretic thing and a right Xical ring-theoretic thing, are they the same ring-theoretic thing? The Jacobson radical may have been the inspiration for this.
+Often a noncommutative ring theorist will be looking for some kinds of
+left-right symmetries. If you define a left Xical ring-theoretic thing
+and a right Xical ring-theoretic thing, are they the same
+ring-theoretic thing? The Jacobson radical may have been the
+inspiration for this.
 
-Another thing is that, as in a lot of mathematics, algebraists will be trying to classify their objets. Rings in general don't seem reasonably classifiable, which leaves room for attempts at partial classification. In ring/algebra theory these will often aim at generalizing Wedderburn's theorem.
+Another thing is that, as in a lot of mathematics, algebraists will be
+trying to classify their objets. Rings in general don't seem
+reasonably classifiable, which leaves room for attempts at partial
+classification. In ring/algebra theory these will often aim at
+generalizing Wedderburn's theorem.
 
-This is a very narrow part of what algebraists do. Algebra comes in so many flavors. The commutative-noncommutative boundary is especially strong I think. Also, some algebraists will think a lot about universal algebra, varieties and pseudo-varieties, some won't. Some will be deeply in love in categories, some will say meh.
+This is a very narrow part of what algebraists do. Algebra comes in so
+many flavors. The commutative-noncommutative boundary is especially
+strong I think. Also, some algebraists will think a lot about
+universal algebra, varieties and pseudo-varieties, some won't. Some
+will be deeply in love in categories, some will say meh.
 
 *** advice on C 
 
@@ -432,10 +472,6 @@ homotopy type theory
 ****** Coding The matrix 1/512 (basic linear)
 ***** geometry/topology 
 ****** Topology Munkres 1/500
-**** mixing:
-****** algebraic geometry
-****** differential geometry
-****** algebraic topology
 **** marketable skills
 ***** programming
 ****** core language
@@ -458,8 +494,6 @@ homotopy type theory
 ******* russian
 ******* japanese
 ******* chinese
-**** research topics
-***** Artifitial intelligence Russel 1/1060
 *** books to read:
 **** math
 ***** graph theory
@@ -482,10 +516,7 @@ homotopy type theory
 ***** data structures book 13/688
 **** other
 ***** how buildings learn
-***** mere christianity by cs lewis
 
-
-functools.partial(<function lambdaSumv.<locals>.ftotal at 0x7f5de2ba2e18>, [functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 1), functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 2), functools.partial(<function bezier.<locals>.<lambda> at 0x7f5de2cbcf28>, 3)])
 ** logic
 **** introduction to the foundations of mathematics by Wilder
 **** All of Dr. Knights recommendations
@@ -506,5 +537,12 @@ obviously something inadequate about this approach. There are other
 domains where axiomatizing may have a more sustainable interface, less
 scaffold-like. Math is something metaphysical with the potential to
 point to or pursue quantum and probably morphic realms as well.
+
+
+“Ramanujan, they call you genius”. Ramanujan retorted “What? me, a genius? Look at my elbow, it will tell you the story”.
+ “Night and day I do my calculations on slate. It is time consuming to look for a rag to wipe it with. I wipe the slate almost every few minutes with my elbow. I suppose my elbow is making a genius of me.”
+
+
+
 
 
