@@ -133,6 +133,7 @@ main:                           #($a0 = argc, $a1 = argv), 4*n($a1) = nth comman
     #addi    $t0, $0, 5
     #print_int($t0)
 
+    addi    $pc, $pc, 4
     #move    $a0, $t0
     #li      $v0, 1
     #syscall
@@ -385,11 +386,11 @@ strlen_loop:
 
 sum_inputString: .asciiz "Input a number: "
 sum_outputString: .asciiz "Total sum of numbers: "
-sum_newline:.asciiz "\n"
+#sum_newline:.asciiz "\n"
 ################# Code segment #####################
     .text
 
-sum:
+#sum:
     add     $s1, $zero, $zero   # Initialize $s1 to zero - reserved for our total sum
 
 sum_Loop: 

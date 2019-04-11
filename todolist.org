@@ -6,8 +6,7 @@ Thu Mar 28 12:30:17 EDT 2019
 http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
 ** hw
 *** watch last video posted
-*** hw7 (4/2) ||done||
-*** hw8 (4/9)
+*** hw8 (4/9) ||done||
 *** read ch2-4.4
 ** optional
 *** read
@@ -28,17 +27,12 @@ and rewritting much of spim
 * stats
 http://pages.iu.edu/~zguan/m261/m261.htm
 ** hw
-*** Homework 9  (3/25) ||done||
-Sections 10.1-10.3 Exercise 10.1, 10.2, 10.4, 10.5, 10.6, 10.14. 
-Study the textbook Examples in Sections 10.1-10.3.
-*** Homework 10 (4/8)
+*** Homework 10 (4/8)  ||done||
 Section 10.4 Exercise 10.19, 10.21, 10.22. 
 Study the textbook Examples in Section 10.4.
-*** TEST        (4/3) 
-    review: Sections 8.5-8.8, 9.1-9.13
-    try to make a cheat sheet (not that you can bring it)
-    write down how to do calculator tricks to get through the test
-    go over review sheet
+*** Homework 11 (4/15)
+Sections 10.5-10.6 Exercise 10.30, 10.36, 10.40, 10.44, 10.48, 10.50.
+Study the textbook Examples in Sections 10.5-10.6.
 *** read
 **** stats book ch6-11
 ** optional
@@ -47,9 +41,6 @@ Study the textbook Examples in Section 10.4.
 *** code
 **** automate selected problems
 * physics
-** EXAM prep (4/3)
-   try to compress the 3 page cheat sheet into 2
-   find first sheet
 ** optional
 *** read
 **** university physics

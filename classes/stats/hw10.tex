@@ -1,0 +1,107 @@
+\iffalse
+// c precompiler stuff
+#define cnote \
+\begin{lstlisting}[ \
+  mathescape, \
+  columns=fullflexible, \
+  basicstyle=\fontfamily{lmvtt}\selectfont, \
+] 
+
+#define endcnote \end{lstlisting}
+\fi
+
+\documentclass{article} 
+\usepackage{amsthm} % writing proofs
+\usepackage{amsfonts} % for blackboard bold charactes like Z R
+\usepackage{amssymb} % came with intermediate value thrm
+\usepackage[fleqn]{amsmath} % for arguments vertically underneath like lim, piecwise functions, equality arrays
+\setlength{\mathindent}{0in} %neutralizes equation indentation
+\usepackage{listings} % more literal, makes hw easier
+\setlength{\parindent}{0in} %neutralizes annoying paragraph indent
+\usepackage{mathtools} % for floor and ceiling functions / macros
+\usepackage{nccmath} % for centering equations with ceqn
+%\usepackage{tkz-euclide} % geometry
+%\usetkzobj{all} % include all objects of tkz
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\f}{\frac}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\bb}{\mathbb}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\renewcommand{\qedsymbol}{$\dashv$}
+
+\begin{document}
+
+Jordan Winkler
+
+stats
+
+Sun Apr  7 12:41:16 EDT 2019
+
+hw10: Section 10.4 Exercise 10.19, 10.21, 10.22. \\
+
+10.19 In a research report, Richard H. Weindruch of the UCLA Medical School claims that mice with an average life span of 32 months will live to be about 40 months old when 40\% of the calories in their diet are replaced by vitamins and protein. Is there any reason to believe that $\mu$ < 40 if 64 mice that are placed on this diet have an average life of 38 months with a standard deviation of 5.8 months? Use a P-value in your conclusion. \\
+
+$H_0 : \mu = 40$ 
+
+$H_1 : \mu < 40$  \\
+
+Assume 
+$\alpha = 0.05$ \\
+
+$\bar{x} = 38$
+
+$\sigma = 5.8$
+
+$n = 64$ \\
+
+$z = \f{\bar{x} - \mu}{\sigma / n^{1/2}} $$ = \f{38-40}{5.8/n^{1/2} } \approx -2.7586$ \\
+
+P-value = $P(Z < -2.7586) \approx 0.0027$ \\
+
+Reject the null. Life span must be less than 40.
+
+10.21 An electrical firm manufactures light bulbs that have a lifetime that is approximately normally distributed with a mean of 800 hours and a standard deviation of 40 hours. Test the hypothesis that $\mu$ = 800 hours against the alternative, not $\mu$ = 800 hours, if a random sample of 30 bulbs has an average life of 788 hours. Use a P-value in your answer. \\
+
+$H_0 : \mu = 800$
+
+$H_1 : \mu \neq 800$ \\
+
+$\alpha = 0.05$
+
+$n = 30$
+
+$\bar{x} = 788$
+
+$\sigma = 40$ \\
+
+$z = \f{\bar{x} - \mu}{\sigma / n^{1/2}} = \f{788- 800}{40/30^{1/2}} \approx -1.6431$ \\
+
+P-value = $2P(Z \geq |-1.6431|) \approx 0.1004$ \\
+
+
+10.22 In the American Heart Association journal Hypertension, researchers report that individuals who practice Transcendental Meditation (TM) lower their blood pressure significantly. If a random sample of 225 male TM practitioners meditate for 8.5 hours per week with a standard deviation of 2.25 hours, does that suggest that, on average, men who use TM meditate more than 8 hours per week? Quote a P-value in your conclusion. \\
+
+$H_0 = \mu = 8$
+
+$H_1 : \mu > 8$ \\
+
+$n = 225$
+
+$\bar{x} = 8.5$
+
+$s = 2.25$
+
+$\alpha = 0.05$ \\
+
+$z = \f{\bar{x} - \mu}{s/n^{1/2}}$$= \f{8.5-8}{2.25/225^{1/2}} \approx 3.3333$ \\
+
+P-value $= P(Z < z) = P(Z < 3.3333) \approx 0.0004$
+
+
+\end{document}
