@@ -4,49 +4,14 @@ Thu Mar 28 12:30:17 EDT 2019
 -------------------------------------------------------------------
 * hardware
 http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
-** hw
-*** watch last video posted
-*** hw8 (4/9) ||done||
-*** read ch2-4.4
-** optional
-*** read
-*** mips emulator
-it turns out that spim is an interpreter, and a poorly made one at that
-so macro expansion would mean doing something that was not part of the book' specification
-and rewritting much of spim
-*** read 
-**** main book 
-***** ch 1 ||done||
-***** ch 2,3,rest
-**** computer-organization-and-architecture
-**** structured-computer-organization
-**** macro
-**** assembler
-**** loader
-**** virtual machine
+** read ch2-4.4
 * stats
 http://pages.iu.edu/~zguan/m261/m261.htm
-** hw
-*** Homework 11 (4/15) ||done||
-Sections 10.5-10.6 Exercise 10.30, 10.36, 10.40, 10.44, 10.48, 10.50.
-Study the textbook Examples in Sections 10.5-10.6.
-*** be ready for quiz wednesday
-*** read
-**** stats book ch6-11
-** optional
-**** math stats book
-**** graduate probability book, measure theory, etc..
-*** code
-**** automate selected problems
+** read stats book ch6-11
 * physics
-** optional
-*** read
-**** university physics
-**** structure and interpretation of mechanics
-**** thermal/statistical mechanics
-*** code
-**** statistical mechanics with scheme
+** work on problem sets
 * Other:
+"actions that cause harm are a crime, actions that cause no harm are one's own business" - silver dragon motto dnd
 ** current plan
 *** finish bs math/cs
 *** finish masters pure math
@@ -120,23 +85,18 @@ really big school
 ****** statistical
 ***** electrodynamics
 ** class schedule
-*** spring 
-CSCI-C 335 Computer structures
-MATH-M 261 Statistical Inferences
-PHYS-P 221 Physics 1
 *** summer
 *** fall
 algebra 2 (self study)
 33449 applied deep learning CSCI-C  490 (first choice)
 **** optional
 33458 applied data mining CSCI-C  490 (sounds trivial but lucrative)
-german (online from another campus/test out)
+german 150 
 *** spring
 CSCI-C 311 Programming Language Theory
 CSCI-C 421 Digital Design
 CSCI-C 435 Operating Systems
 INFO-I 202 CS gen ed
-
 ** notes
 *** math
 nxm * mxp = nxp
@@ -537,9 +497,6 @@ point to or pursue quantum and probably morphic realms as well.
 
 “Ramanujan, they call you genius”. Ramanujan retorted “What? me, a genius? Look at my elbow, it will tell you the story”.
  “Night and day I do my calculations on slate. It is time consuming to look for a rag to wipe it with. I wipe the slate almost every few minutes with my elbow. I suppose my elbow is making a genius of me.”
-
-
-
 
 
 so math masters...

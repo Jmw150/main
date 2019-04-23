@@ -1,0 +1,234 @@
+\iffalse
+// c precompiler stuff
+#define cnote \
+\begin{lstlisting}[ \
+  mathescape, \
+  columns=fullflexible, \
+  basicstyle=\fontfamily{lmvtt}\selectfont, \
+] 
+
+#define endcnote \end{lstlisting}
+\fi
+
+\documentclass{article} 
+\usepackage{amsthm} % writing proofs
+\usepackage{amsfonts} % for blackboard bold charactes like Z R
+\usepackage{amssymb} % came with intermediate value thrm
+\usepackage[fleqn]{amsmath} % for arguments vertically underneath like lim, piecwise functions, equality arrays
+\setlength{\mathindent}{0in} %neutralizes equation indentation
+\usepackage{listings} % more literal, makes hw easier
+\setlength{\parindent}{0in} %neutralizes annoying paragraph indent
+\usepackage{mathtools} % for floor and ceiling functions / macros
+\usepackage{nccmath} % for centering equations with ceqn
+%\usepackage{tkz-euclide} % geometry
+%\usetkzobj{all} % include all objects of tkz
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\f}{\frac}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\rla}{\leftrightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\bb}{\mathbb}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\renewcommand{\qedsymbol}{$\dashv$}
+
+\begin{document}
+
+Jordan Winkler
+
+stats
+
+Mon Apr 15 09:23:44 EDT 2019
+
+Homework 11 Sections 10.5-10.6 Exercise 10.30, 10.36, 10.40, 10.44, 10.48, 10.50. \\
+
+
+10.30 A random sample of size $n_1 = 25$, taken from a normal population with a standard deviation $\sigma_ 1 = 5.2$, has a mean $\bar{x}_1 = 81$. A second random sample of size $n_2 = 36$, taken from a different normal population with a standard deviation $\sigma_2 = 3.4$, has a mean $\bar{x}_1 = 76$. Test the hypothesis that $\mu_1 = \mu_2$ against the alternative, $\mu_1 \neq \mu_2$. Quote a P-value in your conclusion. \\
+
+$H_0 : \mu_1 = \mu_2$
+
+$H_a : \mu_1 \neq \mu_2$ \\
+
+$n_1 = 25$
+
+$n_2 = 36$
+
+$\bar{x}_1 = 81$
+
+$\bar{x}_2 = 76$
+
+$\sigma_1 = 5.2$
+
+$\sigma_2 = 3.4$ \\
+
+$\alpha = 0.05$ \\
+
+
+$z = (\bar{x}_1 - \bar{x}_2)-d_0/(\sigma_1^2/n_1 + \sigma_2^2/n_2)^{1/2}= (81-76)/(5.2^2 /25 + 3.4^2 /36)^{1/2} = 4.2217$ \\
+
+
+$z_{\alpha/2} = z_{0.025} = 1.9599$
+
+$P(|Z| > 4.22) = 0.00002 < 1.9599$
+
+reject null. \\
+
+10.36 Engineers at a large automobile manufacturing company are trying to decide whether to purchase brand A or brand B tires for the company's new models. To help them arrive at a decision, an experiment is conducted using 12 of each brand. The tires are run until they wear out. The results are as follows: \\
+
+Brand A : $\bar{x}_1 = 37,900$ kilometers,
+$s_1 = 5100$ kilometers. \\
+
+Brand B : $\bar{x}_1 = 39,800$ kilometers,
+$s_2 = 5900$ kilometers. \\
+
+Test the hypothesis that there is no difference in the average wear of the two brands of tires. Assume the populations to be approximately normally distributed with equal variances. Use a P-value. \\
+
+$H_0 : \mu_1 = \mu_2$
+
+$H_a : \mu_1 \neq \mu_2$ \\
+
+$n_1 = n_2 = 12$ \\
+
+$s_p^2 = \f{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+ = 30410000$ \\
+
+$t = \f{\bar{x}_1 - \bar{x}_2}{(s^2_p(1/n_1 + 1/n_2))^{1/2}}
+= -0.844$ \\
+
+$df = n_1 + n_2 - 2 = 22$ \\
+
+$2*P(t_{\alpha/2,df} < t_{top}) = 2*P(t_{0.025,22} < -0.844) = 0.4078$ \\
+
+Fail to reject the null. \\
+
+10.40 In a study conducted at Virginia Tech, the plasma ascorbic acid levels of pregnant women were compared for smokers versus nonsmokers. Thirty-two women in the last three months of pregnancy, free of major health disorders and ranging in age from 15 to 32 years, were selected for the study. Prior to the collection of 20 ml of blood, the participants were told to avoid breakfast, forgo their vitamin supplements, and avoid foods high in ascorbic acid content. From the blood samples, the following plasma ascorbic acid values were determined, in milligrams per 100 milliliters: \\
+
+Plasma Ascorbic Acid Values
+
+Nonsmokers
+
+0.97
+1.16
+0.72
+0.86
+1.00
+0.85
+0.81
+0.58
+0.62
+0.57
+1.32
+0.64
+1.24
+0.98
+0.99
+1.09
+0.90
+0.92
+0.74
+0.78
+0.88
+1.24
+0.94
+1.18 \\
+
+Smokers
+
+0.48
+0.71
+0.98
+0.68
+1.18
+1.36
+0.78
+1.64 \\
+
+Is there sufficient evidence to conclude that there is a difference between plasma ascorbic acid levels of smokers and nonsmokers? Assume that the two sets of data came from normal populations with unequal variances. Use a P-value. \\
+
+$\bar{x}_1 = \f{\sum x_1}{n_1} = 0.9763$
+
+$\bar{x}_2 = 0.9158$
+
+$s_1^2 = \f{\sum (x_1 - \bar{x}_1)^2}{n_1-1} = 1.07/7 = 0.1533$
+
+$s_2^2 = 0.0459$ \\
+
+
+$t = \f{\bar{x}_1 - \bar{x}_2 - d_0}{(s_1^2/n_1 + s_2^2/n_2)^{1/2}}$$ = \f{(0.9763 - 0.9158)}{(0.1533/8 + 0.0459/24)^{1/2}} = 0.4167 $ \\
+
+$v = \f{(s_1^2/n_1+s_2^2/n_2)^2}{(s_1^2/n_1)^2/(n_1-1) + (s_2^2/n_2)^2/(n_2-1)}$$\approx 8$ \\
+
+$2*P(t \geq |t|) = 2*P(t_8 \geq 0.4167) = 0.6883$ \\
+
+Do not reject the null. \\
+
+10.44 In a study conducted by the Department of Human Nutrition and Foods at Virginia Tech, the following data were recorded on sorbic acid residuals, in parts per million, in ham immediately after dipping in a sorbate solution and after 60 days of storage: \\
+
+Sorbic Acid Residuals in Ham 
+
+Before Storage 
+
+224
+270
+400
+444
+590
+660
+1400
+680 \\
+
+After Storage
+
+116
+96
+239
+329
+437
+597
+689
+576 \\
+
+Assuming the populations to be normally distributed, is there sufficient evidence, at the 0.05 level of significance, to say that the length of storage influences sorbic acid residual concentrations? \\
+
+$\bar{x} = \sum^n_{i=1} |bf_i - af_i|/n = 1589/8 = 198.625$
+
+$S = 210.17$
+
+$t = 2.6730$
+
+$2*P(|t| < t_7) = 0.0318 < 0.05$ \\
+
+reject null \\
+
+10.48 If the distribution of life spans in Exercise 10.19 is approximately normal, how large a sample is required in order that the probability of committing a type II error be 0.1 when the true mean is 35.9 months? Assume that $\sigma = 5.8$ months.  \\
+
+In a research report, Richard H. Weindruch of the UCLA Medical School claims that mice with an average life span of 32 months will live to be about 40 months old when 40\% of the calories in their diet are replaced by vitamins and protein. Is there any reason to believe that $\mu < 40$ if 64 mice that are placed on this diet have an average life of 38 months with a standard deviation of 5.8 months? Use a P-value in your conclusion. \\
+
+$\alpha = 0.05$
+
+$\beta = 0.1$
+
+$\delta = -4.1$ \\
+
+$n = \ceil{\f{(z_{\alpha} + z_{\beta})^2 * \sigma^2}{\delta^2}}$$=\ceil{(1.645+1.282)^2 * 5.8^2/(-4.1)^2}$$=18$ \\
+
+
+
+10.50 How large should the samples be in Exercise 10.31 if the power of the test is to be 0.95 when the true difference between thread types A and B is 8 kilograms? \\
+
+$\beta = 0.05$
+
+$\alpha = 0.05$
+
+$\sigma = 8$
+
+$\sigma_1 = 6.28$
+
+$\sigma_2 = 5.61$
+
+$n = \ceil{(z_\alpha + z_\beta)^2 * (\sigma^2_1 + \sigma_2^2)/\sigma^2}$$ = 12$
+
+\end{document}

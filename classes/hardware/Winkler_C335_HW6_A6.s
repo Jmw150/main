@@ -3,7 +3,7 @@
 # File Name: Winkler_C335_HW6_A6.s
 # Program Use: Adds integer input until receiving 0 from user
 # Problem Description: 
-#   Using SPIM, write and test an adding machine program that repeatedly reads in integers and adds them into a running sum. Th e program should stop when it gets an input that is 0, printing out the sum at that point. Use the SPIM system calls described on pages A-43 and A-45.
+#   Using SPIM, write and test an adding machine program that repeatedly reads in integers and adds them into a running sum. The program should stop when it gets an input that is 0, printing out the sum at that point. Use the SPIM system calls described on pages A-43 and A-45.
 ################# Data segment #####################
     .data
 
