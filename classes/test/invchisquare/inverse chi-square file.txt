@@ -1,3 +1,0 @@
-INVXSQR
-
-This program will compute the critical values for a chi-square distribution. The user inputs the area to the right of the critical value and the degrees of freedom (so as to be consistent with current tables). If the degrees of freedom are over 100, then it will use an estimate formula based on the normal distribution. Great for statistics classes. Enjoy!
