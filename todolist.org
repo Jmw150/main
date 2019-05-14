@@ -1,27 +1,8 @@
 To Do list 
 
-Sun Apr 28 07:02:03 EDT 2019
+Sun May  5 21:51:37 EDT 2019
+"Actions that cause harm are a crime. Actions that cause no harm are one's own business" - silver dragon motto dnd
 -------------------------------------------------------------------
-* physics
-** work on problem sets
-* hardware
-http://mypage.iu.edu/~dsurma/courses/C335/Spr-19/www/c335.html
-** study for FINAL
-||done|| how to calculate 2-complement
-||done|| *** how to convert instructions to machine code
-r-type(op,rt,rs,rd,sham,func)(6,5,5,5,5,6)
-i-type(op,rt,rs,imm)(6,5,5,rest)
-j-type(op,tag)(6,rest)
-j address	PC ← {(PC + 4)[31:28], address, 00}
-||done|| *** how to calculate execution time
-||done|| *** remember ieee 754 standard
-*** look up what each instruction does
-** read ch2-4.4
-* stats
-http://pages.iu.edu/~zguan/m261/m261.htm
-** read stats book ch6-11
-* Other:
-"actions that cause harm are a crime, actions that cause no harm are one's own business" - silver dragon motto dnd
 ** current plan
 *** finish bs math/cs
 *** finish masters pure math
@@ -42,60 +23,9 @@ graph theory and good relationship with computer science people
 ****** university of florida
 really big school
 
-** jobs
-*** community college professor
-    Need: to finish masters degree in math at least, 
-    Pro: everything stays academic, 
-         actually get to understand things
-    Con: It is idiots forever
-*** embeded systems engineer
-    An EE degree would have been much more appropriate
-    Pro: Knuth style coding, robots!
-    Con: Expensive to train skills
-*** data/ml engineer
-    Need: much more reading on the topics
-    Pro: Actually important stuff going on, highest pay
-    Con: stats is just applied measure theory
-         AI is just an assortment of good math techniques
-** education
-*** general education
-**** math
-***** algebra 
-	  external relationship of members of a set
-****** 
-	  language: (A, A x ... x A -> A)
-	  idea: structure of sets
-	  history: proving things in general aout elementary algebra
-	  Can be thought of as 'structure' a set in total has, or properties of functions mapping elements of X back to elements of X
-***** topology 
-	  internal relationship of members of a set
-****** 
-	  language: (X,t) and then later (X,t) -> (Y,k)
-	  idea: relationships between set elements of a given set
-	  history: understanding how objects relate to each other, spacially or by connectedness
-	  Can be thought of the spacial relationship of stuff, or how 'close' one thing is to another
-	  the internal relationship is not just 'topology' though it can also be about a metric, or uniformity
-***** analysis 
-	  functions
-****** 
-	  language: X -> X
-	  idea: functions of sets
-	  history: closing plot holes in calculus
-	  The typical starting point is using a set with a defined algebra and topology (real numbers) 
-	  fun stuff to do is to find areas sectioned by functions, smoothness of functions, rate of change of functions, 
-	  connectedness of functions, measures of area functions, convergence rates of functions.
 *** focus
 **** model theory
-*** for fun
-**** physics
-***** mechanics
-****** classical
-****** relatistic
-****** quantum
-****** statistical
-***** electrodynamics
 ** class schedule
-*** summer
 *** fall
 algebra 2 (self study)
 33449 applied deep learning CSCI-C  490 (first choice)
@@ -109,8 +39,6 @@ CSCI-C 435 Operating Systems
 INFO-I 202 CS gen ed
 ** notes
 *** math
-nxm * mxp = nxp
-
 In the beginning, I had no idea what was going on. We had always briefly
 recapped set theory and its overlaps with other subjects in courses, but this
 was something else. Rings, fields, groups, morphisms, all kinds of stuff. The
@@ -319,64 +247,11 @@ can change everything from this strongpoint, but you have to be able
 to move around. C is not like the other languages. It is not a
 prison. It is freedom. Think “pirate!”, okay?
 
-** Needed:
-*** workout (rest when needed, and stretch)
-- walk/run 10km
-- 100 bench presses/pushups
-- 100 situps 
-- 100 squats
--- 20 curls
--- 10 overhead press
--- 10 upright row
-*** meals
-**** breakfast
-| oatmeal, coffee       |
-| egg, coffee           |
-| health cereal, coffee |
-| coffee                |
-| nothing               | 
-**** lunch
-| protien shake |
-| protien bar   |
-| nothing       |
-**** dinner
-| What dad makes |
-| protien shake  |
-| protien bar    |
-
+** 
 doctor appointment jun 11th 8 am 
-get fall books onto computer ||done||
 print insurance for car
 get crimson card (6/30)
 change steam account to new credit card
-*** get better
-**** math
-***** cs
-****** languages
-******* scheme
-        structure and inerpretation of computer programs
-******* C
-        C the programming language
-******* python 
-        Introduction-to-Computation-and-Programming-Using-Python-With-Application-to-Understanding-Data.pdf
-****** ai
-******* machine learning
-******** deep learning
-******** data analysis
-****** foundation
-***** physics
-****** classical/modern base
-****** quantum
-****** electrodynamics
-****** relativity
-****** statistical physics
-***** math logic 
-homotopy type theory
-****** main branches
-******* proof theory
-******* model theory
-******* set theory
-******* recursion theory 
 ****** (knight recommended)
       model theory: an introduction - dave marker
       recursive functions and effective computability - hartley rogers
@@ -391,98 +266,20 @@ homotopy type theory
 *** advice on making graph theory graphs in pdf form
     I created my trees with Inkscape and saved then either as pngs or
     as eps files. Then you can incorporate them in latex with \epsfig
-*** find a grad school
 ***** ask shaffii or savvo. and song about schools 
       I am not sure if Shafii or Savvo. still like me, but Song has always 
       been supportive. When I asked Connor he literally googled it in front 
       of me...
-      I am looking for schools that match my interest and ability. 
-      My primary goal is research, although I feel that my options may
-      be very poor. 
       Pretty much from the start I had to deal with this crap. So whatever.
 
-***** schools that seem interesting 
-****** university of notre dame 
-       top math logic school
-****** university of chicago 
-       top math logic school
-****** university of illinois - chicago 
-       top math logic school
-****** university of michigan - kalamazoo
-       graph theory and good connection to the cs department
-*** programming:
-**** these are my favorites
-***** C (optimal use of algorithms/data_struct stuff)
-      most of the time it does not matter, but I have a whole 
-      year of c++ and raw data structures/assembly lingo. 
-      So for some projects this is a fun language.
-***** python (optimal use of my time for most tasks)
-      was not dissapointed by this language in numerical analysis
-      It is a great specification language, plus libraries large 
-      and easy to use.
-***** scheme (or hy{python}, guile{C}, for research code)
-      best code for experiments because it gives so much freedom
-      Very decentralized hacker base due to this freedom.
-      This language glues itself to large libraries and languages to survive 
-      hy{python}, guile{C}, clojure{java}
-*** education
-**** core
-***** analysis 
-****** foundations
-******* foundationals of mathematical analysis by rudin 1/?
-****** real, complex
-******* Real and Complex analysis Rudin 1/396
-****** functional
-******* Functional Analysis Rudin 1/390
-***** algebra 
-****** Coding The matrix 1/512 (basic linear)
-***** geometry/topology 
-****** Topology Munkres 1/500
-**** marketable skills
-***** programming
-****** core language
-******* C
-******** C Dennis Ritchie 1/250
-******* python
-******* lisp
-******** Land of Lisp 1/460
-******** scheme (guile) (interacts directly with C)
-******** clojure (has infinite size data structures)
-****** flavor:
 ******* bash (common linux language)
 ******** Wicked Cool Shell Scripts 10/350 
-******* perl (quick implementation/string manipulator)
-******* R (Good for statistics/data-mining)
-***** math related
-****** human languages helpful in math research
-******* german (I find the most useful)
-******* french (probably what is actually most common)
-******* russian
-******* japanese
-******* chinese
-*** books to read:
-**** math
-***** graph theory
-***** Number Theory Rosen 1/600
 ***** Discrete math book Rosen 185/850
-***** Coding The matrix 1/512
 ***** tao analysis book 8/305
-***** tao analysis second book 1/211
-***** counterexamples in analysis 1/180
-***** how to think about analysis 1/222
-***** the numerical analysis book from class
-**** CS
 ***** Linux 2nd ed Sobell 218/890 (book from a spring class)
-***** Linux 3rd ed Sobell 1/1000 (read much of 2nd ed)
-**** assembly (1 to 1 to computer instructions)
-***** use ARM assembly videos to build a set of notes
-***** x86-64 gas assembly
 ***** ARM assembly book 26/161
 ***** Lisp book 114/587 ?
 ***** data structures book 13/688
-**** other
-***** how buildings learn
-
 ** logic
 **** introduction to the foundations of mathematics by Wilder
 **** All of Dr. Knights recommendations
@@ -503,11 +300,19 @@ obviously something inadequate about this approach. There are other
 domains where axiomatizing may have a more sustainable interface, less
 scaffold-like. Math is something metaphysical with the potential to
 point to or pursue quantum and probably morphic realms as well.
-
-
 “Ramanujan, they call you genius”. Ramanujan retorted “What? me, a genius? Look at my elbow, it will tell you the story”.
  “Night and day I do my calculations on slate. It is time consuming to look for a rag to wipe it with. I wipe the slate almost every few minutes with my elbow. I suppose my elbow is making a genius of me.”
 
-
 so math masters...
 why? because I have a hunch that stuff in the pure field is well structured and useful.
+
+I really do seem to have a love for it..
+I am for promoting math and thought in general, not sure what role that gives me in society
+
+** algebra (books of)
+main: dummit and foote
+computational
+category theory
+from linear algebra 
+reference (lang)
+recommended for skill building 
