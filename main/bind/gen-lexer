@@ -1,2 +1,0 @@
-#!/bin/sh
-$CHICKEN_CSI -s runsilex.scm
