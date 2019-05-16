@@ -6,14 +6,13 @@
 (require-library r7rs)
 
 ;;; ignore these, goto set-stuff
-; remove some of the scheme got-ya's
+; clean up syntax
 (define true  #t)
 (define false #f)
 (define (= a b) (equal? a b))
 (define (!= a b) (not (= a b)))
 (define (first x) (car x))
 (define (rest x) (cdr x))
-; lisp vs scheme got-ya's
 (define nil '())
 (define (mod a b) (modulo a b)) 
 ; special case of two primitives is, by far, the intuitive common case
