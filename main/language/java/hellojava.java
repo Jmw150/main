@@ -1,12 +1,5 @@
 //hello world in java
 
-/*#include "stdio.h"
-int main () { 
-    printf("hello!\n"); 
-    return 0;
-}
-*/
-
 public class hellojava 
 {
 	public static void main (String[] args)
@@ -14,3 +7,5 @@ public class hellojava
 		System.out.println("Hello, World!");
 	}
 }
+
+
