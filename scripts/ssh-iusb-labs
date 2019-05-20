@@ -1,0 +1,68 @@
+#!/bin/bash
+
+if [ "$1" ]; then
+    if (($1 <= 9)); then
+        ssh -Y jomawink@cs0$1.cs.iusb.edu 
+    fi
+else 
+   ssh -Y jomawink@cs05.cs.iusb.edu 
+fi
+
+
+# means server is busy or whatever
+error='ssh_exchange_identification: read: Connection reset by peer'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+password="If math, then immortal space robots1\n"

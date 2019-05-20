@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# used to clean up files that Latex has been used in. Be careful
+
+# .* stands for * for this reg exp
+if [[ $1 =~ .*/$ ]]; then 
+    rm ./${1}*.fmt ./${1}*~ ./${1}*.aux ./${1}_* ./${1}*.log -f -r;
+elif [ $# -eq 0 ]; then
+    rm .${1}/*.fmt .${1}/*~ .${1}/*.aux .${1}/_* .${1}/*.log -f -r;
+else
+    rm ./${1}/*.fmt ./${1}/*~ ./${1}/*.aux ./${1}/_* ./${1}/*.log -f -r;
+fi
+
+
+
+
+

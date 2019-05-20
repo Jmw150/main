@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+from scipy.stats import *
+import sys
+from fractions import Fraction
+
+if len(sys.argv) == 1 :
+   print("gammaPpf [x] [alpha] [beta]")
+   exit()
+
+x = float(Fraction(sys.argv[1]))
+alpha = float(Fraction(sys.argv[2]))
+beta = float(Fraction(sys.argv[3]))
+
+
+print(gamma.ppf(x,alpha,scale=beta))

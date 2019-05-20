@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# A simple script to count how many excutable commands are in your PATH
+
+IFS=":"
+count=0 ; nonex=0
+for rawDirectory in $PATH ; do
+    eval directory=$rawDirectory # ~/ does not count as a directory in test
+	if [ -d "$directory" ] ; then             
+        for command in "$directory"/* ; do
+    		if [ -x "$command" ] ; then
+    			count="$(( $count + 1 ))"
+    	    else
+    			nonex="$(( $nonex + 1))"
+    		fi
+    	done
+	fi
+done
+
+echo "$count commands, and $nonex entries that were not executable"
+
+exit 0

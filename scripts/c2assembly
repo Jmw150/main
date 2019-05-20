@@ -1,0 +1,5 @@
+#!/bin/bash
+
+gcc -S -m64 $1 #make into assembly x86-64, (but has to be asembled and loaded through gcc)
+
+

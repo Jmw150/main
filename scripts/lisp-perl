@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# the name of clojure system ontop of perl
+cljp "$@"
