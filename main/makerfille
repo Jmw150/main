@@ -1,5 +1,0 @@
-# -std=c99 so that for loops work in c..
-# -lgmp c big number binary lib
-
-bignum : test.c
-	gcc test.c -lgmp -o bignum -std=c99

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# instead of writting xgd-open, just type open
-# now with multiple arg
-
-for var in "$@"
-do
-    xdg-open $var
-done

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# the name of the language that is a lisp on top of python
-hy "$@"

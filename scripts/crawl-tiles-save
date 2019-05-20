@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# play dungeon crawl and have a backup save
-
-cp -r ~/.crawl/saves ~/dungeonCrawlSaves/"$(date)"
-
-crawl-tiles
-

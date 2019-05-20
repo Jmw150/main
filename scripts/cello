@@ -1,3 +1,0 @@
-#!/bin/bash
-
-gcc -std=gnu99 $@ -lCello -lm -lpthread

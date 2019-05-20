@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# just shut up and load it from the terminal
-octave --no-gui -q
